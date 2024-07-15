@@ -1,7 +1,11 @@
 ﻿namespace AdminCenter.Domain.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity
+public abstract class AuditableEntity<T> : Entity<T>
 {
+    protected AuditableEntity(T id) : base(id)
+    {
+    }
+
     public DateTimeOffset Created { get; set; }
 
     public string? CreatedBy { get; set; }

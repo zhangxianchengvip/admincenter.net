@@ -2,6 +2,6 @@
 
 namespace AdminCenter.Domain.Common;
 
-public abstract class BaseEvent : INotification
+public abstract class Event : INotification
 {
 }

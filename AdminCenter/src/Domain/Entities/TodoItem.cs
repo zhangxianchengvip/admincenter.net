@@ -1,6 +1,6 @@
 ﻿namespace AdminCenter.Domain.Entities;
 
-public class TodoItem : BaseAuditableEntity
+public class TodoItem : AuditableEntity<int>
 {
     public int ListId { get; set; }
 
