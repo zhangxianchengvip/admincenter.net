@@ -159,7 +159,12 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRealName([NotNull] string realName)
     {
-        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName)); ;
+        RealName = Guard.Against.NullOrWhiteSpace
+        (
+           input: realName,
+           parameterName: nameof(realName),
+           exceptionCreator: () => new Exception()
+        );
 
         return this;
     }
