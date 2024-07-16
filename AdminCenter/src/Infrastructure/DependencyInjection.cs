@@ -14,7 +14,7 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
 
