@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
@@ -20,7 +21,18 @@ public class UserRole : AuditableEntity
 
     public UserRole([NotNull] Guid userId, [NotNull] Guid roleId)
     {
-        UserId = Guard.Against.NullOrEmpty(userId, nameof(userId));
-        RoleId = Guard.Against.NullOrEmpty(roleId, nameof(roleId));
+        UserId = Guard.Against.NullOrEmpty
+        (
+            input: userId,
+            parameterName: nameof(userId),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserIdNull)
+        );
+
+        RoleId = Guard.Against.NullOrEmpty
+        (
+            input: roleId,
+            parameterName: nameof(roleId),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.RoleIdNull)
+        );
     }
 }

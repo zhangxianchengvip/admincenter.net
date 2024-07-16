@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
+using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 namespace AdminCenter.Domain;
 
@@ -62,9 +63,9 @@ public class User : IAggregateRoot<Guid>
         PhoneNumber = phoneNumber;
         Email = email;
         Status = StatusEnum.Enable;
-        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName));
-        LoginName = Guard.Against.NullOrWhiteSpace(loginName, nameof(loginName));
-        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password)));
+        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull));
+        LoginName = Guard.Against.NullOrWhiteSpace(loginName, nameof(loginName), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull));
+        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)));
         UserRoles = [];
     }
 
@@ -145,8 +146,8 @@ public class User : IAggregateRoot<Guid>
     {
         UserRoles = roleList.Select(roleId => new UserRole
         (
-          userId: Id,
-          roleId: roleId
+             userId: Id,
+             roleId: roleId
         )).ToList();
 
         return this;
@@ -163,7 +164,7 @@ public class User : IAggregateRoot<Guid>
         (
            input: realName,
            parameterName: nameof(realName),
-           exceptionCreator: () => new Exception()
+           exceptionCreator: () => new AdminBusinessException("用户名称不能为空!")
         );
 
         return this;
