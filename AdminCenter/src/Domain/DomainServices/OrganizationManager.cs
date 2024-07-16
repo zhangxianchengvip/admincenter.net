@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Domain;
 
-public class OrganizationManager(IApplicationDbContext context)
+public class OrganizationManager(IApplicationDbContext context) : DomainService
 {
     public async Task<Organization> UpdateAsync(
         [NotNull] Guid id,
