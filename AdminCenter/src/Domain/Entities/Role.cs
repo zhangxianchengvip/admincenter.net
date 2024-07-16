@@ -1,14 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
-public class Role : IAggregateRoot<Guid>
+public class Role : AggregateRoot<Guid>
 {
     /// <summary>
     /// 角色名称
     /// </summary>
-    public string Name { get; private set; }
+    public string Name { get; private set; } = default!;
 
     /// <summary>
     /// 描述
@@ -22,12 +23,12 @@ public class Role : IAggregateRoot<Guid>
 
     public Role(
         [NotNull] Guid id,
-        [NotNull] string roleName,
+        [NotNull] string name,
         string? description = null) : base(id)
     {
         Description = description;
         Status = StatusEnum.Enable;
-        Name = Guard.Against.NullOrWhiteSpace(roleName, nameof(roleName));
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
     }
 
     /// <summary>

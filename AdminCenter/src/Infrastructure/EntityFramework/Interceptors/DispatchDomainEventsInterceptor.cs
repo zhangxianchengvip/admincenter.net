@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace AdminCenter.Infrastructure.Data.Interceptors;
+namespace AdminCenter.Infrastructure.EntityFramework.Interceptors;
 
 public class DispatchDomainEventsInterceptor : SaveChangesInterceptor
 {

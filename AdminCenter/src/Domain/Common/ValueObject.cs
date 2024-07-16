@@ -1,8 +1,16 @@
 ﻿namespace AdminCenter.Domain.Common;
 
-// Learn more: https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
+/// <summary>
+/// 值对象
+/// </summary>
 public abstract class ValueObject
 {
+    /// <summary>
+    /// 等于
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
     protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
         if (left is null ^ right is null)
@@ -13,6 +21,12 @@ public abstract class ValueObject
         return left?.Equals(right!) != false;
     }
 
+    /// <summary>
+    /// 不等与操作
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <returns></returns>
     protected static bool NotEqualOperator(ValueObject left, ValueObject right)
     {
         return !(EqualOperator(left, right));
@@ -20,6 +34,11 @@ public abstract class ValueObject
 
     protected abstract IEnumerable<object> GetEqualityComponents();
 
+    /// <summary>
+    /// 相等
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public override bool Equals(object? obj)
     {
         if (obj == null || obj.GetType() != GetType())
@@ -31,6 +50,10 @@ public abstract class ValueObject
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
+    /// <summary>
+    /// 获取Hash
+    /// </summary>
+    /// <returns></returns>
     public override int GetHashCode()
     {
         var hash = new HashCode();

@@ -1,6 +1,6 @@
 ﻿namespace AdminCenter.Domain;
 
-public class UserPasswordUpdateEvent : Event
+public class UserPasswordUpdateEvent : DomainEvent
 {
     public Guid UserId { get; set; }
 }

@@ -1,38 +1,64 @@
-﻿using AdminCenter.Domain.Common;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdminCenter.Domain;
 
-
-public abstract class AggregateRoot : IAuditableEntity
+/// <summary>
+/// 聚合根
+/// </summary>
+public abstract class AggregateRoot : AuditableEntity
 {
-    public DateTimeOffset Created { get; set; }
-    public string? CreatedBy { get; set; }
-    public DateTimeOffset LastModified { get; set; }
-    public string? LastModifiedBy { get; set; }
+    /// <summary>
+    /// 事件集合
+    /// </summary>
+    private readonly List<DomainEvent> _domainEvents = new();
 
-    private readonly List<Event> _domainEvents = new();
+    /// <summary>
+    /// 只读事件集合
+    /// </summary>
+    [NotMapped]
+    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
-    public IReadOnlyCollection<Event> DomainEvents => _domainEvents.AsReadOnly();
-
-    public void AddDomainEvent(Event domainEvent)
+    /// <summary>
+    /// 添加领域事件
+    /// </summary>
+    /// <param name="domainEvent"></param>
+    public void AddDomainEvent(DomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
     }
 
-    public void RemoveDomainEvent(Event domainEvent)
+    /// <summary>
+    /// 移出事件
+    /// </summary>
+    /// <param name="domainEvent"></param>
+    public void RemoveDomainEvent(DomainEvent domainEvent)
     {
         _domainEvents.Remove(domainEvent);
     }
 
+    /// <summary>
+    /// 清除领域事件
+    /// </summary>
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();
     }
 }
-public abstract class IAggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey>
+
+/// <summary>
+/// 聚合根
+/// </summary>
+/// <typeparam name="TKey"></typeparam>
+public abstract class AggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey>
 {
-    public TKey Id { get; init; }
-    protected IAggregateRoot(TKey id)
+    /// <summary>
+    /// 主键
+    /// </summary>
+    public TKey Id { get; init; } = default!;
+
+    protected AggregateRoot() { }
+
+    protected AggregateRoot(TKey id)
     {
         Id = id;
     }

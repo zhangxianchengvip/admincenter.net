@@ -3,7 +3,7 @@ using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminCenter.Infrastructure.Data;
+namespace AdminCenter.Infrastructure.EntityFramework;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {

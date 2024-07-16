@@ -1,11 +1,11 @@
 ﻿using Azure.Identity;
 using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Infrastructure.Data;
 using AdminCenter.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using AdminCenter.Infrastructure.EntityFramework;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -46,6 +46,15 @@ public static class DependencyInjection
             });
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+        });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
         });
 
         return services;

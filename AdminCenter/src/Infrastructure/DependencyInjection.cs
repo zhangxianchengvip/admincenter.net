@@ -1,6 +1,6 @@
 ﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Infrastructure.Data;
-using AdminCenter.Infrastructure.Data.Interceptors;
+using AdminCenter.Infrastructure.EntityFramework;
+using AdminCenter.Infrastructure.EntityFramework.Interceptors;
 using AdminCenter.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -24,7 +24,7 @@ public static class DependencyInjection
         {
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
 
-            options.UseNpgsql(connectionString);
+            options.UseSqlite(connectionString);
         });
 
         services.AddScoped<IIdentityService, IdentityService>();

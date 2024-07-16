@@ -1,5 +1,4 @@
 ﻿using System.Data.Common;
-using AdminCenter.Infrastructure.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

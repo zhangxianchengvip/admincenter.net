@@ -1,5 +1,7 @@
 using AdminCenter.Domain;
-using AdminCenter.Infrastructure.Data;
+using AdminCenter.Infrastructure.EntityFramework;
+using AdminCenter.Web.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,12 @@ builder.Services.AddDomainService();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebServices();
+
+builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthorization();
+
+builder.Services.AddHostedService<SendDataBackgroundService>();
+
 
 var app = builder.Build();
 
@@ -43,10 +51,15 @@ app.MapFallbackToFile("index.html");
 
 app.UseExceptionHandler(options => { });
 
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.Map("/", () => Results.Redirect("/swagger"));
 
 app.MapEndpoints();
 
 app.Run();
+
 
 public partial class Program { }

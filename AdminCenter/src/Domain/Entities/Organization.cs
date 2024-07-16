@@ -7,7 +7,7 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 组织
 /// </summary>
-public class Organization : IAggregateRoot<Guid>
+public class Organization : AggregateRoot<Guid>
 {
     /// <summary>
     /// 组织名称

@@ -8,17 +8,17 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 用户
 /// </summary>
-public class User : IAggregateRoot<Guid>
+public class User : AggregateRoot<Guid>
 {
     /// <summary>
     /// 账号
     /// </summary>
-    public string LoginName { get; init; }
+    public string LoginName { get; init; } = default!;
 
     /// <summary>
     /// 密码
     /// </summary>
-    public string Password { get; private set; }
+    public string Password { get; private set; } = default!;
 
     /// <summary>
     /// 邮箱
@@ -38,17 +38,19 @@ public class User : IAggregateRoot<Guid>
     /// <summary>
     /// 真实名称
     /// </summary>
-    public string RealName { get; private set; }
+    public string RealName { get; private set; } = default!;
 
     /// <summary>
     /// 用户角色
     /// </summary>
-    public ICollection<UserRole> UserRoles { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = [];
 
     /// <summary>
     /// 状态
     /// </summary>
     public StatusEnum Status { get; set; }
+
+    private User() { }
 
     public User(
         [NotNull] Guid id,
@@ -63,9 +65,31 @@ public class User : IAggregateRoot<Guid>
         PhoneNumber = phoneNumber;
         Email = email;
         Status = StatusEnum.Enable;
-        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull));
-        LoginName = Guard.Against.NullOrWhiteSpace(loginName, nameof(loginName), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull));
-        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password), exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)));
+
+        //校验名称为空，或者赋值
+        RealName = Guard.Against.NullOrWhiteSpace
+        (
+            input: realName,
+            parameterName: nameof(realName),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)
+        );
+
+        //校验登录名称为空，或者赋值
+        LoginName = Guard.Against.NullOrWhiteSpace
+        (
+            input: loginName,
+            parameterName: nameof(loginName),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)
+        );
+
+        //校验密码为空，或者赋值
+        Password = HashPassword(Guard.Against.NullOrWhiteSpace
+        (
+            input: password,
+            parameterName: nameof(password),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)
+        ));
+
         UserRoles = [];
     }
 
@@ -75,7 +99,13 @@ public class User : IAggregateRoot<Guid>
     /// <param name="password"></param>
     public User UpdatePassword([NotNull] string password)
     {
-        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password)));
+        //校验密码为空，或者赋值
+        Password = HashPassword(Guard.Against.NullOrWhiteSpace
+        (
+            input: password,
+            parameterName: nameof(password),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserPasswordNull)
+        ));
 
         //添加用户密码修改事件
         AddDomainEvent(new UserPasswordUpdateEvent { UserId = Id });
@@ -90,7 +120,13 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     private string HashPassword([NotNull] string password)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+        //校验密码为空
+        Guard.Against.NullOrWhiteSpace
+        (
+            input: password,
+            parameterName: nameof(password),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserPasswordNull)
+        );
 
         // 生成一个随机的盐
         using var rng = RandomNumberGenerator.Create();
@@ -119,7 +155,13 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     public bool ValidatePassword([NotNull] string password)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
+        //校验密码为空
+        Guard.Against.NullOrWhiteSpace
+        (
+            input: password,
+            parameterName: nameof(password),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserPasswordNull)
+        );
 
         byte[] saltAndHash = Convert.FromBase64String(Password);
         byte[] salt = new byte[32];
@@ -144,11 +186,7 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRoleRange(List<Guid> roleList)
     {
-        UserRoles = roleList.Select(roleId => new UserRole
-        (
-             userId: Id,
-             roleId: roleId
-        )).ToList();
+        UserRoles = roleList.Select(roleId => new UserRole(userId: Id, roleId: roleId)).ToList();
 
         return this;
     }
@@ -160,6 +198,7 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRealName([NotNull] string realName)
     {
+        //校验名称为空，或者赋值
         RealName = Guard.Against.NullOrWhiteSpace
         (
            input: realName,
