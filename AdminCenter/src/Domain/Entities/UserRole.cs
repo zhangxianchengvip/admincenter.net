@@ -1,4 +1,7 @@
-﻿namespace AdminCenter.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
+
+namespace AdminCenter.Domain;
 
 /// <summary>
 /// 用户角色
@@ -15,9 +18,9 @@ public class UserRole : AuditableEntity
     /// </summary>
     public Guid RoleId { get; private set; }
 
-    public UserRole(Guid userId, Guid roleId)
+    public UserRole([NotNull] Guid userId, [NotNull] Guid roleId)
     {
-        UserId = userId;
-        RoleId = roleId;
+        UserId = Guard.Against.NullOrEmpty(userId, nameof(userId));
+        RoleId = Guard.Against.NullOrEmpty(roleId, nameof(roleId));
     }
 }

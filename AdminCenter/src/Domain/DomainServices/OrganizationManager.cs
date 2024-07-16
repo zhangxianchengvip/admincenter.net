@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Application.Common.Interfaces;
+using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Domain;
 
 public class OrganizationManager(IApplicationDbContext context)
 {
-
     public async Task<Organization> UpdateAsync(
         [NotNull] Guid id,
         [NotNull] string name,
@@ -22,12 +22,11 @@ public class OrganizationManager(IApplicationDbContext context)
 
         var organizatoin = await context.Organizations.FindAsync(id);
 
-        if (organizatoin is null)
-            throw new Exception(nameof(id));
+        Guard.Against.Null(organizatoin);
 
-        organizatoin.UpdateOrganizationName(name).UpdateOrganizationCode(code);
-        organizatoin.SuperiorOrganizationId = superiorOrganizationId;
         organizatoin.Description = description;
+        organizatoin.SuperiorOrganizationId = superiorOrganizationId;
+        organizatoin.UpdateOrganizationName(name).UpdateOrganizationCode(code);
 
         return organizatoin;
     }

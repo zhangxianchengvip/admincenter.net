@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
+using Ardalis.GuardClauses;
 namespace AdminCenter.Domain;
 
 /// <summary>
@@ -57,17 +58,13 @@ public class User : IAggregateRoot<Guid>
         string? phoneNumber = null,
         string? email = null) : base(id)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(loginName, nameof(loginName));
-        ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
-        ArgumentException.ThrowIfNullOrWhiteSpace(realName, nameof(realName));
-
-        LoginName = loginName;
-        Password = HashPassword(password);
-        RealName = realName;
         NickName = nickName;
         PhoneNumber = phoneNumber;
         Email = email;
         Status = StatusEnum.Enable;
+        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName));
+        LoginName = Guard.Against.NullOrWhiteSpace(loginName, nameof(loginName));
+        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password)));
         UserRoles = [];
     }
 
@@ -77,9 +74,7 @@ public class User : IAggregateRoot<Guid>
     /// <param name="password"></param>
     public User UpdatePassword([NotNull] string password)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(password, nameof(password));
-
-        Password = HashPassword(password);
+        Password = HashPassword(Guard.Against.NullOrWhiteSpace(password, nameof(password)));
 
         //添加用户密码修改事件
         AddDomainEvent(new UserPasswordUpdateEvent { UserId = Id });
@@ -164,9 +159,7 @@ public class User : IAggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRealName([NotNull] string realName)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(realName, nameof(realName));
-
-        RealName = realName;
+        RealName = Guard.Against.NullOrWhiteSpace(realName, nameof(realName)); ;
 
         return this;
     }

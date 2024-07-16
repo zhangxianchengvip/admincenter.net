@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -24,11 +25,9 @@ public class Role : IAggregateRoot<Guid>
         [NotNull] string roleName,
         string? description = null) : base(id)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(roleName, nameof(roleName));
-
-        Name = roleName;
         Description = description;
         Status = StatusEnum.Enable;
+        Name = Guard.Against.NullOrWhiteSpace(roleName, nameof(roleName));
     }
 
     /// <summary>
@@ -38,9 +37,7 @@ public class Role : IAggregateRoot<Guid>
     /// <returns></returns>
     public Role UpdateRoleName([NotNull] string roleName)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(roleName, nameof(roleName));
-
-        Name = roleName;
+        Name = Guard.Against.NullOrWhiteSpace(roleName, nameof(roleName)); ;
 
         return this;
     }

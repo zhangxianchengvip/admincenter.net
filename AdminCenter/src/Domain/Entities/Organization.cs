@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
+using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -37,12 +39,10 @@ public class Organization : IAggregateRoot<Guid>
         Guid? superiorOrganizationId,
         string? description = null) : base(id)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-
-        Name = name;
         Code = code;
-        SuperiorOrganizationId = superiorOrganizationId;
         Description = description;
+        SuperiorOrganizationId = superiorOrganizationId;
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
     }
 
@@ -53,11 +53,7 @@ public class Organization : IAggregateRoot<Guid>
     /// <returns></returns>
     public Organization UpdateOrganizationName([NotNull] string name)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-
-        if (Name == name) return this;
-
-        Name = name;
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
         return this;
     }
@@ -70,11 +66,7 @@ public class Organization : IAggregateRoot<Guid>
     /// <returns></returns>
     public Organization UpdateOrganizationCode([NotNull] string code)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(code, nameof(code));
-
-        if (Code == code) return this;
-
-        Code = code;
+        Code = Guard.Against.NullOrWhiteSpace(code, nameof(code));
 
         return this;
     }

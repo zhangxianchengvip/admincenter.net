@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -29,11 +30,9 @@ public class Position : IAggregateRoot<Guid>
         [NotNull] string name,
         string? description = null) : base(id)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-
-        Name = name;
         Description = description;
         Status = StatusEnum.Enable;
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
     }
 
     /// <summary>
@@ -43,9 +42,7 @@ public class Position : IAggregateRoot<Guid>
     /// <returns></returns>
     public Position UpdatePositionName([NotNull] string name)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
-
-        Name = name;
+        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name)); ;
 
         return this;
     }
