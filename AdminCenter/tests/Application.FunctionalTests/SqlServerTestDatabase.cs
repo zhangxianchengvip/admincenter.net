@@ -31,13 +31,13 @@ public class SqlServerTestDatabase : ITestDatabase
     {
         _connection = new SqlConnection(_connectionString);
 
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseSqlServer(_connectionString)
-            .Options;
+        //var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+        //    .UseSqlServer(_connectionString)
+        //    .Options;
 
-        var context = new ApplicationDbContext(options);
+        //var context = new ApplicationDbContext(options);
 
-        context.Database.Migrate();
+       // context.Database.Migrate();
 
         _respawner = await Respawner.CreateAsync(_connectionString, new RespawnerOptions
         {

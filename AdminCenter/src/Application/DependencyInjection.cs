@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AdminCenter.Application.Common.Behaviours;
+using MediatR.Pipeline;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +12,8 @@ public static class DependencyInjection
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(cfg => {
+        services.AddMediatR(cfg =>
+        {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));

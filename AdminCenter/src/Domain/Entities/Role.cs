@@ -2,7 +2,7 @@
 
 namespace AdminCenter.Domain;
 
-public class Role : AggregateRoot<Guid>
+public class Role : IAggregateRoot<Guid>
 {
     /// <summary>
     /// 角色名称

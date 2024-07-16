@@ -1,4 +1,4 @@
-﻿using AdminCenter.Domain.Common;
+﻿using AdminCenter.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -34,7 +34,7 @@ public class DispatchDomainEventsInterceptor : SaveChangesInterceptor
         if (context == null) return;
 
         var entities = context.ChangeTracker
-            .Entries<BaseEntity>()
+            .Entries<AggregateRoot>()
             .Where(e => e.Entity.DomainEvents.Any())
             .Select(e => e.Entity);
 

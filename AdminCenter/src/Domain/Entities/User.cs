@@ -6,7 +6,7 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 用户
 /// </summary>
-public class User : AggregateRoot<Guid>
+public class User : IAggregateRoot<Guid>
 {
     /// <summary>
     /// 账号

@@ -1,21 +1,21 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AdminCenter.Domain.Common;
-
-
-public abstract class Entity
+public class Entity : IEntity
 {
 
 }
 
-public abstract class Entity<T> : Entity
+public class Entity<TKey> : Entity, IEntity<TKey>
 {
-    public T Id { get; init; }
+    public TKey Id { get; init; }
 
-    protected Entity([NotNull] T id)
+    public Entity(TKey id)
     {
-        ArgumentNullException.ThrowIfNull(id, nameof(id));
-
         Id = id;
     }
 }

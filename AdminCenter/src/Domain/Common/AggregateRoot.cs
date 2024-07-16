@@ -1,11 +1,14 @@
-﻿namespace AdminCenter.Domain;
+﻿using AdminCenter.Domain.Common;
 
-public abstract class AggregateRoot<T> : AuditableEntity<T>
+namespace AdminCenter.Domain;
+
+
+public abstract class AggregateRoot : IAuditableEntity
 {
-    protected AggregateRoot(T id) : base(id)
-    {
-
-    }
+    public DateTimeOffset Created { get; set; }
+    public string? CreatedBy { get; set; }
+    public DateTimeOffset LastModified { get; set; }
+    public string? LastModifiedBy { get; set; }
 
     private readonly List<Event> _domainEvents = new();
 
@@ -24,5 +27,13 @@ public abstract class AggregateRoot<T> : AuditableEntity<T>
     public void ClearDomainEvents()
     {
         _domainEvents.Clear();
+    }
+}
+public abstract class IAggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey>
+{
+    public TKey Id { get; init; }
+    protected IAggregateRoot(TKey id)
+    {
+        Id = id;
     }
 }

@@ -4,7 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Application.Common.Interfaces;
 
-public interface IRepository<T, KeyType> where T : AggregateRoot<KeyType>
+/// <summary>
+/// 仓储
+/// </summary>
+public interface IApplicationDbContext
 {
-    DbSet<T> Data { get; }
+    DbSet<User> Users { get; }
+    DbSet<Role> Roles { get; }
+    DbSet<Position> Positions { get; }
+    DbSet<Organization> Organizations { get; }
 }

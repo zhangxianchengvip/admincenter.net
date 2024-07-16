@@ -5,7 +5,7 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 职位
 /// </summary>
-public class Position : AggregateRoot<Guid>
+public class Position : IAggregateRoot<Guid>
 {
 
     /// <summary>

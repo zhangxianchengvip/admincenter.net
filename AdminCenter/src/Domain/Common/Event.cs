@@ -2,6 +2,8 @@
 
 namespace AdminCenter.Domain.Common;
 
-public abstract class Event : INotification
+public class Event : IEvent, INotification
 {
+    public Guid EventId { get; set; }
+    public DateTimeOffset Created { get; set; }
 }
