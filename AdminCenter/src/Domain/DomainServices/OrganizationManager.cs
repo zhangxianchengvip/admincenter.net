@@ -13,18 +13,17 @@ public class OrganizationManager(IApplicationDbContext context)
         [NotNull] string code,
         string description,
         Guid? superiorOrganizationId)
-
     {
-        var exit = await context.Organizations.AnyAsync(s => s.Name == name || s.Code == code);
+        if (await context.Organizations.AnyAsync(s => s.Name.Equals(name)))
+            throw new Exception();
 
-        if (exit) throw new ArgumentOutOfRangeException(nameof(name));
+        if (await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
+            throw new Exception();
 
         var organizatoin = await context.Organizations.FindAsync(id);
 
         if (organizatoin is null)
-        {
-            throw new ArgumentOutOfRangeException(nameof(id));
-        }
+            throw new Exception(nameof(id));
 
         organizatoin.UpdateOrganizationName(name).UpdateOrganizationCode(code);
         organizatoin.SuperiorOrganizationId = superiorOrganizationId;
@@ -32,5 +31,4 @@ public class OrganizationManager(IApplicationDbContext context)
 
         return organizatoin;
     }
-
 }

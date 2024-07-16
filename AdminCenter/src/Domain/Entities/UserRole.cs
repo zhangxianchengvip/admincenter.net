@@ -3,7 +3,7 @@
 /// <summary>
 /// 用户角色
 /// </summary>
-public class UserRole : Entity
+public class UserRole : AuditableEntity
 {
     /// <summary>
     /// 用户Id

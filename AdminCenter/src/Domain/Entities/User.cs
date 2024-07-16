@@ -162,7 +162,7 @@ public class User : IAggregateRoot<Guid>
     /// </summary>
     /// <param name="realName"></param>
     /// <returns></returns>
-    public User UpdateRealName(string realName)
+    public User UpdateRealName([NotNull] string realName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(realName, nameof(realName));
 

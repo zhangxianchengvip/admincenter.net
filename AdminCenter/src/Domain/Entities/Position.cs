@@ -41,7 +41,7 @@ public class Position : IAggregateRoot<Guid>
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public Position UpdatePositionName(string name)
+    public Position UpdatePositionName([NotNull] string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
 

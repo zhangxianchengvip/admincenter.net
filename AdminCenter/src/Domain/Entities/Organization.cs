@@ -51,7 +51,7 @@ public class Organization : IAggregateRoot<Guid>
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public Organization UpdateOrganizationName(string name)
+    public Organization UpdateOrganizationName([NotNull] string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));
 
@@ -68,7 +68,7 @@ public class Organization : IAggregateRoot<Guid>
     /// </summary>
     /// <param name="code"></param>
     /// <returns></returns>
-    public Organization UpdateOrganizationCode(string code)
+    public Organization UpdateOrganizationCode([NotNull] string code)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(code, nameof(code));
 
