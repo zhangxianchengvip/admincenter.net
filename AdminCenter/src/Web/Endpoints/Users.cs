@@ -18,11 +18,13 @@ public class Users : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-           .MapPost(UserLogin, "Login");
+              .AddEndpointFilter<ApiResponseFilter>()
+              .MapPost(UserLogin, "Login");
 
         app.MapGroup(this)
-           .RequireAuthorization()
-           .MapGet(UserInfoQuery, "{id}");
+              .RequireAuthorization()
+              .AddEndpointFilter<ApiResponseFilter>()
+              .MapGet(UserInfoQuery, "{id}");
     }
 
     public async Task<UserDto> UserLogin(ISender sender, [FromServices] IOptionsSnapshot<JwtOptions> options, UserLoginQuery query)

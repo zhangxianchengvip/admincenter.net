@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Common.Exceptions;
+using AdminCenter.Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ public class CustomExceptionHandler : IExceptionHandler
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+                { typeof(AdminBusinessException), HandleAdminBusinessException },
             };
     }
 
@@ -30,7 +32,8 @@ public class CustomExceptionHandler : IExceptionHandler
             return true;
         }
 
-        return false;
+        await HandleOtherException(httpContext, exception);
+        return true;
     }
 
     private async Task HandleValidationException(HttpContext httpContext, Exception ex)
@@ -83,5 +86,27 @@ public class CustomExceptionHandler : IExceptionHandler
             Title = "Forbidden",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
         });
+    }
+
+    private async Task HandleAdminBusinessException(HttpContext httpContext, Exception ex)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        await httpContext.Response.WriteAsJsonAsync(new ApiResponse
+        (
+            code: StatusCodes.Status500InternalServerError,
+            message: ex.Message)
+        );
+    }
+
+    private async Task HandleOtherException(HttpContext httpContext, Exception ex)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        await httpContext.Response.WriteAsJsonAsync(new ApiResponse
+        (
+            code: StatusCodes.Status500InternalServerError,
+            message: "Internal Serve rError")
+        );
     }
 }
