@@ -74,6 +74,31 @@
           }
         ]
       }
+    },
+    "/api/v1/Users/Personal": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "PersonalInfoQuery",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
     }
   },
   "components": {

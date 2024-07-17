@@ -23,11 +23,14 @@ public class UserLoginHandler(IApplicationDbContext context) : IRequestHandler<U
         .FirstOrDefaultAsync(s => s.LoginName.Equals(request.LoginName));
 
         if (user == null)
+        {
             throw new AdminBusinessException(ExctptionMessage.UserNotFind);
+        }
 
         if (!user.ValidatePassword(request.Password))
+        {
             throw new AdminBusinessException(ExctptionMessage.UserPasswordError);
-
+        }
 
         return user.Adapt<UserDto>();
     }

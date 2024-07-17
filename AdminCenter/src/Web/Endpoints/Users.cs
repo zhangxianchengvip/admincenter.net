@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AdminCenter.Application;
+using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Users.Dto;
 using AdminCenter.Application.Users.Queries;
@@ -24,10 +25,21 @@ public class Users : EndpointGroupBase
         app.MapGroup(this)
               .RequireAuthorization()
               .AddEndpointFilter<ApiResponseFilter>()
-              .MapGet(UserInfoQuery, "{id}");
+              .MapGet(UserInfoQuery, "{id}")
+              .MapGet(PersonalInfoQuery, "/Personal");
     }
 
-    public async Task<UserDto> UserLogin(ISender sender, [FromServices] IOptionsSnapshot<JwtOptions> options, UserLoginQuery query)
+    /// <summary>
+    /// 登录
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="options"></param>
+    /// <param name="query"></param>
+    /// <returns></returns>
+    public async Task<UserDto> UserLogin(
+        ISender sender,
+        [FromServices] IOptionsSnapshot<JwtOptions> options,
+        UserLoginQuery query)
     {
         var userDto = await sender.Send(query);
 
@@ -69,10 +81,25 @@ public class Users : EndpointGroupBase
         return userDto;
     }
 
+    /// <summary>
+    /// 用户信息
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<UserDto> UserInfoQuery(ISender sender, Guid id)
     {
-        var userDto = await sender.Send(new UserInfoQuery(id));
+        return await sender.Send(new UserInfoQuery(id));
+    }
 
-        return userDto;
+    /// <summary>
+    /// 个人信息
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public async Task<UserDto> PersonalInfoQuery(ISender sender, IUser user)
+    {
+        return await sender.Send(new UserInfoQuery(Guid.Parse(user.Id!)));
     }
 }
