@@ -1,7 +1,12 @@
+using System.Text;
 using AdminCenter.Domain;
 using AdminCenter.Infrastructure.EntityFramework;
+using AdminCenter.Web;
 using AdminCenter.Web.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +16,24 @@ builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddDomainService();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddWebServices();
+builder.Services.AddWebServices(builder.Configuration);
 
-builder.Services.AddAuthentication().AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //在这里获取注入的 jwt option
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true, //是否验证Issuer
+        ValidIssuer = builder.Configuration["Jwt:Issuer"], //发行人Issuer
+        ValidateAudience = true, //是否验证Audience
+        ValidAudience = builder.Configuration["Jwt:Audience"], //订阅人Audience
+        ValidateIssuerSigningKey = true, //是否验证SecurityKey
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!)), //SecurityKey
+        ValidateLifetime = true, //是否验证失效时间
+        ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
+        RequireExpirationTime = true,
+    };
+});
 builder.Services.AddAuthorization();
 
 builder.Services.AddHostedService<SendDataBackgroundService>();

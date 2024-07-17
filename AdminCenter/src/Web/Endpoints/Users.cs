@@ -1,8 +1,13 @@
 ﻿
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using AdminCenter.Application;
 using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Users.Dto;
 using AdminCenter.Application.Users.Queries;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AdminCenter.Web;
 [Authorize]
@@ -18,11 +23,43 @@ public class Users : EndpointGroupBase
            .MapGet(UserInfoQuery, "{id}");
     }
 
-    public async Task<UserDto> UserLogin(ISender sender, UserLoginQuery query)
+    public async Task<string> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLoginQuery query)
     {
         var userDto = await sender.Send(query);
 
-        return userDto;
+        var jwtOptions = options.Value;
+
+        var claims = new[]
+               {
+            new Claim(ClaimTypes.NameIdentifier, userDto.Id.ToString()!),
+            new Claim(ClaimTypes.Name, userDto.LoginName!), //HttpContext.User.Identity.Name
+            new Claim(ClaimTypes.Role, "admin"), //HttpContext.User.IsInRole("r_admin")
+            new Claim("Username",userDto.RealName??""),
+        };
+
+        // 2. 从 appsettings.json 中读取SecretKey
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
+
+        // 3. 选择加密算法
+        var algorithm = SecurityAlgorithms.HmacSha256;
+
+        // 4. 生成Credentials
+        var signingCredentials = new SigningCredentials(secretKey, algorithm);
+
+        // 5. 根据以上，生成token
+        var jwtSecurityToken = new JwtSecurityToken(
+            jwtOptions.Issuer,     //Issuer
+            jwtOptions.Audience,   //Audience
+            claims,                          //Claims,
+            DateTime.Now,                    //notBefore
+            DateTime.Now.AddSeconds(300),    //expires
+            signingCredentials               //Credentials
+        );
+
+        // 6. 将token变为string
+        var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+        return token;
     }
 
     public async Task<UserDto> UserInfoQuery(ISender sender, Guid id)
