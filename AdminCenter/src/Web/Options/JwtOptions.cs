@@ -1,6 +1,8 @@
-﻿using Auto.Options;
+﻿namespace AdminCenter.Web;
 
-namespace AdminCenter.Web;
-
-[AutoOptions]
-public record JwtOptions(string Issuer, string Audience, string SecretKey);
+public class JwtOptions 
+{
+    public string Issuer { get; set; } = default!;
+    public string Audience { get; set; } = default!;
+    public string SecretKey { get; set; } = default!;
+}

@@ -1,12 +1,11 @@
-﻿using Azure.Identity;
-using AdminCenter.Application.Common.Interfaces;
+﻿using AdminCenter.Application.Common.Interfaces;
+using AdminCenter.Infrastructure.EntityFramework;
+using AdminCenter.Web;
 using AdminCenter.Web.Services;
+using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using AdminCenter.Infrastructure.EntityFramework;
-using Auto.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -14,26 +13,26 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddAutoOptions(configuration);
+        services.AddRazorPages();
+        
+        services.AddHttpContextAccessor();
+
+        services.AddEndpointsApiExplorer();
+        
+        services.AddScoped<IUser, CurrentUser>();
 
         services.AddDatabaseDeveloperPageExceptionFilter();
 
-        services.AddScoped<IUser, CurrentUser>();
-
-        services.AddHttpContextAccessor();
-
-        services.AddHealthChecks()
-            .AddDbContextCheck<ApplicationDbContext>();
-
         services.AddExceptionHandler<CustomExceptionHandler>();
+        
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
-        services.AddRazorPages();
+
+        services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         // Customise default API behaviour
-        services.Configure<ApiBehaviorOptions>(options =>
-            options.SuppressModelStateInvalidFilter = true);
+        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
-        services.AddEndpointsApiExplorer();
 
         services.AddOpenApiDocument((configure, sp) =>
         {

@@ -6,6 +6,8 @@ using AdminCenter.Application;
 using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Users.Dto;
 using AdminCenter.Application.Users.Queries;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,7 +25,7 @@ public class Users : EndpointGroupBase
            .MapGet(UserInfoQuery, "{id}");
     }
 
-    public async Task<string> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLoginQuery query)
+    public async Task<UserDto> UserLogin(ISender sender, [FromServices] IOptionsSnapshot<JwtOptions> options, UserLoginQuery query)
     {
         var userDto = await sender.Send(query);
 
@@ -47,7 +49,8 @@ public class Users : EndpointGroupBase
         var signingCredentials = new SigningCredentials(secretKey, algorithm);
 
         // 5. 根据以上，生成token
-        var jwtSecurityToken = new JwtSecurityToken(
+        var jwtSecurityToken = new JwtSecurityToken
+        (
             jwtOptions.Issuer,     //Issuer
             jwtOptions.Audience,   //Audience
             claims,                          //Claims,
@@ -59,7 +62,9 @@ public class Users : EndpointGroupBase
         // 6. 将token变为string
         var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-        return token;
+        userDto.Token = token;
+
+        return userDto;
     }
 
     public async Task<UserDto> UserInfoQuery(ISender sender, Guid id)

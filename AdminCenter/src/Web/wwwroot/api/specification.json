@@ -30,7 +30,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -78,18 +78,6 @@
   },
   "components": {
     "schemas": {
-      "UserLoginQuery": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "loginName": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
       "UserDto": {
         "type": "object",
         "additionalProperties": false,
@@ -118,6 +106,18 @@
           "phoneNumber": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "UserLoginQuery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "loginName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
           }
         }
       }
