@@ -55,7 +55,7 @@ public class Users : EndpointGroupBase
             jwtOptions.Audience,   //Audience
             claims,                          //Claims,
             DateTime.Now,                    //notBefore
-            DateTime.Now.AddSeconds(300),    //expires
+            DateTime.Now.AddSeconds(jwtOptions.Expires),    //expires
             signingCredentials               //Credentials
         );
 
