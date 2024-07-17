@@ -19,12 +19,11 @@ public class UserLoginHandler(IApplicationDbContext context) : IRequestHandler<U
 {
     public async Task<UserDto> Handle(UserLoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await context.Users
-        .FirstOrDefaultAsync(s => s.LoginName.Equals(request.LoginName));
+        var user = await context.Users.FirstOrDefaultAsync(s => s.LoginName.Equals(request.LoginName));
 
         if (user == null)
         {
-            throw new AdminBusinessException(ExctptionMessage.UserNotFind);
+            throw new AdminBusinessException(ExctptionMessage.UserNotExist);
         }
 
         if (!user.ValidatePassword(request.Password))

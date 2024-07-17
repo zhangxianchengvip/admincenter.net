@@ -38,7 +38,91 @@
         }
       }
     },
+    "/api/v1/Users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UserCreate",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/api/v1/Users/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UserUpdate",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
       "get": {
         "tags": [
           "Users"
@@ -147,6 +231,103 @@
           },
           "password": {
             "type": "string"
+          }
+        }
+      },
+      "CreateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "loginName": {
+            "type": "string"
+          },
+          "realName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          },
+          "superiorOrganizationIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
+            }
+          }
+        }
+      },
+      "ValueTupleOfGuidAndBoolean": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "system.Runtime.CompilerServices.ITuple.Length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "system.Runtime.CompilerServices.ITuple.Item": {
+            "nullable": true
+          }
+        }
+      },
+      "UpdateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "loginName": {
+            "type": "string"
+          },
+          "realName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          },
+          "superiorOrganizationIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
+            }
           }
         }
       }

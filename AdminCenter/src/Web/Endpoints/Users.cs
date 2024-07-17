@@ -25,6 +25,8 @@ public class Users : EndpointGroupBase
         app.MapGroup(this)
               .RequireAuthorization()
               .AddEndpointFilter<ApiResponseFilter>()
+              .MapPost(UserCreate)
+              .MapPut(UserUpdate, "{id}")
               .MapGet(UserInfoQuery, "{id}")
               .MapGet(PersonalInfoQuery, "/Personal");
     }
@@ -101,5 +103,27 @@ public class Users : EndpointGroupBase
     public async Task<UserDto> PersonalInfoQuery(ISender sender, IUser user)
     {
         return await sender.Send(new UserInfoQuery(Guid.Parse(user.Id!)));
+    }
+
+    /// <summary>
+    /// 用户创建
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="command"></param>
+    /// <returns></returns>
+    public async Task<UserDto> UserCreate(ISender sender, CreateUserCommand command)
+    {
+        return await sender.Send(command);
+    }
+
+    /// <summary>
+    /// 用户更新
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="command"></param>
+    /// <returns></returns>
+    public async Task<UserDto> UserUpdate(ISender sender, Guid id, UpdateUserCommand command)
+    {
+        return await sender.Send(command);
     }
 }

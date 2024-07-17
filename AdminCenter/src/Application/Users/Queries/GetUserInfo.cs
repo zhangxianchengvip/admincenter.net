@@ -20,7 +20,7 @@ public class UserInfoHandler(IApplicationDbContext context) : IRequestHandler<Us
 
         if (user is null)
         {
-            throw new AdminBusinessException(ExctptionMessage.UserNotFind);
+            throw new AdminBusinessException(ExctptionMessage.UserNotExist);
         }
 
         return user.Adapt<UserDto>();

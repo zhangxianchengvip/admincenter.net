@@ -46,6 +46,11 @@ public class User : AggregateRoot<Guid>
     public ICollection<UserRole> UserRoles { get; set; } = [];
 
     /// <summary>
+    /// 用户组织
+    /// </summary>
+    public ICollection<UserOrganization> UserOrganizations { get; set; } = [];
+
+    /// <summary>
     /// 状态
     /// </summary>
     public StatusEnum Status { get; set; }
@@ -91,6 +96,7 @@ public class User : AggregateRoot<Guid>
         ));
 
         UserRoles = [];
+        UserOrganizations = [];
     }
 
     /// <summary>
@@ -186,7 +192,9 @@ public class User : AggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRoleRange(List<Guid> roleList)
     {
-        UserRoles = roleList.Select(roleId => new UserRole(userId: Id, roleId: roleId)).ToList();
+        UserRoles = roleList
+        .Select(roleId => new UserRole { RoleId = roleId, UserId = Id })
+        .ToList();
 
         return this;
     }
@@ -205,6 +213,20 @@ public class User : AggregateRoot<Guid>
            parameterName: nameof(realName),
            exceptionCreator: () => new AdminBusinessException("用户名称不能为空!")
         );
+
+        return this;
+    }
+
+    /// <summary>
+    /// 更新用户组织
+    /// </summary>
+    /// <param name="organizationList"></param>
+    /// <returns></returns>
+    public User UpdateOrganizationRange(List<(Guid organizationId, bool isSubsidiary)> organizationList)
+    {
+        UserOrganizations = organizationList
+        .Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, isSubsidiary = organization.isSubsidiary })
+        .ToList();
 
         return this;
     }
