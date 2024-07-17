@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Application.Common.Interfaces;
-using Ardalis.GuardClauses;
+using AdminCenter.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Domain;
@@ -8,26 +8,21 @@ namespace AdminCenter.Domain;
 public class OrganizationManager(IApplicationDbContext context) : DomainService
 {
     public async Task<Organization> UpdateAsync(
-        [NotNull] Guid id,
+        [NotNull] Organization organization,
         [NotNull] string name,
         [NotNull] string code,
-        string description,
-        Guid? superiorOrganizationId)
+        string? description = null,
+        Guid? superiorOrganizationId = null)
     {
-        if (await context.Organizations.AnyAsync(s => s.Name.Equals(name)))
-            throw new Exception();
-
         if (await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
-            throw new Exception();
+        {
+            throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
+        }
 
-        var organizatoin = await context.Organizations.FindAsync(id);
+        organization.Description = description;
+        organization.SuperiorOrganizationId = superiorOrganizationId;
+        organization.UpdateOrganizationName(name).UpdateOrganizationCode(code);
 
-        Guard.Against.Null(organizatoin);
-
-        organizatoin.Description = description;
-        organizatoin.SuperiorOrganizationId = superiorOrganizationId;
-        organizatoin.UpdateOrganizationName(name).UpdateOrganizationCode(code);
-
-        return organizatoin;
+        return organization;
     }
 }

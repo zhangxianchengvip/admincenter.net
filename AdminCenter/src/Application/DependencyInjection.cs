@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using AdminCenter.Application;
 using AdminCenter.Application.Common.Behaviours;
 using MediatR.Pipeline;
 
@@ -17,6 +18,7 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(SaveChangeBehaviour<,>));
         });
 
         return services;

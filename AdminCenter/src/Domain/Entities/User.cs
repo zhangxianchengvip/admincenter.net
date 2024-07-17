@@ -61,9 +61,9 @@ public class User : AggregateRoot<Guid>
         string? phoneNumber = null,
         string? email = null) : base(id)
     {
+        Email = email;
         NickName = nickName;
         PhoneNumber = phoneNumber;
-        Email = email;
         Status = StatusEnum.Enable;
 
         //校验名称为空，或者赋值

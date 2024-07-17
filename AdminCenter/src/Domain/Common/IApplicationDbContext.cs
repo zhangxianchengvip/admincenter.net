@@ -28,4 +28,6 @@ public interface IApplicationDbContext
     /// 组织
     /// </summary>
     DbSet<Organization> Organizations { get; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

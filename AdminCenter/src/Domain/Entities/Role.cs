@@ -28,7 +28,12 @@ public class Role : AggregateRoot<Guid>
     {
         Description = description;
         Status = StatusEnum.Enable;
-        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+        Name = Guard.Against.NullOrWhiteSpace
+        (
+            input: name,
+            parameterName: nameof(name),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.RoleNameNull)
+        );
     }
 
     /// <summary>
@@ -36,9 +41,14 @@ public class Role : AggregateRoot<Guid>
     /// </summary>
     /// <param name="roleName"></param>
     /// <returns></returns>
-    public Role UpdateRoleName([NotNull] string roleName)
+    public Role UpdateRoleName([NotNull] string name)
     {
-        Name = Guard.Against.NullOrWhiteSpace(roleName, nameof(roleName)); ;
+        Name = Guard.Against.NullOrWhiteSpace
+        (
+            input: name,
+            parameterName: nameof(name),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.RoleNameNull)
+        );
 
         return this;
     }

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
+using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
@@ -39,10 +39,22 @@ public class Organization : AggregateRoot<Guid>
         Guid? superiorOrganizationId,
         string? description = null) : base(id)
     {
-        Code = code;
         Description = description;
         SuperiorOrganizationId = superiorOrganizationId;
-        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+
+        Code = Guard.Against.NullOrWhiteSpace
+        (
+            input: code,
+            parameterName: nameof(code),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.OrganizationCodeNull)
+        );
+
+        Name = Guard.Against.NullOrWhiteSpace
+        (
+            input: name,
+            parameterName: nameof(name),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.OrganizationNameNull)
+        );
 
     }
 
@@ -53,7 +65,12 @@ public class Organization : AggregateRoot<Guid>
     /// <returns></returns>
     public Organization UpdateOrganizationName([NotNull] string name)
     {
-        Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
+        Name = Guard.Against.NullOrWhiteSpace
+        (
+            input: name,
+            parameterName: nameof(name),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.OrganizationNameNull)
+        );
 
         return this;
     }
@@ -66,7 +83,12 @@ public class Organization : AggregateRoot<Guid>
     /// <returns></returns>
     public Organization UpdateOrganizationCode([NotNull] string code)
     {
-        Code = Guard.Against.NullOrWhiteSpace(code, nameof(code));
+        Code = Guard.Against.NullOrWhiteSpace
+        (
+            input: code,
+            parameterName: nameof(code),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.OrganizationCodeNull)
+        );
 
         return this;
     }
