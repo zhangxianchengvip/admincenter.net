@@ -18,22 +18,19 @@ namespace AdminCenter.Application;
 /// <param name="PhoneNumber"></param>
 /// <param name="RoleIds"></param>
 /// <param name="SuperiorOrganizationIds"></param>
-public record CreateUserCommand(
-string LoginName,
-string RealName,
-string Password,
-string? NickName,
-string? Email,
-string? PhoneNumber,
-List<Guid> RoleIds,
-List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds
-) : IRequest<UserDto>;
+public record UserCreateCommand(
+    string LoginName,
+    string RealName,
+    string Password,
+    string? NickName,
+    string? Email,
+    string? PhoneNumber,
+    List<Guid> RoleIds,
+    List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds) : IRequest<UserDto>;
 
-public class CreateUserHandler(
-    IApplicationDbContext context,
-    UserManager manager) : IRequestHandler<CreateUserCommand, UserDto>
+public class CreateUserHandler(IApplicationDbContext context, UserManager manager) : IRequestHandler<UserCreateCommand, UserDto>
 {
-    public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(UserCreateCommand request, CancellationToken cancellationToken)
     {
         var user = await manager.CreateAsync
         (

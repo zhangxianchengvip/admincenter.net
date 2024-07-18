@@ -17,7 +17,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserLoginQuery"
+                "$ref": "#/components/schemas/UserLogin"
               }
             }
           },
@@ -49,7 +49,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserCommand"
+                "$ref": "#/components/schemas/UserCreateCommand"
               }
             }
           },
@@ -98,7 +98,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserCommand"
+                "$ref": "#/components/schemas/UserUpdateCommand"
               }
             }
           },
@@ -123,11 +123,46 @@
           }
         ]
       },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UserDelete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
       "get": {
         "tags": [
           "Users"
         ],
-        "operationId": "UserInfoQuery",
+        "operationId": "UserQuery",
         "parameters": [
           {
             "name": "id",
@@ -164,7 +199,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "PersonalInfoQuery",
+        "operationId": "PersonalQuery",
         "responses": {
           "200": {
             "description": "",
@@ -193,8 +228,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "guid",
-            "nullable": true
+            "format": "guid"
           },
           "loginName": {
             "type": "string",
@@ -222,7 +256,7 @@
           }
         }
       },
-      "UserLoginQuery": {
+      "UserLogin": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -234,7 +268,7 @@
           }
         }
       },
-      "CreateUserCommand": {
+      "UserCreateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -287,7 +321,7 @@
           }
         }
       },
-      "UpdateUserCommand": {
+      "UserUpdateCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using AdminCenter.Domain.Constants;
+using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -60,6 +62,11 @@ public abstract class AggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey
 
     protected AggregateRoot(TKey id)
     {
-        Id = id;
+        Id = Guard.Against.Null
+        (
+            input: id,
+            parameterName: nameof(id),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.IdNull)
+        );
     }
 }

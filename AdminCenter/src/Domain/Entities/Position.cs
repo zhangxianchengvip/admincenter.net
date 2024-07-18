@@ -9,7 +9,6 @@ namespace AdminCenter.Domain;
 /// </summary>
 public class Position : AggregateRoot<Guid>
 {
-
     /// <summary>
     /// 职位名称
     /// </summary>

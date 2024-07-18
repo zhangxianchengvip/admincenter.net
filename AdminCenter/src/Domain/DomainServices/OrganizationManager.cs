@@ -7,6 +7,49 @@ namespace AdminCenter.Domain;
 
 public class OrganizationManager(IApplicationDbContext context) : DomainService
 {
+
+    /// <summary>
+    /// 创建
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="code"></param>
+    /// <param name="description"></param>
+    /// <param name="superiorOrganizationId"></param>
+    /// <returns></returns>
+    /// <exception cref="AdminBusinessException"></exception>
+    public async Task<Organization> CreateAsync(
+        [NotNull] string name,
+        [NotNull] string code,
+        string? description = null,
+        Guid? superiorOrganizationId = null)
+    {
+        var organization = new Organization
+        (
+            id: Guid.NewGuid(),
+            name: name,
+            code: code,
+            description: description,
+            superiorOrganizationId: superiorOrganizationId
+        );
+
+        if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
+        {
+            return organization;
+        }
+
+        throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
+    }
+
+    /// <summary>
+    /// 修改组织
+    /// </summary>
+    /// <param name="organization"></param>
+    /// <param name="name"></param>
+    /// <param name="code"></param>
+    /// <param name="description"></param>
+    /// <param name="superiorOrganizationId"></param>
+    /// <returns></returns>
+    /// <exception cref="AdminBusinessException"></exception>
     public async Task<Organization> UpdateAsync(
         [NotNull] Organization organization,
         [NotNull] string name,
@@ -14,15 +57,16 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
         string? description = null,
         Guid? superiorOrganizationId = null)
     {
-        if (await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
-        {
-            throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
-        }
-
+        organization.UpdateOrganizationName(name);
+        organization.UpdateOrganizationCode(code);
         organization.Description = description;
         organization.SuperiorOrganizationId = superiorOrganizationId;
-        organization.UpdateOrganizationName(name).UpdateOrganizationCode(code);
 
-        return organization;
+        if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
+        {
+            return organization;
+        }
+
+        throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
     }
 }

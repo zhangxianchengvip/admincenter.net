@@ -1,4 +1,7 @@
-﻿namespace AdminCenter.Domain.Common;
+﻿using AdminCenter.Domain.Constants;
+using Ardalis.GuardClauses;
+
+namespace AdminCenter.Domain.Common;
 
 /// <summary>
 /// 审计实体
@@ -37,9 +40,14 @@ public class AuditableEntity<TKey> : AuditableEntity, IAuditableEntity<TKey>
     /// 主键
     /// </summary>
     public TKey Id { get; init; }
-    
+
     public AuditableEntity(TKey id)
     {
-        Id = id;
+        Id = Guard.Against.Null
+        (
+            input: id,
+            parameterName: nameof(id),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.IdNull)
+        );
     }
 }

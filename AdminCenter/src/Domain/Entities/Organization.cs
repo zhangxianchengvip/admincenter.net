@@ -92,6 +92,4 @@ public class Organization : AggregateRoot<Guid>
 
         return this;
     }
-
-
 }

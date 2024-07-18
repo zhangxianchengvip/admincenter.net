@@ -1,4 +1,7 @@
-﻿namespace AdminCenter.Domain.Common;
+﻿using AdminCenter.Domain.Constants;
+using Ardalis.GuardClauses;
+
+namespace AdminCenter.Domain.Common;
 
 /// <summary>
 /// 实体
@@ -21,6 +24,11 @@ public class Entity<TKey> : Entity, IEntity<TKey>
 
     public Entity(TKey id)
     {
-        Id = id;
+        Id = Guard.Against.Null
+        (
+            input: id,
+            parameterName: nameof(id),
+            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.IdNull)
+        );
     }
 }

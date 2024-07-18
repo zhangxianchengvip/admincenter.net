@@ -192,6 +192,13 @@ public class User : AggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateRoleRange(List<Guid> roleList)
     {
+        Guard.Against.Null
+        (
+           input: roleList,
+           parameterName: nameof(roleList),
+           exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserRoleListNull)
+        );
+
         UserRoles = roleList
         .Select(roleId => new UserRole { RoleId = roleId, UserId = Id })
         .ToList();
@@ -211,7 +218,7 @@ public class User : AggregateRoot<Guid>
         (
            input: realName,
            parameterName: nameof(realName),
-           exceptionCreator: () => new AdminBusinessException("用户名称不能为空!")
+           exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserNameNull)
         );
 
         return this;
@@ -224,6 +231,13 @@ public class User : AggregateRoot<Guid>
     /// <returns></returns>
     public User UpdateOrganizationRange(List<(Guid organizationId, bool isSubsidiary)> organizationList)
     {
+        Guard.Against.Null
+        (
+           input: organizationList,
+           parameterName: nameof(organizationList),
+           exceptionCreator: () => new AdminBusinessException(ExctptionMessage.UserOrgListNull)
+        );
+
         UserOrganizations = organizationList
         .Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, isSubsidiary = organization.isSubsidiary })
         .ToList();

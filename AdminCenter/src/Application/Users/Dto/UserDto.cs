@@ -8,7 +8,7 @@ public class UserDto
     /// <summary>
     /// 用户ID
     /// </summary>
-    public Guid? Id { get; set; }
+    public Guid Id { get; set; }
 
     /// <summary>
     /// 登录名

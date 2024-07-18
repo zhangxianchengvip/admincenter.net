@@ -8,6 +8,10 @@ public static class ExctptionMessage
     public const string UserIdNull = "用户标识为空";
     public const string UserPasswordError = "用户密码错误";
     public const string UserPasswordNull = "用户密码为空";
+    public const string UserDeleteError = "用户不能删除自己";
+    public const string UserRoleListNull = "用户角色为空";
+    public const string UserOrgListNull = "用户组织为空";
+    public const string IdNull = "标识为空";
 
     //角色
     public const string RoleIdNull = "角色表示为空";

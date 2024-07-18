@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using AdminCenter.Application;
 using AdminCenter.Application.Common.Interfaces;
+using AdminCenter.Application.Common.Models;
 using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Users.Dto;
 using AdminCenter.Application.Users.Queries;
@@ -19,16 +20,18 @@ public class Users : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-              .AddEndpointFilter<ApiResponseFilter>()
-              .MapPost(UserLogin, "Login");
+           .AddEndpointFilter<ApiResponseFilter>()
+           .MapPost(UserLogin, "Login");
 
         app.MapGroup(this)
-              .RequireAuthorization()
-              .AddEndpointFilter<ApiResponseFilter>()
-              .MapPost(UserCreate)
-              .MapPut(UserUpdate, "{id}")
-              .MapGet(UserInfoQuery, "{id}")
-              .MapGet(PersonalInfoQuery, "/Personal");
+           .RequireAuthorization()
+           .AddEndpointFilter<ApiResponseFilter>()
+           .MapPost(UserCreate)
+           .MapPut(UserUpdate, "{id}")
+           .MapDelete(UserDelete, "{id}")
+           .MapGet(UserQuery, "{id}")
+           .MapGet(PersonalQuery, "/Personal");
+
     }
 
     /// <summary>
@@ -38,18 +41,16 @@ public class Users : EndpointGroupBase
     /// <param name="options"></param>
     /// <param name="query"></param>
     /// <returns></returns>
-    public async Task<UserDto> UserLogin(
-        ISender sender,
-        [FromServices] IOptionsSnapshot<JwtOptions> options,
-        UserLoginQuery query)
+    public async Task<UserDto> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLogin query)
     {
         var userDto = await sender.Send(query);
 
         var jwtOptions = options.Value;
 
+        //1. 创建 claims
         var claims = new[]
-               {
-            new Claim(ClaimTypes.NameIdentifier, userDto.Id.ToString()!),
+        {
+            new Claim(ClaimTypes.NameIdentifier, userDto.Id.ToString()),
             new Claim(ClaimTypes.Name, userDto.LoginName!), //HttpContext.User.Identity.Name
             new Claim(ClaimTypes.Role, "admin"), //HttpContext.User.IsInRole("r_admin")
             new Claim("Username",userDto.RealName??""),
@@ -89,20 +90,31 @@ public class Users : EndpointGroupBase
     /// <param name="sender"></param>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task<UserDto> UserInfoQuery(ISender sender, Guid id)
+    public async Task<UserDto> UserQuery(ISender sender, Guid id)
     {
-        return await sender.Send(new UserInfoQuery(id));
+        return await sender.Send(new UserQuery(id));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    public async Task<PaginatedList<UserDto>> UserListQuery(ISender sender, int pageNumber, int pageSize)
+    {
+        return await sender.Send(new UserListQuery(pageNumber, pageSize));
+    }
     /// <summary>
     /// 个人信息
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public async Task<UserDto> PersonalInfoQuery(ISender sender, IUser user)
+    public async Task<UserDto> PersonalQuery(ISender sender, IUser user)
     {
-        return await sender.Send(new UserInfoQuery(Guid.Parse(user.Id!)));
+        return await sender.Send(new UserQuery(Guid.Parse(user.Id!)));
     }
 
     /// <summary>
@@ -111,7 +123,7 @@ public class Users : EndpointGroupBase
     /// <param name="sender"></param>
     /// <param name="command"></param>
     /// <returns></returns>
-    public async Task<UserDto> UserCreate(ISender sender, CreateUserCommand command)
+    public async Task<UserDto> UserCreate(ISender sender, UserCreateCommand command)
     {
         return await sender.Send(command);
     }
@@ -122,8 +134,19 @@ public class Users : EndpointGroupBase
     /// <param name="sender"></param>
     /// <param name="command"></param>
     /// <returns></returns>
-    public async Task<UserDto> UserUpdate(ISender sender, Guid id, UpdateUserCommand command)
+    public async Task<UserDto> UserUpdate(ISender sender, Guid id, UserUpdateCommand command)
     {
         return await sender.Send(command);
+    }
+
+    /// <summary>
+    /// 用户删除
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task<bool> UserDelete(ISender sender, Guid id)
+    {
+        return await sender.Send(new UserDeleteCommand(id));
     }
 }
