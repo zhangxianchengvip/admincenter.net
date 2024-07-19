@@ -6,7 +6,7 @@
 public record UserDeleteCommand(Guid Id) : IRequest<bool>;
 
 
-public class UserDeleteHandler(IApplicationDbContext context, IUser user) : IRequestHandler<UserDeleteCommand, bool>
+public class UserDeleteHandler(IApplicationDbContext context, IUser<Guid> user) : IRequestHandler<UserDeleteCommand, bool>
 {
     public async Task<bool> Handle(UserDeleteCommand request, CancellationToken cancellationToken)
     {

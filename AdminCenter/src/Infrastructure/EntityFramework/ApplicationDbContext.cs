@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Domain;
+using AdminCenter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Infrastructure.EntityFramework;
@@ -16,6 +17,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<Position> Positions => Set<Position>();
+
+    public DbSet<Menu> Menus => Set<Menu>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

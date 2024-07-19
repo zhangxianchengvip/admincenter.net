@@ -14,17 +14,17 @@ public static class DependencyInjection
     public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddRazorPages();
-        
+
         services.AddHttpContextAccessor();
 
         services.AddEndpointsApiExplorer();
-        
-        services.AddScoped<IUser, CurrentUser>();
+
+        services.AddScoped(typeof(IUser<>), typeof(CurrentUser<>));
 
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddExceptionHandler<CustomExceptionHandler>();
-        
+
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
 

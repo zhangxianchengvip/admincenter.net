@@ -6,10 +6,10 @@ namespace AdminCenter.Application.Common.Behaviours;
 public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
     private readonly ILogger _logger;
-    private readonly IUser _user;
+    private readonly IUser<string> _user;
     private readonly IIdentityService _identityService;
 
-    public LoggingBehaviour(ILogger<TRequest> logger, IUser user, IIdentityService identityService)
+    public LoggingBehaviour(ILogger<TRequest> logger, IUser<string> user, IIdentityService identityService)
     {
         _logger = logger;
         _user = user;

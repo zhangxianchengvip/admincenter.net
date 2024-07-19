@@ -4,38 +4,36 @@ using System.Security.Claims;
 using System.Text;
 using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Application.Common.Models;
-using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Features.Users.Commands;
 using AdminCenter.Application.Features.Users.Dto;
-using AdminCenter.Application.Users.Queries;
+using AdminCenter.Application.Features.Users.Queries;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AdminCenter.Web;
-[Authorize]
 public class Users : EndpointGroupBase
 {
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-              .AddEndpointFilter<ApiResponseFilter>()
-              .MapPost(UserLogin, "Login");
+           .AddEndpointFilter<ApiResponseFilter>()
+           .MapPost(UserLogin, "Login");
 
         app.MapGroup(this)
-              .RequireAuthorization()
-              .AddEndpointFilter<ApiResponseFilter>()
-              .MapPost(UserCreate)
-              .MapPut(UserUpdate, "{id}")
-              .MapDelete(UserDelete, "{id}")
-              .MapGet(UserQuery, "{id}")
-              .MapGet(PersonalQuery, "/Personal");
+           .RequireAuthorization()
+           .AddEndpointFilter<ApiResponseFilter>()
+           .MapPost(UserCreate)
+           .MapPut(UserUpdate, "{id}")
+           .MapDelete(UserDelete, "{id}")
+           .MapGet(UserQuery, "{id}")
+           .MapGet(PersonalQuery, "/Personal");
 
     }
 
     /// <summary>
     /// 登录
     /// </summary>
-    public async Task<UserDto> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLogin query)
+    public async Task<object> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLogin query)
     {
         var userDto = await sender.Send(query);
 
@@ -71,7 +69,9 @@ public class Users : EndpointGroupBase
         );
 
         // 6. 将token变为string
-        return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+        var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+        return new { User = userDto, Token = token };
     }
 
     /// <summary>
@@ -96,9 +96,9 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 个人信息
     /// </summary>
-    public async Task<UserDto> PersonalQuery(ISender sender, IUser user)
+    public async Task<UserDto> PersonalQuery(ISender sender, IUser<Guid> user)
     {
-        return await sender.Send(new UserQuery(Guid.Parse(user.Id!)));
+        return await sender.Send(new UserQuery(user.Id));
     }
 
     /// <summary>

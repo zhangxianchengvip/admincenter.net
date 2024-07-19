@@ -1,6 +1,6 @@
 ﻿namespace AdminCenter.Domain.Common;
 
-public interface IAuditableEntity : IEntity
+public interface IAuditableEntity: IEntity
 {
     public DateTimeOffset Created { get; set; }
 

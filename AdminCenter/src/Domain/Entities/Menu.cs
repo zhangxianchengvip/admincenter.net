@@ -50,13 +50,13 @@ public class Menu : AggregateRoot<Guid>
         [NotNull] string name,
         string? route,
         bool isLink,
-        Guid? superiorMenuId) : base(id)
+        Guid? superiorId) : base(id)
     {
         Route = route;
         IsLink = isLink;
         MenuType = menuType;
         Status = StatusEnum.Enable;
-        SuperiorId = superiorMenuId;
+        SuperiorId = superiorId;
         Name = Guard.Against.NullOrWhiteSpace
        (
            input: name,

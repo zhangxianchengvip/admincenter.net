@@ -17,6 +17,75 @@ namespace AdminCenter.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
+            modelBuilder.Entity("AdminCenter.Domain.Entities.Menu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsLink")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MenuType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Route")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("SuperiorId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("AdminCenter.Domain.Entities.RoleMenu", b =>
+                {
+                    b.Property<Guid>("MenuId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MenuId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleMenu");
+                });
+
             modelBuilder.Entity("AdminCenter.Domain.Organization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,7 +118,7 @@ namespace AdminCenter.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("SuperiorOrganizationId")
+                    b.Property<Guid?>("SuperiorId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -61,6 +130,10 @@ namespace AdminCenter.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("Created")
@@ -170,6 +243,36 @@ namespace AdminCenter.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AdminCenter.Domain.UserOrganization", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsSubsidiary")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "OrganizationId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("UserOrganization");
+                });
+
             modelBuilder.Entity("AdminCenter.Domain.UserRole", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -192,11 +295,49 @@ namespace AdminCenter.Infrastructure.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("AdminCenter.Domain.Entities.RoleMenu", b =>
+                {
+                    b.HasOne("AdminCenter.Domain.Entities.Menu", null)
+                        .WithMany("RoleMenu")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AdminCenter.Domain.Role", null)
+                        .WithMany("RoleMenu")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AdminCenter.Domain.UserOrganization", b =>
+                {
+                    b.HasOne("AdminCenter.Domain.Organization", null)
+                        .WithMany("UserOrganizations")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AdminCenter.Domain.User", null)
+                        .WithMany("UserOrganizations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AdminCenter.Domain.UserRole", b =>
                 {
+                    b.HasOne("AdminCenter.Domain.Role", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AdminCenter.Domain.User", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
@@ -204,8 +345,27 @@ namespace AdminCenter.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AdminCenter.Domain.Entities.Menu", b =>
+                {
+                    b.Navigation("RoleMenu");
+                });
+
+            modelBuilder.Entity("AdminCenter.Domain.Organization", b =>
+                {
+                    b.Navigation("UserOrganizations");
+                });
+
+            modelBuilder.Entity("AdminCenter.Domain.Role", b =>
+                {
+                    b.Navigation("RoleMenu");
+
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("AdminCenter.Domain.User", b =>
                 {
+                    b.Navigation("UserOrganizations");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

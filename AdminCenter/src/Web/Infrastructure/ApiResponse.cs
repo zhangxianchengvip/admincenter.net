@@ -6,7 +6,7 @@ public class ApiResponse
     public object? Data { get; set; }
     public string? Message { get; set; }
 
-    public ApiResponse(int code = 200, object? data = null, string? message = null)
+    public ApiResponse(int code = 200, object? data = default, string? message = null)
     {
         Code = code;
         Data = data;

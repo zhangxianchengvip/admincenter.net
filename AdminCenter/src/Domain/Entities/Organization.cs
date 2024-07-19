@@ -42,11 +42,11 @@ public class Organization : AggregateRoot<Guid>
         [NotNull] Guid id,
         [NotNull] string name,
         [NotNull] string code,
-        Guid? superiorOrganizationId,
+        Guid? superiorId,
         string? description = null) : base(id)
     {
         Description = description;
-        SuperiorId = superiorOrganizationId;
+        SuperiorId = superiorId;
 
         Code = Guard.Against.NullOrWhiteSpace
         (

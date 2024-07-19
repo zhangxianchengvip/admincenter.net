@@ -23,7 +23,7 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             name: name,
             code: code,
             description: description,
-            superiorOrganizationId: superiorOrganizationId
+            superiorId: superiorOrganizationId
         );
 
         if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
@@ -47,7 +47,7 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
         organization.UpdateOrganizationName(name);
         organization.UpdateOrganizationCode(code);
         organization.Description = description;
-        organization.SuperiorOrganizationId = superiorOrganizationId;
+        organization.SuperiorId = superiorOrganizationId;
 
         if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
         {

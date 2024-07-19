@@ -8,11 +8,11 @@ namespace AdminCenter.Infrastructure.EntityFramework.Interceptors;
 
 public class AuditableEntityInterceptor : SaveChangesInterceptor
 {
-    private readonly IUser _user;
+    private readonly IUser<string> _user;
     private readonly TimeProvider _dateTime;
 
     public AuditableEntityInterceptor(
-        IUser user,
+        IUser<string> user,
         TimeProvider dateTime)
     {
         _user = user;

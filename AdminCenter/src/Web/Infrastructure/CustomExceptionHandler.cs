@@ -106,7 +106,7 @@ public class CustomExceptionHandler : IExceptionHandler
         await httpContext.Response.WriteAsJsonAsync(new ApiResponse
         (
             code: StatusCodes.Status500InternalServerError,
-            message: "Internal Serve rError")
+            message: "Internal Server Error")
         );
     }
 }
