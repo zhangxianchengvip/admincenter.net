@@ -13,8 +13,6 @@ public class RoleQueryHandler(IApplicationDbContext context) : IRequestHandler<R
     {
         var role = await context.Roles.FindAsync(request.Id);
 
-        if (role != null) return role.Adapt<RoleDto>();
-
-        throw new BusinessException(ExceptionMessage.RoleNotExist);
+        return role != null ? role.Adapt<RoleDto>() : throw new BusinessException(ExceptionMessage.RoleNotExist);
     }
 }

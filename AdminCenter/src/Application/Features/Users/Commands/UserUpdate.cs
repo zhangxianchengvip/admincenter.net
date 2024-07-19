@@ -14,7 +14,7 @@ public record UserUpdateCommand(
     string? Email,
     string? PhoneNumber,
     List<Guid> RoleIds,
-    List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds) : IRequest<UserDto>;
+    List<(Guid SuperiorId, bool isSubsidiary)> SuperiorIds) : IRequest<UserDto>;
 
 public class UserUpdateCommandValidator : AbstractValidator<UserUpdateCommand>
 {
@@ -24,8 +24,8 @@ public class UserUpdateCommandValidator : AbstractValidator<UserUpdateCommand>
         RuleFor(v => v.LoginName).NotNull();
         RuleFor(v => v.RealName).NotNull();
         RuleFor(v => v.Password).NotNull();
-        RuleFor(v => v.RoleIds).Must(s => s.Any());
-        RuleFor(v => v.SuperiorOrganizationIds).Must(s => s.Any());
+        RuleFor(v => v.RoleIds).Must(s => s.Count != 0);
+        RuleFor(v => v.SuperiorIds).Must(s => s.Count != 0);
     }
 }
 

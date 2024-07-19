@@ -13,8 +13,6 @@ public class UserQueryHandler(IApplicationDbContext context) : IRequestHandler<U
     {
         var user = await context.Users.FindAsync(request.Id);
 
-        if (user != null) return user.Adapt<UserDto>();
-
-        throw new BusinessException(ExceptionMessage.UserNotExist);
+        return user != null ? user.Adapt<UserDto>() : throw new BusinessException(ExceptionMessage.UserNotExist);
     }
 }

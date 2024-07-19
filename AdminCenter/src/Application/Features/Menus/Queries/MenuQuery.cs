@@ -14,8 +14,6 @@ public class MenuQueryHandler(IApplicationDbContext context) : IRequestHandler<M
     {
         var menu = await context.Menus.FindAsync(request.Id);
 
-        if (menu != null) return menu.Adapt<MenuDto>();
-
-        throw new BusinessException(ExceptionMessage.MenuNotExist);
+        return menu != null ? menu.Adapt<MenuDto>() : throw new BusinessException(ExceptionMessage.MenuNotExist);
     }
 }

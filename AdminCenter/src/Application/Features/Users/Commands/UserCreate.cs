@@ -14,7 +14,7 @@ public record UserCreateCommand(
     string? Email,
     string? PhoneNumber,
     List<Guid> RoleIds,
-    List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds) : IRequest<UserDto>;
+    List<(Guid SuperiorId, bool isSubsidiary)> SuperiorIds) : IRequest<UserDto>;
 
 public class UserCreateCommandValidator : AbstractValidator<UserCreateCommand>
 {
@@ -23,8 +23,8 @@ public class UserCreateCommandValidator : AbstractValidator<UserCreateCommand>
         RuleFor(v => v.LoginName).NotNull();
         RuleFor(v => v.RealName).NotNull();
         RuleFor(v => v.Password).NotNull();
-        RuleFor(v => v.RoleIds).Must(s => s.Any());
-        RuleFor(v => v.SuperiorOrganizationIds).Must(s => s.Any());
+        RuleFor(v => v.RoleIds).Must(s => s.Count != 0);
+        RuleFor(v => v.SuperiorIds).Must(s => s.Count != 0);
     }
 }
 
@@ -42,7 +42,7 @@ public class CreateUserHandler(IApplicationDbContext context, UserManager manage
             request.Email,
             request.PhoneNumber,
             request.RoleIds,
-            request.SuperiorOrganizationIds
+            request.SuperiorIds
         );
 
         await context.Users.AddAsync(user, cancellationToken);
