@@ -96,7 +96,7 @@ public class Users : EndpointGroupBase
     }
 
     /// <summary>
-    /// 
+    /// 用户列表
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="pageNumber"></param>
