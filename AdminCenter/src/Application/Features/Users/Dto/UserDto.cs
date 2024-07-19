@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application.Users.Dto;
+﻿namespace AdminCenter.Application.Features.Users.Dto;
 
 /// <summary>
 /// 用户

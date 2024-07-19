@@ -1,4 +1,6 @@
-﻿namespace AdminCenter.Application;
+﻿using AdminCenter.Application.Features.Organizations.Dto;
+
+namespace AdminCenter.Application.Features.Organizations.Queries;
 
 /// <summary>
 /// 组织查询

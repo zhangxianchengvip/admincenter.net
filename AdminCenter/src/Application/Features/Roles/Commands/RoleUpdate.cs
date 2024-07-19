@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application.Roles.Commands;
+﻿namespace AdminCenter.Application.Features.Roles.Commands;
 
 //角色修改
 public record RoleUpdateCommand(Guid Id, string Name, string? Description) : IRequest<bool>;

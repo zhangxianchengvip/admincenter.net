@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application.Features.Users.Commands;
 
 /// <summary>
 /// 删除用户

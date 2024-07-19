@@ -1,6 +1,6 @@
 ﻿using AdminCenter.Domain;
 
-namespace AdminCenter.Application;
+namespace AdminCenter.Application.Features.Organizations.Commands;
 
 /// <summary>
 /// 创建

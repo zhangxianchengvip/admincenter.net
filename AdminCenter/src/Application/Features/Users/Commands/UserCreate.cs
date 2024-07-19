@@ -1,7 +1,7 @@
-﻿using AdminCenter.Application.Users.Dto;
+﻿using AdminCenter.Application.Features.Users.Dto;
 using AdminCenter.Domain;
 
-namespace AdminCenter.Application;
+namespace AdminCenter.Application.Features.Users.Commands;
 
 /// <summary>
 /// 创建用户

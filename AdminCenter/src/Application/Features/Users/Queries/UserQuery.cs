@@ -1,6 +1,6 @@
-﻿using AdminCenter.Application.Users.Dto;
+﻿using AdminCenter.Application.Features.Users.Dto;
 
-namespace AdminCenter.Application.Users.Queries;
+namespace AdminCenter.Application.Features.Users.Queries;
 
 /// <summary>
 /// 用户信息查询

@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application.Roles.Commands;
+﻿namespace AdminCenter.Application.Features.Roles.Commands;
 
 /// <summary>
 /// 角色删除

@@ -2,11 +2,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AdminCenter.Application;
 using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Application.Common.Models;
 using AdminCenter.Application.Common.Security;
-using AdminCenter.Application.Users.Dto;
+using AdminCenter.Application.Features.Users.Commands;
+using AdminCenter.Application.Features.Users.Dto;
 using AdminCenter.Application.Users.Queries;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

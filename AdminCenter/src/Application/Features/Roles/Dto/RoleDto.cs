@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application.Roles.Dto;
+﻿namespace AdminCenter.Application.Features.Roles.Dto;
 public class RoleDto
 {
     public Guid Id { get; set; }

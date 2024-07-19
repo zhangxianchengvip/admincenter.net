@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application.Features.Organizations.Dto;
 
 public class OrganizationDto
 {

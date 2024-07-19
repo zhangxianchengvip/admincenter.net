@@ -1,8 +1,8 @@
 ﻿using AdminCenter.Application.Common.Models;
-using AdminCenter.Application.Users.Dto;
+using AdminCenter.Application.Features.Users.Dto;
 using CleanArchitecture.Application.Common.Mappings;
 
-namespace AdminCenter.Application.Users.Queries;
+namespace AdminCenter.Application.Features.Users.Queries;
 
 /// <summary>
 /// 用户列表查询

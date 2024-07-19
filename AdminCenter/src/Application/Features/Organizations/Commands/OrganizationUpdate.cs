@@ -1,6 +1,7 @@
-﻿using AdminCenter.Domain;
+﻿using AdminCenter.Application.Features.Organizations.Dto;
+using AdminCenter.Domain;
 
-namespace AdminCenter.Application;
+namespace AdminCenter.Application.Features.Organizations.Commands;
 
 /// <summary>
 /// 组织创建

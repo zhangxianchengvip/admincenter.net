@@ -1,8 +1,8 @@
 ﻿using AdminCenter.Application.Common.Models;
-using AdminCenter.Application.Roles.Dto;
+using AdminCenter.Application.Features.Roles.Dto;
 using CleanArchitecture.Application.Common.Mappings;
 
-namespace AdminCenter.Application.Roles.Queries;
+namespace AdminCenter.Application.Features.Roles.Queries;
 
 /// <summary>
 /// 角色列表

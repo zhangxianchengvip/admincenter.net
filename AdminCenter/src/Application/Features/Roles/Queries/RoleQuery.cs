@@ -1,6 +1,6 @@
-﻿using AdminCenter.Application.Roles.Dto;
+﻿using AdminCenter.Application.Features.Roles.Dto;
 
-namespace AdminCenter.Application.Roles.Queries;
+namespace AdminCenter.Application.Features.Roles.Queries;
 
 /// <summary>
 /// 角色

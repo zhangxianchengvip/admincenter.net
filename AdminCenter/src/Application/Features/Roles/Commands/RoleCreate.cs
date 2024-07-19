@@ -1,7 +1,7 @@
-﻿using AdminCenter.Application.Roles.Dto;
+﻿using AdminCenter.Application.Features.Roles.Dto;
 using AdminCenter.Domain.DomainServices;
 
-namespace AdminCenter.Application.Roles.Commands;
+namespace AdminCenter.Application.Features.Roles.Commands;
 
 /// <summary>
 /// 角色创建
