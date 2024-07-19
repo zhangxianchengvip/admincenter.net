@@ -32,7 +32,7 @@ public class Role : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.RoleNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.RoleNameNull)
         );
     }
 
@@ -47,7 +47,7 @@ public class Role : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.RoleNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.RoleNameNull)
         );
 
         return this;

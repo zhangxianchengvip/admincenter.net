@@ -48,7 +48,7 @@ public class UserUpdateHandler(IApplicationDbContext context) : IRequestHandler<
             return user.Adapt<UserDto>();
         }
 
-        throw new AdminBusinessException(ExceptionMessage.UserNotExist);
+        throw new BusinessException(ExceptionMessage.UserNotExist);
     }
 }
 

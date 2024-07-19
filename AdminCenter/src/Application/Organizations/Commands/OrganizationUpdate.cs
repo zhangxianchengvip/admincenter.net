@@ -42,7 +42,7 @@ public class UpdateOrganizationHandler(IApplicationDbContext context, Organizati
             return organization.Adapt<OrganizationDto>();
         }
 
-        throw new AdminBusinessException(ExceptionMessage.OrganizationNotExist);
+        throw new BusinessException(ExceptionMessage.OrganizationNotExist);
     }
 }
 

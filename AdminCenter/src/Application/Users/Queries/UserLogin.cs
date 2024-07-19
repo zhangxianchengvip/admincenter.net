@@ -25,12 +25,12 @@ public class UserLoginHandler(IApplicationDbContext context) : IRequestHandler<U
 
         if (user == null)
         {
-            throw new AdminBusinessException(ExceptionMessage.UserNotExist);
+            throw new BusinessException(ExceptionMessage.UserNotExist);
         }
 
         if (!user.ValidatePassword(request.Password))
         {
-            throw new AdminBusinessException(ExceptionMessage.UserPasswordError);
+            throw new BusinessException(ExceptionMessage.UserPasswordError);
         }
 
         return user.Adapt<UserDto>();

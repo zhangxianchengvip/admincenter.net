@@ -24,6 +24,6 @@ public class RoleUpdataHandler(IApplicationDbContext context) : IRequestHandler<
             return true;
         }
 
-        throw new AdminBusinessException(ExceptionMessage.RoleNotExist);
+        throw new BusinessException(ExceptionMessage.RoleNotExist);
     }
 }

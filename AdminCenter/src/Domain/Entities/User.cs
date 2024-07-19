@@ -76,7 +76,7 @@ public class User : AggregateRoot<Guid>
         (
             input: realName,
             parameterName: nameof(realName),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
         );
 
         //校验登录名称为空，或者赋值
@@ -84,7 +84,7 @@ public class User : AggregateRoot<Guid>
         (
             input: loginName,
             parameterName: nameof(loginName),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
         );
 
         //校验密码为空，或者赋值
@@ -92,7 +92,7 @@ public class User : AggregateRoot<Guid>
         (
             input: password,
             parameterName: nameof(password),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
         ));
 
         UserRoles = [];
@@ -110,7 +110,7 @@ public class User : AggregateRoot<Guid>
         (
             input: password,
             parameterName: nameof(password),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserPasswordNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
         ));
 
         //添加用户密码修改事件
@@ -131,7 +131,7 @@ public class User : AggregateRoot<Guid>
         (
             input: password,
             parameterName: nameof(password),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserPasswordNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
         );
 
         // 生成一个随机的盐
@@ -166,7 +166,7 @@ public class User : AggregateRoot<Guid>
         (
             input: password,
             parameterName: nameof(password),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserPasswordNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
         );
 
         byte[] saltAndHash = Convert.FromBase64String(Password);
@@ -196,7 +196,7 @@ public class User : AggregateRoot<Guid>
         (
            input: roleList,
            parameterName: nameof(roleList),
-           exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserRoleListNull)
+           exceptionCreator: () => new BusinessException(ExceptionMessage.UserRoleListNull)
         );
 
         UserRoles = roleList
@@ -218,7 +218,7 @@ public class User : AggregateRoot<Guid>
         (
            input: realName,
            parameterName: nameof(realName),
-           exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserNameNull)
+           exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
         );
 
         return this;
@@ -235,7 +235,7 @@ public class User : AggregateRoot<Guid>
         (
            input: organizationList,
            parameterName: nameof(organizationList),
-           exceptionCreator: () => new AdminBusinessException(ExceptionMessage.UserOrgListNull)
+           exceptionCreator: () => new BusinessException(ExceptionMessage.UserOrgListNull)
         );
 
         UserOrganizations = organizationList

@@ -15,6 +15,6 @@ public class RoleQueryHandler(IApplicationDbContext context) : IRequestHandler<R
 
         if (role != null) return role.Adapt<RoleDto>();
 
-        throw new AdminBusinessException(ExceptionMessage.RoleNotExist);
+        throw new BusinessException(ExceptionMessage.RoleNotExist);
     }
 }

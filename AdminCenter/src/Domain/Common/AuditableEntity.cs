@@ -47,7 +47,7 @@ public class AuditableEntity<TKey> : AuditableEntity, IAuditableEntity<TKey>
         (
             input: id,
             parameterName: nameof(id),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.IdNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.IdNull)
         );
     }
 }

@@ -15,6 +15,6 @@ public class UserQueryHandler(IApplicationDbContext context) : IRequestHandler<U
 
         if (user != null) return user.Adapt<UserDto>();
 
-        throw new AdminBusinessException(ExceptionMessage.UserNotExist);
+        throw new BusinessException(ExceptionMessage.UserNotExist);
     }
 }

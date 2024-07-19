@@ -46,14 +46,14 @@ public class Organization : AggregateRoot<Guid>
         (
             input: code,
             parameterName: nameof(code),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.OrganizationCodeNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationCodeNull)
         );
 
         Name = Guard.Against.NullOrWhiteSpace
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.OrganizationNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
         );
 
     }
@@ -69,7 +69,7 @@ public class Organization : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.OrganizationNameNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
         );
 
         return this;
@@ -87,7 +87,7 @@ public class Organization : AggregateRoot<Guid>
         (
             input: code,
             parameterName: nameof(code),
-            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.OrganizationCodeNull)
+            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationCodeNull)
         );
 
         return this;

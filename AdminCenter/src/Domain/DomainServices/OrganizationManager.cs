@@ -11,12 +11,6 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
     /// <summary>
     /// 创建
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="code"></param>
-    /// <param name="description"></param>
-    /// <param name="superiorOrganizationId"></param>
-    /// <returns></returns>
-    /// <exception cref="AdminBusinessException"></exception>
     public async Task<Organization> CreateAsync(
         [NotNull] string name,
         [NotNull] string code,
@@ -37,19 +31,12 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             return organization;
         }
 
-        throw new AdminBusinessException(ExceptionMessage.OrganizationCodeExist);
+        throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 
     /// <summary>
     /// 修改组织
     /// </summary>
-    /// <param name="organization"></param>
-    /// <param name="name"></param>
-    /// <param name="code"></param>
-    /// <param name="description"></param>
-    /// <param name="superiorOrganizationId"></param>
-    /// <returns></returns>
-    /// <exception cref="AdminBusinessException"></exception>
     public async Task<Organization> UpdateAsync(
         [NotNull] Organization organization,
         [NotNull] string name,
@@ -67,6 +54,6 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             return organization;
         }
 
-        throw new AdminBusinessException(ExceptionMessage.OrganizationCodeExist);
+        throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 }

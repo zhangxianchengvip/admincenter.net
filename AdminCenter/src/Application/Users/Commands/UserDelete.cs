@@ -19,6 +19,6 @@ public class UserDeleteHandler(IApplicationDbContext context, IUser user) : IReq
             return true;
         }
 
-        throw new AdminBusinessException(ExceptionMessage.UserDeleteError);
+        throw new BusinessException(ExceptionMessage.UserDeleteError);
     }
 }
