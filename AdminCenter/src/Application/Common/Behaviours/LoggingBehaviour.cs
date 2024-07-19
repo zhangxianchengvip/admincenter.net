@@ -1,5 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using MediatR.Pipeline;
+﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
 namespace AdminCenter.Application.Common.Behaviours;

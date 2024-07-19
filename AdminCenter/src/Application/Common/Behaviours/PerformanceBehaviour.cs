@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using AdminCenter.Application.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace AdminCenter.Application.Common.Behaviours;

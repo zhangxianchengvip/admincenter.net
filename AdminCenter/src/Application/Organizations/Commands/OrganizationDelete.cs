@@ -1,6 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-
-namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application;
 
 public record OrganizationDeleteCommand(Guid Id) : IRequest<bool>;
 
@@ -8,6 +6,7 @@ public class OrganizationDeleteHandler(IApplicationDbContext context) : IRequest
 {
     public async Task<bool> Handle(OrganizationDeleteCommand request, CancellationToken cancellationToken)
     {
+        //TODO:此处需要判断没有在使用
         var organization = await context.Organizations.FindAsync(request.Id, cancellationToken);
 
         if (organization != null) context.Organizations.Remove(organization);

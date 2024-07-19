@@ -36,6 +36,6 @@ public class UserManager(IApplicationDbContext context) : DomainEvent
             return user;
         }
 
-        throw new AdminBusinessException(ExctptionMessage.UserExist);
+        throw new AdminBusinessException(ExceptionMessage.UserExist);
     }
 }

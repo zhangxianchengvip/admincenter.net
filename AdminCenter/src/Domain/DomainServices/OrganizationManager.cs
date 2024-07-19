@@ -37,7 +37,7 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             return organization;
         }
 
-        throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
+        throw new AdminBusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 
     /// <summary>
@@ -67,6 +67,6 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             return organization;
         }
 
-        throw new AdminBusinessException(ExctptionMessage.OrganizationCodeExist);
+        throw new AdminBusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 }

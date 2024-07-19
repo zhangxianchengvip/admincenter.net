@@ -66,7 +66,7 @@ public abstract class AggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey
         (
             input: id,
             parameterName: nameof(id),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.IdNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.IdNull)
         );
     }
 }

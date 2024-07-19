@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using AdminCenter.Application.Common.Exceptions;
-using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Application.Common.Security;
 
 namespace AdminCenter.Application.Common.Behaviours;

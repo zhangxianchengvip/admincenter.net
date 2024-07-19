@@ -1,7 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using Mapster;
-
-namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application;
 
 /// <summary>
 /// 获取下级组织

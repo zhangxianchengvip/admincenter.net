@@ -1,8 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Domain;
-using AdminCenter.Domain.Constants;
-using AdminCenter.Domain.Exceptions;
-using Mapster;
+﻿using AdminCenter.Domain;
 
 namespace AdminCenter.Application;
 
@@ -35,7 +31,7 @@ public class UpdateOrganizationHandler(IApplicationDbContext context, Organizati
             return organization.Adapt<OrganizationDto>();
         }
 
-        throw new AdminBusinessException(ExctptionMessage.OrganizationNotExist);
+        throw new AdminBusinessException(ExceptionMessage.OrganizationNotExist);
     }
 }
 

@@ -32,14 +32,14 @@ public class Role : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.RoleNameNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.RoleNameNull)
         );
     }
 
     /// <summary>
     /// 更新角色名称
     /// </summary>
-    /// <param name="roleName"></param>
+    /// <param name="name"></param>
     /// <returns></returns>
     public Role UpdateRoleName([NotNull] string name)
     {
@@ -47,7 +47,7 @@ public class Role : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.RoleNameNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.RoleNameNull)
         );
 
         return this;

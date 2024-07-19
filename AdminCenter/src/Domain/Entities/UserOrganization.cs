@@ -18,6 +18,6 @@ public class UserOrganization : AuditableEntity
     /// <summary>
     /// 附属组织
     /// </summary>
-    public required bool isSubsidiary { get; set; }
+    public required bool IsSubsidiary { get; set; }
 
 }

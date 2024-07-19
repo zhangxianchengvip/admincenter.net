@@ -1,8 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Application.Users.Dto;
-using AdminCenter.Domain.Constants;
-using AdminCenter.Domain.Exceptions;
-using Mapster;
+﻿using AdminCenter.Application.Users.Dto;
 
 namespace AdminCenter.Application.Users.Queries;
 
@@ -20,6 +16,6 @@ public class UserQueryHandler(IApplicationDbContext context) : IRequestHandler<U
 
         if (user != null) return user.Adapt<UserDto>();
 
-        throw new AdminBusinessException(ExctptionMessage.UserNotExist);
+        throw new AdminBusinessException(ExceptionMessage.UserNotExist);
     }
 }

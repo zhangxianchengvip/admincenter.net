@@ -1,5 +1,5 @@
 ﻿namespace AdminCenter.Domain.Constants;
-public static class ExctptionMessage
+public static class ExceptionMessage
 {
     //用户
     public const string UserExist = "用户已存在";
@@ -16,6 +16,8 @@ public static class ExctptionMessage
     //角色
     public const string RoleIdNull = "角色表示为空";
     public const string RoleNameNull = "角色名称为空";
+    public const string RoleExist = "角色已存在";
+    public const string RoleNotExist = "角色不存在";
 
     //组织
     public const string OrganizationNotExist = "组织不存在";

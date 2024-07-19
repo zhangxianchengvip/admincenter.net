@@ -1,5 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace AdminCenter.Application;
 

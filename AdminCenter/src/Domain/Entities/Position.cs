@@ -43,14 +43,14 @@ public class Position : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.PositionNameNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.PositionNameNull)
         );
 
         Code = Guard.Against.NullOrWhiteSpace
         (
             input: code,
             parameterName: nameof(code),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.PositionCodeNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.PositionCodeNull)
         );
     }
 
@@ -65,7 +65,7 @@ public class Position : AggregateRoot<Guid>
         (
             input: name,
             parameterName: nameof(name),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.PositionNameNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.PositionNameNull)
         );
 
         return this;
@@ -74,7 +74,7 @@ public class Position : AggregateRoot<Guid>
     /// <summary>
     /// 更新职位编码
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="code"></param>
     /// <returns></returns>
     public Position UpdatePositionCode([NotNull] string code)
     {
@@ -82,7 +82,7 @@ public class Position : AggregateRoot<Guid>
         (
             input: code,
             parameterName: nameof(code),
-            exceptionCreator: () => new AdminBusinessException(ExctptionMessage.PositionCodeNull)
+            exceptionCreator: () => new AdminBusinessException(ExceptionMessage.PositionCodeNull)
         );
 
         return this;

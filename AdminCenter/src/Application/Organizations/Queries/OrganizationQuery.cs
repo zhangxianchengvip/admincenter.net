@@ -1,9 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Domain.Constants;
-using AdminCenter.Domain.Exceptions;
-using Mapster;
-
-namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application;
 
 public record OrganizationQuery(Guid Id) : IRequest<OrganizationDto>;
 
@@ -15,6 +10,6 @@ public class OrganizationQueryHandler(IApplicationDbContext context) : IRequestH
 
         if (organization != null) return organization.Adapt<OrganizationDto>();
 
-        throw new AdminBusinessException(ExctptionMessage.OrganizationNotExist);
+        throw new AdminBusinessException(ExceptionMessage.OrganizationNotExist);
     }
 }

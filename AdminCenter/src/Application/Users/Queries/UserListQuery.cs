@@ -1,8 +1,6 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Application.Common.Models;
+﻿using AdminCenter.Application.Common.Models;
 using AdminCenter.Application.Users.Dto;
 using CleanArchitecture.Application.Common.Mappings;
-using Mapster;
 
 namespace AdminCenter.Application.Users.Queries;
 

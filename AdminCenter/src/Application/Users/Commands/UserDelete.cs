@@ -1,8 +1,4 @@
-﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Domain.Constants;
-using AdminCenter.Domain.Exceptions;
-
-namespace AdminCenter.Application;
+﻿namespace AdminCenter.Application;
 
 /// <summary>
 /// 删除用户
@@ -24,6 +20,6 @@ public class UserDeleteHandler(IApplicationDbContext context, IUser user) : IReq
             return true;
         }
 
-        throw new AdminBusinessException(ExctptionMessage.UserDeleteError);
+        throw new AdminBusinessException(ExceptionMessage.UserDeleteError);
     }
 }
