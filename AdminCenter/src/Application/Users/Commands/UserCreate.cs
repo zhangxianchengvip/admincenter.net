@@ -6,14 +6,6 @@ namespace AdminCenter.Application;
 /// <summary>
 /// 创建用户
 /// </summary>
-/// <param name="LoginName"></param>
-/// <param name="RealName"></param>
-/// <param name="Password"></param>
-/// <param name="NickName"></param>
-/// <param name="Email"></param>
-/// <param name="PhoneNumber"></param>
-/// <param name="RoleIds"></param>
-/// <param name="SuperiorOrganizationIds"></param>
 public record UserCreateCommand(
     string LoginName,
     string RealName,
@@ -23,6 +15,19 @@ public record UserCreateCommand(
     string? PhoneNumber,
     List<Guid> RoleIds,
     List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds) : IRequest<UserDto>;
+
+public class UserCreateCommandValidator : AbstractValidator<UserCreateCommand>
+{
+    public UserCreateCommandValidator()
+    {
+        RuleFor(v => v.LoginName).NotNull();
+        RuleFor(v => v.RealName).NotNull();
+        RuleFor(v => v.Password).NotNull();
+        RuleFor(v => v.RoleIds).Must(s => s.Any());
+        RuleFor(v => v.SuperiorOrganizationIds).Must(s => s.Any());
+    }
+}
+
 
 public class CreateUserHandler(IApplicationDbContext context, UserManager manager) : IRequestHandler<UserCreateCommand, UserDto>
 {

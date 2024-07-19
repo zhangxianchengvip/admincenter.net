@@ -5,7 +5,6 @@ namespace AdminCenter.Application.Users.Queries;
 /// <summary>
 /// 用户信息查询
 /// </summary>
-/// <param name="Id"></param>
 public record UserQuery(Guid Id) : IRequest<UserDto>;
 
 public class UserQueryHandler(IApplicationDbContext context) : IRequestHandler<UserQuery, UserDto>

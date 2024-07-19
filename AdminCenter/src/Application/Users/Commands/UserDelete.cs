@@ -3,7 +3,6 @@
 /// <summary>
 /// 删除用户
 /// </summary>
-/// <param name="Id"></param>
 public record UserDeleteCommand(Guid Id) : IRequest<bool>;
 
 

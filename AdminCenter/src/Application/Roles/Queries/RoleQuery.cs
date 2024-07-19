@@ -1,8 +1,11 @@
 ﻿using AdminCenter.Application.Roles.Dto;
 
 namespace AdminCenter.Application.Roles.Queries;
-public record RoleQuery(Guid Id) : IRequest<RoleDto>;
 
+/// <summary>
+/// 角色
+/// </summary>
+public record RoleQuery(Guid Id) : IRequest<RoleDto>;
 
 public class RoleQueryHandler(IApplicationDbContext context) : IRequestHandler<RoleQuery, RoleDto>
 {

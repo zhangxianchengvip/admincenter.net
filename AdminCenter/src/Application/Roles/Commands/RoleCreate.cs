@@ -2,6 +2,10 @@
 using AdminCenter.Domain.DomainServices;
 
 namespace AdminCenter.Application.Roles.Commands;
+
+/// <summary>
+/// 角色创建
+/// </summary>
 public record RoleCreateCommand(string Name, string? Description) : IRequest<RoleDto>;
 
 public class RoleCreateCommandValidator : AbstractValidator<RoleCreateCommand>

@@ -1,5 +1,8 @@
 ﻿namespace AdminCenter.Application;
 
+/// <summary>
+/// 组织删除
+/// </summary>
 public record OrganizationDeleteCommand(Guid Id) : IRequest<bool>;
 
 public class OrganizationDeleteHandler(IApplicationDbContext context) : IRequestHandler<OrganizationDeleteCommand, bool>

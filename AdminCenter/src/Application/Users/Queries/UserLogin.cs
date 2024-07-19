@@ -9,7 +9,14 @@ namespace AdminCenter.Application;
 /// <param name="Password">密码</param>
 public record UserLoginQuery(string LoginName, string Password) : IRequest<UserDto>;
 
-
+public class UserLoginQueryValidator : AbstractValidator<UserLoginQuery>
+{
+    public UserLoginQueryValidator()
+    {
+        RuleFor(v => v.LoginName).NotNull();
+        RuleFor(v => v.Password).NotNull();
+    }
+}
 public class UserLoginHandler(IApplicationDbContext context) : IRequestHandler<UserLoginQuery, UserDto>
 {
     public async Task<UserDto> Handle(UserLoginQuery request, CancellationToken cancellationToken)

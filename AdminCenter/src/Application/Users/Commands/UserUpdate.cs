@@ -2,6 +2,9 @@
 
 namespace AdminCenter.Application;
 
+/// <summary>
+/// 用户修改
+/// </summary>
 public record UserUpdateCommand(
     Guid Id,
     string LoginName,
@@ -13,7 +16,18 @@ public record UserUpdateCommand(
     List<Guid> RoleIds,
     List<(Guid SuperiorOrganizationId, bool isSubsidiary)> SuperiorOrganizationIds) : IRequest<UserDto>;
 
-
+public class UserUpdateCommandValidator : AbstractValidator<UserUpdateCommand>
+{
+    public UserUpdateCommandValidator()
+    {
+        RuleFor(v => v.Id).NotNull();
+        RuleFor(v => v.LoginName).NotNull();
+        RuleFor(v => v.RealName).NotNull();
+        RuleFor(v => v.Password).NotNull();
+        RuleFor(v => v.RoleIds).Must(s => s.Any());
+        RuleFor(v => v.SuperiorOrganizationIds).Must(s => s.Any());
+    }
+}
 
 public class UserUpdateHandler(IApplicationDbContext context) : IRequestHandler<UserUpdateCommand, UserDto>
 {

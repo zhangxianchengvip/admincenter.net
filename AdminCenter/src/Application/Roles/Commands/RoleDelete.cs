@@ -1,6 +1,9 @@
 ﻿namespace AdminCenter.Application.Roles.Commands;
-public record RoleDeleteCommand(Guid Id) : IRequest<bool>;
 
+/// <summary>
+/// 角色删除
+/// </summary>
+public record RoleDeleteCommand(Guid Id) : IRequest<bool>;
 
 public class RoleDeleteHandler(IApplicationDbContext context) : IRequestHandler<RoleDeleteCommand, bool>
 {

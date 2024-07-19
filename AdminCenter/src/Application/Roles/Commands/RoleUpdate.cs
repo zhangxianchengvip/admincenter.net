@@ -1,5 +1,15 @@
 ﻿namespace AdminCenter.Application.Roles.Commands;
+
+//角色修改
 public record RoleUpdateCommand(Guid Id, string Name, string? Description) : IRequest<bool>;
+
+public class RoleUpdateCommandValidator : AbstractValidator<RoleCreateCommand>
+{
+    public RoleUpdateCommandValidator()
+    {
+        RuleFor(v => v.Name).NotNull();
+    }
+}
 
 public class RoleUpdataHandler(IApplicationDbContext context) : IRequestHandler<RoleUpdateCommand, bool>
 {

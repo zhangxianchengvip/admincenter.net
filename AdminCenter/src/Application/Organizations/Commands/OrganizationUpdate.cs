@@ -2,15 +2,26 @@
 
 namespace AdminCenter.Application;
 
+/// <summary>
+/// 组织创建
+/// </summary>
 public record OrganizationUpdateCommand(
-    Guid id,
+    Guid Id,
     string Name,
     string Code,
     string? Description,
     Guid? SuperiorOrganizationId,
     StatusEnum Status) : IRequest<OrganizationDto>;
 
-
+public class OrganizationUpdateCommandValidator : AbstractValidator<OrganizationUpdateCommand>
+{
+    public OrganizationUpdateCommandValidator()
+    {
+        RuleFor(v => v.Id).NotNull();
+        RuleFor(v => v.Name).NotNull();
+        RuleFor(v => v.Code).NotNull();
+    }
+}
 public class UpdateOrganizationHandler(IApplicationDbContext context, OrganizationManager manager) : IRequestHandler<OrganizationUpdateCommand, OrganizationDto>
 {
     public async Task<OrganizationDto> Handle(OrganizationUpdateCommand request, CancellationToken cancellationToken)
