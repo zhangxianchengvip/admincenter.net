@@ -74,6 +74,41 @@
       }
     },
     "/api/v1/Users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UserQuery",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
       "put": {
         "tags": [
           "Users"
@@ -155,41 +190,6 @@
             "JWT": []
           }
         ]
-      },
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "UserQuery",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
       }
     },
     "/api/v1/Users/Personal": {
@@ -215,6 +215,78 @@
             "JWT": []
           }
         ]
+      }
+    },
+    "/api/v1/Roles": {
+      "post": {
+        "tags": [
+          "Roles"
+        ],
+        "operationId": "RoleCreate",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleCreateCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "operationId": "RoleListQuery",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfRoleDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/Roles/{Id}": {
@@ -320,78 +392,6 @@
           }
         }
       }
-    },
-    "/api/v1/Roles": {
-      "get": {
-        "tags": [
-          "Roles"
-        ],
-        "operationId": "RoleListQuery",
-        "parameters": [
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfRoleDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Roles"
-        ],
-        "operationId": "RoleCreate",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleCreateCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RoleDto"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -470,7 +470,7 @@
               "format": "guid"
             }
           },
-          "superiorOrganizationIds": {
+          "superiorIds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
@@ -527,7 +527,7 @@
               "format": "guid"
             }
           },
-          "superiorOrganizationIds": {
+          "superiorIds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
@@ -543,6 +543,19 @@
             "type": "string",
             "format": "guid"
           },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RoleCreateCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
           "name": {
             "type": "string"
           },
@@ -579,19 +592,6 @@
           },
           "hasNextPage": {
             "type": "boolean"
-          }
-        }
-      },
-      "RoleCreateCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
