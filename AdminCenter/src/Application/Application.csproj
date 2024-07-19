@@ -14,4 +14,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DomainEventHandlers\" />
+    <Folder Include="IntegrationEvents\" />
+  </ItemGroup>
+
 </Project>

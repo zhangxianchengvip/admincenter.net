@@ -34,6 +34,4 @@ public class UserDto
     /// 电话
     /// </summary>
     public string? PhoneNumber { get; set; }
-
-    public string? Token { get; set; }
 }

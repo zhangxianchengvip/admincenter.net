@@ -27,7 +27,7 @@ public class UpdateOrganizationHandler(IApplicationDbContext context, Organizati
 {
     public async Task<OrganizationDto> Handle(OrganizationUpdateCommand request, CancellationToken cancellationToken)
     {
-        var organization = await context.Organizations.FindAsync(request.id);
+        var organization = await context.Organizations.FindAsync(request.Id);
 
         if (organization != null)
         {

@@ -15,8 +15,8 @@ public class OrganizationCreateCommandValidator : AbstractValidator<Organization
 {
     public OrganizationCreateCommandValidator()
     {
-        RuleFor(v => v.Name).NotNull();
         RuleFor(v => v.Code).NotNull();
+        RuleFor(v => v.Name).NotNull();
     }
 }
 public class OrganizationCreateHandler(IApplicationDbContext context, OrganizationManager manager) : IRequestHandler<OrganizationCreateCommand, bool>

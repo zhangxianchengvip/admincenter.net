@@ -8,6 +8,6 @@ public class ApiResponseFilter : IEndpointFilter
     {
         var result = await next(context);
 
-            return new ApiResponse(data: result);
+        return new ApiResponse(data: result);
     }
 }

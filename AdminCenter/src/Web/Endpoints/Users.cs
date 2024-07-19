@@ -8,8 +8,6 @@ using AdminCenter.Application.Common.Security;
 using AdminCenter.Application.Features.Users.Commands;
 using AdminCenter.Application.Features.Users.Dto;
 using AdminCenter.Application.Users.Queries;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,27 +18,23 @@ public class Users : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-           .AddEndpointFilter<ApiResponseFilter>()
-           .MapPost(UserLogin, "Login");
+              .AddEndpointFilter<ApiResponseFilter>()
+              .MapPost(UserLogin, "Login");
 
         app.MapGroup(this)
-           .RequireAuthorization()
-           .AddEndpointFilter<ApiResponseFilter>()
-           .MapPost(UserCreate)
-           .MapPut(UserUpdate, "{id}")
-           .MapDelete(UserDelete, "{id}")
-           .MapGet(UserQuery, "{id}")
-           .MapGet(PersonalQuery, "/Personal");
+              .RequireAuthorization()
+              .AddEndpointFilter<ApiResponseFilter>()
+              .MapPost(UserCreate)
+              .MapPut(UserUpdate, "{id}")
+              .MapDelete(UserDelete, "{id}")
+              .MapGet(UserQuery, "{id}")
+              .MapGet(PersonalQuery, "/Personal");
 
     }
 
     /// <summary>
     /// 登录
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="options"></param>
-    /// <param name="query"></param>
-    /// <returns></returns>
     public async Task<UserDto> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLogin query)
     {
         var userDto = await sender.Send(query);
@@ -77,19 +71,12 @@ public class Users : EndpointGroupBase
         );
 
         // 6. 将token变为string
-        var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-
-        userDto.Token = token;
-
-        return userDto;
+        return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
     }
 
     /// <summary>
     /// 用户信息
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="id"></param>
-    /// <returns></returns>
     public async Task<UserDto> UserQuery(ISender sender, Guid id)
     {
         return await sender.Send(new UserQuery(id));
@@ -109,9 +96,6 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 个人信息
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="user"></param>
-    /// <returns></returns>
     public async Task<UserDto> PersonalQuery(ISender sender, IUser user)
     {
         return await sender.Send(new UserQuery(Guid.Parse(user.Id!)));
@@ -120,9 +104,6 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 用户创建
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="command"></param>
-    /// <returns></returns>
     public async Task<UserDto> UserCreate(ISender sender, UserCreateCommand command)
     {
         return await sender.Send(command);
@@ -131,9 +112,6 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 用户更新
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="command"></param>
-    /// <returns></returns>
     public async Task<UserDto> UserUpdate(ISender sender, Guid id, UserUpdateCommand command)
     {
         return await sender.Send(command);
@@ -142,9 +120,6 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 用户删除
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="id"></param>
-    /// <returns></returns>
     public async Task<bool> UserDelete(ISender sender, Guid id)
     {
         return await sender.Send(new UserDeleteCommand(id));
