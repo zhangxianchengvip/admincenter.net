@@ -61,10 +61,6 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 用户列表
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="pageNumber"></param>
-    /// <param name="pageSize"></param>
-    /// <returns></returns>
     public async Task<PaginatedList<UserDto>> UserListQuery(ISender sender, int pageNumber, int pageSize)
     {
         return await sender.Send(new UserListQuery(pageNumber, pageSize));
