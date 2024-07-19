@@ -16,9 +16,7 @@ public class RoleDeleteHandler(IApplicationDbContext context) : IRequestHandler<
 
         if (role != null && !role.UserRoles.Any()) context.Roles.Remove(role);
 
-        if (role == null) return true;
-
-        throw new BusinessException(ExceptionMessage.RoleOccupy);
+        return role == null ? true : throw new BusinessException(ExceptionMessage.RoleOccupy);
     }
 }
 

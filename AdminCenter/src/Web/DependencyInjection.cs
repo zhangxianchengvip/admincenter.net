@@ -19,20 +19,20 @@ public static class DependencyInjection
 
         services.AddEndpointsApiExplorer();
 
-        services.AddScoped(typeof(IUser<>), typeof(CurrentUser<>));
+        services.AddScoped<TokenBuilder>();
 
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddExceptionHandler<CustomExceptionHandler>();
 
-        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+        services.AddScoped(typeof(IUser<>), typeof(CurrentUser<>));
 
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
 
         services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
-
 
         services.AddOpenApiDocument((configure, sp) =>
         {

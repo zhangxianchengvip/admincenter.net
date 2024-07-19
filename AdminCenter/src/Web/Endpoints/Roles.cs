@@ -11,11 +11,11 @@ public class Roles : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-              .MapGet(RoleQuery, "{Id}")
-              .MapGet(RoleListQuery)
-              .MapPost(RoleCreate)
-              .MapPut(RoleUpdate, "{Id}")
-              .MapDelete(RoleDelete, "{Id}");
+           .MapPost(RoleCreate)
+           .MapGet(RoleListQuery)
+           .MapGet(RoleQuery, "{Id}")
+           .MapPut(RoleUpdate, "{Id}")
+           .MapDelete(RoleDelete, "{Id}");
     }
 
     public async Task<RoleDto> RoleQuery(ISender sender, Guid Id)

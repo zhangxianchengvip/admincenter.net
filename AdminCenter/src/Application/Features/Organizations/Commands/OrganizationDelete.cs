@@ -16,9 +16,7 @@ public class OrganizationDeleteHandler(IApplicationDbContext context) : IRequest
 
         if (organization != null && !organization.UserOrganizations.Any()) context.Organizations.Remove(organization);
 
-        if (organization == null) return true;
-
-        throw new BusinessException(ExceptionMessage.OrganizationOccupy);
+        return organization == null ? true : throw new BusinessException(ExceptionMessage.OrganizationOccupy);
     }
 }
 

@@ -23,9 +23,9 @@ public class Users : EndpointGroupBase
            .RequireAuthorization()
            .AddEndpointFilter<ApiResponseFilter>()
            .MapPost(UserCreate)
+           .MapGet(UserQuery, "{id}")
            .MapPut(UserUpdate, "{id}")
            .MapDelete(UserDelete, "{id}")
-           .MapGet(UserQuery, "{id}")
            .MapGet(PersonalQuery, "/Personal");
 
     }
@@ -33,13 +33,10 @@ public class Users : EndpointGroupBase
     /// <summary>
     /// 登录
     /// </summary>
-    public async Task<object> UserLogin(ISender sender, IOptionsSnapshot<JwtOptions> options, UserLogin query)
+    public async Task<object> UserLogin(ISender sender, TokenBuilder tokenBuilder, UserLogin query)
     {
         var userDto = await sender.Send(query);
 
-        var jwtOptions = options.Value;
-
-        //1. 创建 claims
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, userDto.Id.ToString()),
@@ -48,28 +45,7 @@ public class Users : EndpointGroupBase
             new Claim("Username",userDto.RealName??""),
         };
 
-        // 2. 从 appsettings.json 中读取SecretKey
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
-
-        // 3. 选择加密算法
-        var algorithm = SecurityAlgorithms.HmacSha256;
-
-        // 4. 生成Credentials
-        var signingCredentials = new SigningCredentials(secretKey, algorithm);
-
-        // 5. 根据以上，生成token
-        var jwtSecurityToken = new JwtSecurityToken
-        (
-            jwtOptions.Issuer,     //Issuer
-            jwtOptions.Audience,   //Audience
-            claims,                          //Claims,
-            DateTime.Now,                    //notBefore
-            DateTime.Now.AddSeconds(jwtOptions.Expires),    //expires
-            signingCredentials               //Credentials
-        );
-
-        // 6. 将token变为string
-        var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+        string token = tokenBuilder.Build(claims);
 
         return new { User = userDto, Token = token };
     }

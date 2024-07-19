@@ -17,8 +17,6 @@ public class MenuDeleteHandler(IApplicationDbContext context) : IRequestHandler<
 
         if (menu != null && !menu.RoleMenu.Any()) context.Menus.Remove(menu);
 
-        if (menu == null) return true;
-
-        throw new BusinessException(ExceptionMessage.MenuOccupy);
+        return menu == null ? true : throw new BusinessException(ExceptionMessage.MenuOccupy);
     }
 }
