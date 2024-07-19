@@ -7,6 +7,9 @@ namespace AdminCenter.Domain;
 
 public class UserManager(IApplicationDbContext context) : DomainEvent
 {
+    /// <summary>
+    /// 创建用户
+    /// </summary>
     public async Task<User> CreateAsync(
         [NotNull] string loginName,
         [NotNull] string realName,

@@ -14,16 +14,12 @@ public abstract class AggregateRoot : AuditableEntity
     /// </summary>
     private readonly List<DomainEvent> _domainEvents = new();
 
-    /// <summary>
-    /// 只读事件集合
-    /// </summary>
     [NotMapped]
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     /// <summary>
     /// 添加领域事件
     /// </summary>
-    /// <param name="domainEvent"></param>
     public void AddDomainEvent(DomainEvent domainEvent)
     {
         _domainEvents.Add(domainEvent);
@@ -32,7 +28,6 @@ public abstract class AggregateRoot : AuditableEntity
     /// <summary>
     /// 移出事件
     /// </summary>
-    /// <param name="domainEvent"></param>
     public void RemoveDomainEvent(DomainEvent domainEvent)
     {
         _domainEvents.Remove(domainEvent);

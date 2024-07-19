@@ -57,8 +57,6 @@ public class Position : AggregateRoot<Guid>
     /// <summary>
     /// 更新职位名称
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
     public Position UpdatePositionName([NotNull] string name)
     {
         Name = Guard.Against.NullOrWhiteSpace
@@ -74,8 +72,6 @@ public class Position : AggregateRoot<Guid>
     /// <summary>
     /// 更新职位编码
     /// </summary>
-    /// <param name="code"></param>
-    /// <returns></returns>
     public Position UpdatePositionCode([NotNull] string code)
     {
         Code = Guard.Against.NullOrWhiteSpace

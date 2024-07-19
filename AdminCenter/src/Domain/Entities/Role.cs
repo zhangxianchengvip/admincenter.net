@@ -39,8 +39,6 @@ public class Role : AggregateRoot<Guid>
     /// <summary>
     /// 更新角色名称
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
     public Role UpdateRoleName([NotNull] string name)
     {
         Name = Guard.Against.NullOrWhiteSpace

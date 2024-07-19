@@ -102,7 +102,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 更新密码
     /// </summary>
-    /// <param name="password"></param>
     public User UpdatePassword([NotNull] string password)
     {
         //校验密码为空，或者赋值
@@ -122,8 +121,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 密码hash加密
     /// </summary>
-    /// <param name="password"></param>
-    /// <returns></returns>
     private string HashPassword([NotNull] string password)
     {
         //校验密码为空
@@ -157,8 +154,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 校验密码
     /// </summary>
-    /// <param name="password"></param>
-    /// <returns></returns>
     public bool ValidatePassword([NotNull] string password)
     {
         //校验密码为空
@@ -188,8 +183,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 更新角色
     /// </summary>
-    /// <param name="roleList"></param>
-    /// <returns></returns>
     public User UpdateRoleRange(List<Guid> roleList)
     {
         Guard.Against.Null
@@ -209,8 +202,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 更新真实名称
     /// </summary>
-    /// <param name="realName"></param>
-    /// <returns></returns>
     public User UpdateRealName([NotNull] string realName)
     {
         //校验名称为空，或者赋值
@@ -227,8 +218,6 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 更新用户组织
     /// </summary>
-    /// <param name="organizationList"></param>
-    /// <returns></returns>
     public User UpdateOrganizationRange(List<(Guid organizationId, bool isSubsidiary)> organizationList)
     {
         Guard.Against.Null

@@ -30,4 +30,7 @@ public static class ExceptionMessage
     public const string PositionCodeNull = "职位编号为空";
     public const string OPositionCodeExist = "职位编号已存在";
 
+    //菜单
+    public const string MenuNameNull = "菜单名称为空";
+
 }

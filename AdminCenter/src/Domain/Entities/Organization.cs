@@ -61,8 +61,6 @@ public class Organization : AggregateRoot<Guid>
     /// <summary>
     /// 更新组织名称
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
     public Organization UpdateOrganizationName([NotNull] string name)
     {
         Name = Guard.Against.NullOrWhiteSpace
@@ -79,8 +77,6 @@ public class Organization : AggregateRoot<Guid>
     /// <summary>
     /// 更新组织编码
     /// </summary>
-    /// <param name="code"></param>
-    /// <returns></returns>
     public Organization UpdateOrganizationCode([NotNull] string code)
     {
         Code = Guard.Against.NullOrWhiteSpace
