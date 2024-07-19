@@ -6,7 +6,7 @@ using YamlDotNet.Core.Tokens;
 
 namespace AdminCenter.Web.Services;
 
-public class CurrentUser<T> : IUser<T>
+public class CurrentUser<TKey> : IUser<TKey>
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -15,7 +15,7 @@ public class CurrentUser<T> : IUser<T>
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public T? Id
+    public TKey? Id
     {
         get
         {
@@ -23,9 +23,9 @@ public class CurrentUser<T> : IUser<T>
 
             if (userId == null) return default;
 
-            var converter = TypeDescriptor.GetConverter(typeof(T));
+            var converter = TypeDescriptor.GetConverter(typeof(TKey));
 
-            return (T)converter.ConvertFromInvariantString(userId)!;
+            return (TKey)converter.ConvertFromInvariantString(userId)!;
         }
     }
 }

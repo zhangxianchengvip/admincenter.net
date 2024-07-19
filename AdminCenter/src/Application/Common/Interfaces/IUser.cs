@@ -1,6 +1,6 @@
 ﻿namespace AdminCenter.Application.Common.Interfaces;
 
-public interface IUser<T>
+public interface IUser<TKey>
 {
-    T? Id { get; }
+    TKey? Id { get; }
 }
