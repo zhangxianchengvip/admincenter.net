@@ -18,12 +18,14 @@ public static class ExceptionMessage
     public const string RoleNameNull = "角色名称为空";
     public const string RoleExist = "角色已存在";
     public const string RoleNotExist = "角色不存在";
+    public const string RoleOccupy = "角色正在使用中";
 
     //组织
     public const string OrganizationNotExist = "组织不存在";
     public const string OrganizationNameNull = "组织名称为空";
     public const string OrganizationCodeNull = "组织编号为空";
     public const string OrganizationCodeExist = "组织编号已存在";
+    public const string OrganizationOccupy = "组织正在使用中";
 
     //职位
     public const string PositionNameNull = "职位名称为空";
@@ -31,6 +33,8 @@ public static class ExceptionMessage
     public const string OPositionCodeExist = "职位编号已存在";
 
     //菜单
+    public const string MenuNotExist = "菜单不存在";
     public const string MenuNameNull = "菜单名称为空";
+    public const string MenuOccupy = "菜单正在使用中";
 
 }

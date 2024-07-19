@@ -9,12 +9,16 @@ public class OrganizationDeleteHandler(IApplicationDbContext context) : IRequest
 {
     public async Task<bool> Handle(OrganizationDeleteCommand request, CancellationToken cancellationToken)
     {
-        //TODO:此处需要判断没有在使用
-        var organization = await context.Organizations.FindAsync(request.Id, cancellationToken);
+        var organization = await context.Organizations
+            .AsNoTracking()
+            .Include(s => s.UserOrganizations.Take(1))
+            .FirstOrDefaultAsync(o => o.Id.Equals(request.Id));
 
-        if (organization != null) context.Organizations.Remove(organization);
+        if (organization != null && !organization.UserOrganizations.Any()) context.Organizations.Remove(organization);
 
-        return true;
+        if (organization == null) return true;
+
+        throw new BusinessException(ExceptionMessage.OrganizationOccupy);
     }
 }
 

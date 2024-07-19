@@ -36,9 +36,13 @@ public class Menu : AggregateRoot<Guid>
     public StatusEnum Status { get; set; }
 
     /// <summary>
+    /// 角色菜单
+    /// </summary>
+    public ICollection<RoleMenu> RoleMenu { get; set; } = [];
+    /// <summary>
     /// 上级Id
     /// </summary>
-    public Guid? SuperiorMenuId { get; set; }
+    public Guid? SuperiorId { get; set; }
 
     public Menu(
         [NotNull] Guid id,
@@ -52,7 +56,7 @@ public class Menu : AggregateRoot<Guid>
         IsLink = isLink;
         MenuType = menuType;
         Status = StatusEnum.Enable;
-        SuperiorMenuId = superiorMenuId;
+        SuperiorId = superiorMenuId;
         Name = Guard.Against.NullOrWhiteSpace
        (
            input: name,

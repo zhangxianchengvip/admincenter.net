@@ -26,12 +26,18 @@ public class Organization : AggregateRoot<Guid>
     /// <summary>
     /// 上级组织
     /// </summary>
-    public Guid? SuperiorOrganizationId { get; set; }
+    public Guid? SuperiorId { get; set; }
 
     /// <summary>
     /// 状态
     /// </summary>
     public StatusEnum Status { get; set; }
+
+    /// <summary>
+    /// 用户组织
+    /// </summary>
+    public ICollection<UserOrganization> UserOrganizations { get; set; } = [];
+
     public Organization(
         [NotNull] Guid id,
         [NotNull] string name,
@@ -40,7 +46,7 @@ public class Organization : AggregateRoot<Guid>
         string? description = null) : base(id)
     {
         Description = description;
-        SuperiorOrganizationId = superiorOrganizationId;
+        SuperiorId = superiorOrganizationId;
 
         Code = Guard.Against.NullOrWhiteSpace
         (

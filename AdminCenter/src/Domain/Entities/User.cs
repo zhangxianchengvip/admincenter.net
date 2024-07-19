@@ -94,9 +94,6 @@ public class User : AggregateRoot<Guid>
             parameterName: nameof(password),
             exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
         ));
-
-        UserRoles = [];
-        UserOrganizations = [];
     }
 
     /// <summary>

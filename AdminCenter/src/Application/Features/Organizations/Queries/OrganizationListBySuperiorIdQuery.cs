@@ -13,7 +13,7 @@ public class OrganizationListBySuperiorOrganizationIdHandler(IApplicationDbConte
     public async Task<List<OrganizationDto>> Handle(OrganizationListBySuperiorOrganizationIdQuery request, CancellationToken cancellationToken)
     {
         return await context.Organizations
-        .Where(s => s.SuperiorOrganizationId.Equals(request.Id))
+        .Where(s => s.SuperiorId.Equals(request.Id))
         .ProjectToType<OrganizationDto>()
         .ToListAsync(cancellationToken);
     }

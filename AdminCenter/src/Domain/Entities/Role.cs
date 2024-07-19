@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Domain.Constants;
+using AdminCenter.Domain.Entities;
 using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
@@ -20,6 +21,16 @@ public class Role : AggregateRoot<Guid>
     /// 状态
     /// </summary>
     public StatusEnum Status { get; set; }
+
+    /// <summary>
+    /// 用户角色
+    /// </summary>
+    public ICollection<UserRole> UserRoles { get; set; } = [];
+
+    /// <summary>
+    /// 角色菜单
+    /// </summary>
+    public ICollection<RoleMenu> RoleMenu { get; set; } = [];
 
     public Role(
         [NotNull] Guid id,

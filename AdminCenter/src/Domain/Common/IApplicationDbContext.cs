@@ -1,5 +1,6 @@
 ﻿
 using AdminCenter.Domain;
+using AdminCenter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Application.Common.Interfaces;
@@ -28,6 +29,11 @@ public interface IApplicationDbContext
     /// 组织
     /// </summary>
     DbSet<Organization> Organizations { get; }
+
+    /// <summary>
+    /// 菜单
+    /// </summary>
+    DbSet<Menu> Menus { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
