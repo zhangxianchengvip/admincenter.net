@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using AdminCenter.Domain.Constants;
+using AdminCenter.Domain.Entities;
 using Ardalis.GuardClauses;
 namespace AdminCenter.Domain;
 
@@ -44,6 +45,11 @@ public class User : AggregateRoot<Guid>
     /// 用户角色
     /// </summary>
     public ICollection<UserRole> UserRoles { get; set; } = [];
+
+    /// <summary>
+    /// 用户职位
+    /// </summary>
+    public ICollection<UserPosition> UserPositions { get; set; } = [];
 
     /// <summary>
     /// 用户组织

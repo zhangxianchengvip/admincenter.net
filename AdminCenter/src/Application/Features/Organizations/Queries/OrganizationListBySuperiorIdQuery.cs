@@ -6,11 +6,11 @@ namespace AdminCenter.Application.Features.Organizations.Queries;
 /// 获取下级组织
 /// </summary>
 /// <param name="Id"></param>
-public record OrganizationListBySuperiorOrganizationIdQuery(Guid? Id) : IRequest<List<OrganizationDto>>;
+public record OrganizationListBySuperiorIdQuery(Guid? Id) : IRequest<List<OrganizationDto>>;
 
-public class OrganizationListBySuperiorOrganizationIdHandler(IApplicationDbContext context) : IRequestHandler<OrganizationListBySuperiorOrganizationIdQuery, List<OrganizationDto>>
+public class OrganizationListBySuperiorOrganizationIdHandler(IApplicationDbContext context) : IRequestHandler<OrganizationListBySuperiorIdQuery, List<OrganizationDto>>
 {
-    public async Task<List<OrganizationDto>> Handle(OrganizationListBySuperiorOrganizationIdQuery request, CancellationToken cancellationToken)
+    public async Task<List<OrganizationDto>> Handle(OrganizationListBySuperiorIdQuery request, CancellationToken cancellationToken)
     {
         return await context.Organizations
         .Where(s => s.SuperiorId.Equals(request.Id))

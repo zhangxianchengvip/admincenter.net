@@ -7,7 +7,6 @@ namespace AdminCenter.Domain;
 
 public class OrganizationManager(IApplicationDbContext context) : DomainService
 {
-
     /// <summary>
     /// 创建
     /// </summary>
@@ -15,7 +14,7 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
         [NotNull] string name,
         [NotNull] string code,
         string? description = null,
-        Guid? superiorOrganizationId = null)
+        Guid? superiorId = null)
     {
         var organization = new Organization
         (
@@ -23,15 +22,12 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
             name: name,
             code: code,
             description: description,
-            superiorId: superiorOrganizationId
+            superiorId: superiorId
         );
 
-        if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
-        {
-            return organization;
-        }
+        var exist = await context.Organizations.AnyAsync(s => s.Code.Equals(code));
 
-        throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
+        return !exist ? organization : throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 
     /// <summary>
@@ -42,18 +38,15 @@ public class OrganizationManager(IApplicationDbContext context) : DomainService
         [NotNull] string name,
         [NotNull] string code,
         string? description = null,
-        Guid? superiorOrganizationId = null)
+        Guid? superiorId = null)
     {
+        organization.Description = description;
         organization.UpdateOrganizationName(name);
         organization.UpdateOrganizationCode(code);
-        organization.Description = description;
-        organization.SuperiorId = superiorOrganizationId;
+        organization.SuperiorId = superiorId;
 
-        if (!await context.Organizations.AnyAsync(s => s.Code.Equals(code)))
-        {
-            return organization;
-        }
+        var exist = await context.Organizations.AnyAsync(s => s.Code.Equals(code));
 
-        throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
+        return !exist ? organization : throw new BusinessException(ExceptionMessage.OrganizationCodeExist);
     }
 }

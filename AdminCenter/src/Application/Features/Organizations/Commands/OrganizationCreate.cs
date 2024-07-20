@@ -9,7 +9,7 @@ public record OrganizationCreateCommand(
     string Name,
     string Code,
     string? Description = null,
-    Guid? superiorOrganizationId = null) : IRequest<bool>;
+    Guid? SuperiorOrganizationId = null) : IRequest<bool>;
 
 public class OrganizationCreateCommandValidator : AbstractValidator<OrganizationCreateCommand>
 {
@@ -28,7 +28,7 @@ public class OrganizationCreateHandler(IApplicationDbContext context, Organizati
             request.Name,
             request.Code,
             request.Description,
-            request.superiorOrganizationId
+            request.SuperiorOrganizationId
         );
 
         await context.Organizations.AddAsync(organization);

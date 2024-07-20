@@ -9,6 +9,8 @@ public static class DependencyInjection
     {
         services.AddTransient<UserManager>();
         services.AddTransient<RoleManager>();
+        services.AddTransient<MenuManager>();
+        services.AddTransient<PositionManager>();
         services.AddTransient<OrganizationManager>();
 
         return services;

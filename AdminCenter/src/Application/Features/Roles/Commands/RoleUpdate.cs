@@ -1,6 +1,8 @@
 ﻿namespace AdminCenter.Application.Features.Roles.Commands;
 
-//角色修改
+/// <summary>
+/// 角色修改
+/// </summary>
 public record RoleUpdateCommand(Guid Id, string Name, string? Description) : IRequest<bool>;
 
 public class RoleUpdateCommandValidator : AbstractValidator<RoleCreateCommand>

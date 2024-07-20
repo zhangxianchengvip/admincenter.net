@@ -11,19 +11,21 @@ public class Roles : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+           .RequireAuthorization()
+           .AddEndpointFilter<ApiResponseFilter>()
            .MapPost(RoleCreate)
            .MapGet(RoleListQuery)
-           .MapGet(RoleQuery, "{Id}")
-           .MapPut(RoleUpdate, "{Id}")
-           .MapDelete(RoleDelete, "{Id}");
+           .MapGet(RoleQuery, "{id}")
+           .MapPut(RoleUpdate, "{id}")
+           .MapDelete(RoleDelete, "{id}");
     }
 
     /// <summary>
     /// 角色查询
     /// </summary>
-    public async Task<RoleDto> RoleQuery(ISender sender, Guid Id)
+    public async Task<RoleDto> RoleQuery(ISender sender, Guid id)
     {
-        return await sender.Send(new RoleQuery(Id));
+        return await sender.Send(new RoleQuery(id));
     }
 
     /// <summary>
@@ -45,7 +47,7 @@ public class Roles : EndpointGroupBase
     /// <summary>
     /// 角色修改
     /// </summary>
-    public async Task<bool> RoleUpdate(ISender sender, Guid Id, RoleUpdateCommand command)
+    public async Task<bool> RoleUpdate(ISender sender, Guid id, RoleUpdateCommand command)
     {
         return await sender.Send(command);
     }
@@ -53,8 +55,8 @@ public class Roles : EndpointGroupBase
     /// <summary>
     /// 角色删除
     /// </summary>
-    public async Task<bool> RoleDelete(ISender sender, Guid Id)
+    public async Task<bool> RoleDelete(ISender sender, Guid id)
     {
-        return await sender.Send(new RoleDeleteCommand(Id));
+        return await sender.Send(new RoleDeleteCommand(id));
     }
 }

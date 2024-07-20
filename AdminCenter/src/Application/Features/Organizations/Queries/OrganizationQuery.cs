@@ -13,8 +13,6 @@ public class OrganizationQueryHandler(IApplicationDbContext context) : IRequestH
     {
         var organization = await context.Organizations.FindAsync(request.Id);
 
-        if (organization != null) return organization.Adapt<OrganizationDto>();
-
-        throw new BusinessException(ExceptionMessage.OrganizationNotExist);
+        return organization != null ? organization.Adapt<OrganizationDto>() : throw new BusinessException(ExceptionMessage.OrganizationNotExist);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Domain.Constants;
+using AdminCenter.Domain.Entities;
 using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
@@ -28,6 +29,11 @@ public class Position : AggregateRoot<Guid>
     /// 状态
     /// </summary>
     public StatusEnum Status { get; set; }
+
+    /// <summary>
+    /// 用户职位
+    /// </summary>
+    public ICollection<UserPosition> UserPositions { get; set; } = [];
 
 
     public Position(

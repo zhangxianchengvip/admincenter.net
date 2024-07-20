@@ -18,12 +18,9 @@ public class RoleManager(IApplicationDbContext context) : DomainService
             description: description
         );
 
-        if (!await context.Roles.AnyAsync(s => s.Name.Equals(name)))
-        {
-            return role;
-        }
+        var exist = await context.Roles.AnyAsync(s => s.Name.Equals(name));
 
-        throw new BusinessException(ExceptionMessage.RoleExist);
+        return !exist ? role : throw new BusinessException(ExceptionMessage.RoleExist);
     }
 
     /// <summary>
@@ -34,11 +31,8 @@ public class RoleManager(IApplicationDbContext context) : DomainService
         role.Description = description;
         role.UpdateRoleName(name);
 
-        if (!await context.Roles.AnyAsync(s => s.Name.Equals(name)))
-        {
-            return role;
-        }
+        var exist = await context.Roles.AnyAsync(s => s.Name.Equals(name));
 
-        throw new BusinessException(ExceptionMessage.RoleExist);
+        return !exist ? role : throw new BusinessException(ExceptionMessage.RoleExist);
     }
 }

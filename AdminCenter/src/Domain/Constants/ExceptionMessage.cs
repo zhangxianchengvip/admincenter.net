@@ -28,11 +28,14 @@ public static class ExceptionMessage
     public const string OrganizationOccupy = "组织正在使用中";
 
     //职位
+    public const string PositionNotExist = "职位不存在";
     public const string PositionNameNull = "职位名称为空";
     public const string PositionCodeNull = "职位编号为空";
-    public const string OPositionCodeExist = "职位编号已存在";
+    public const string PositionCodeExist = "职位编号已存在";
+    public const string PositionOccupy = "职位正在使用中";
 
     //菜单
+    public const string MenuExist = "菜单存在";
     public const string MenuNotExist = "菜单不存在";
     public const string MenuNameNull = "菜单名称为空";
     public const string MenuOccupy = "菜单正在使用中";

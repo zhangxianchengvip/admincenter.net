@@ -37,7 +37,7 @@ public class UpdateOrganizationHandler(IApplicationDbContext context, Organizati
                 name: request.Name,
                 code: request.Code,
                 description: request.Description,
-                superiorOrganizationId: request.SuperiorOrganizationId
+                superiorId: request.SuperiorOrganizationId
             );
 
             return organization.Adapt<OrganizationDto>();
