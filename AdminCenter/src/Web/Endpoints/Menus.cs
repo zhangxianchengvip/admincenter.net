@@ -20,7 +20,7 @@ public class Menus : EndpointGroupBase
     }
 
     /// <summary>
-    /// 组织查询
+    /// 菜单查询
     /// </summary>
     public async Task<MenuDto> MenuQuery(ISender sender, Guid id)
     {
@@ -28,7 +28,7 @@ public class Menus : EndpointGroupBase
     }
 
     /// <summary>
-    /// 组织列表查询
+    /// 菜单列表查询
     /// </summary>
     public async Task<List<MenuDto>> MenuListBySuperiorIdQuery(ISender sender, Guid superiorId)
     {
@@ -44,7 +44,7 @@ public class Menus : EndpointGroupBase
     }
 
     /// <summary>
-    /// 组织修改
+    /// 菜单修改
     /// </summary>
     public async Task<MenuDto> MenuUpdate(ISender sender, Guid id, MenuUpdateCommand command)
     {

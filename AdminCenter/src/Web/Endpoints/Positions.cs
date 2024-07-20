@@ -23,7 +23,7 @@ public class Positions : EndpointGroupBase
     }
 
     /// <summary>
-    /// 角色查询
+    ///  职位查询
     /// </summary>
     public async Task<PositionDto> PositionQuery(ISender sender, Guid id)
     {
@@ -31,7 +31,7 @@ public class Positions : EndpointGroupBase
     }
 
     /// <summary>
-    /// 角色列表
+    /// 职位列表
     /// </summary>
     public async Task<PaginatedList<PositionDto>> PositionListQuery(ISender sender, [AsParameters] PositionListQuery query)
     {
@@ -39,7 +39,7 @@ public class Positions : EndpointGroupBase
     }
 
     /// <summary>
-    /// 角色创建
+    /// 职位创建
     /// </summary>
     public async Task<PositionDto> PositionCreate(ISender sender, PositionCreateCommand command)
     {
@@ -47,7 +47,7 @@ public class Positions : EndpointGroupBase
     }
 
     /// <summary>
-    /// 角色修改
+    /// 职位修改
     /// </summary>
     public async Task<PositionDto> PositionUpdate(ISender sender, Guid id, PositionUpdateCommand command)
     {
@@ -55,7 +55,7 @@ public class Positions : EndpointGroupBase
     }
 
     /// <summary>
-    /// 角色删除
+    /// 职位删除
     /// </summary>
     public async Task<bool> PositionDelete(ISender sender, Guid id)
     {
