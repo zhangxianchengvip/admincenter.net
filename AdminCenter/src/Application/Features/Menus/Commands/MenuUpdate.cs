@@ -39,6 +39,6 @@ public class MenuUpdateHandler(IApplicationDbContext context, MenuManager manage
             return menu.Adapt<MenuDto>();
         }
 
-        throw new BusinessException(ExceptionMessage.OrganizationNotExist);
+        throw new BusinessException(ExceptionMessage.MenuNotExist);
     }
 }

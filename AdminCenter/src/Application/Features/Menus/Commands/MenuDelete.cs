@@ -11,7 +11,6 @@ public class MenuDeleteHandler(IApplicationDbContext context) : IRequestHandler<
     public async Task<bool> Handle(MenuDeleteCommand request, CancellationToken cancellationToken)
     {
         var menu = await context.Menus
-            .AsNoTracking()
             .Include(s => s.RoleMenu.Take(1))
             .FirstOrDefaultAsync(o => o.Id.Equals(request.Id));
 
