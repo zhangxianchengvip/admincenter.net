@@ -10,7 +10,6 @@ public class OrganizationDeleteHandler(IApplicationDbContext context) : IRequest
     public async Task<bool> Handle(OrganizationDeleteCommand request, CancellationToken cancellationToken)
     {
         var organization = await context.Organizations
-            .AsNoTracking()
             .Include(s => s.UserOrganizations.Take(1))
             .FirstOrDefaultAsync(o => o.Id.Equals(request.Id));
 

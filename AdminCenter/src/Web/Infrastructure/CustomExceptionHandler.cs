@@ -18,7 +18,7 @@ public class CustomExceptionHandler : IExceptionHandler
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-                { typeof(BusinessException), HandleAdminBusinessException },
+                { typeof(BusinessException), HandleBusinessException },
             };
     }
 
@@ -88,9 +88,9 @@ public class CustomExceptionHandler : IExceptionHandler
         });
     }
 
-    private async Task HandleAdminBusinessException(HttpContext httpContext, Exception ex)
+    private async Task HandleBusinessException(HttpContext httpContext, Exception ex)
     {
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        httpContext.Response.StatusCode = StatusCodes.Status200OK;
 
         await httpContext.Response.WriteAsJsonAsync(new ApiResponse
         (

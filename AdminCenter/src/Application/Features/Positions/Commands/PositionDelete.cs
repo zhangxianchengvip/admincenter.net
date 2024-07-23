@@ -7,7 +7,6 @@ public class PositionDeleteHandler(IApplicationDbContext context) : IRequestHand
     public async Task<bool> Handle(PositionDeleteCommand request, CancellationToken cancellationToken)
     {
         var position = await context.Positions
-            .AsNoTracking()
             .Include(s => s.UserPositions.Take(1))
             .FirstOrDefaultAsync(s => s.Id.Equals(request.Id));
 
