@@ -23,7 +23,7 @@ public class Position : AggregateRoot<Guid>
     /// <summary>
     /// 职位代码
     /// </summary>
-    public string Code { get; set; }
+    public string Code { get; private set; }
 
     /// <summary>
     /// 状态
@@ -33,7 +33,7 @@ public class Position : AggregateRoot<Guid>
     /// <summary>
     /// 用户职位
     /// </summary>
-    public ICollection<UserPosition> UserPositions { get; set; } = [];
+    public ICollection<UserPosition> UserPositions { get; private set; } = [];
 
 
     public Position(
