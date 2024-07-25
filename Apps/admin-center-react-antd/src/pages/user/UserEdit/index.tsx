@@ -76,7 +76,7 @@ const UserEdit:React.FC = () => {
             form={form}
             name="control-hooks"
             onFinish={onFinish}
-            style={{ maxWidth: 600 }}
+            style={{ maxWidth: 100}}
         >
             <Form.Item name="note" label="Note" rules={[{ required: true }]}>
                 <Input />

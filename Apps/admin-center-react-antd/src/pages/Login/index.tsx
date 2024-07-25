@@ -1,11 +1,11 @@
 import React from "react";
-import {App as AntdApp, Button, Checkbox, Form, Input} from "antd";
+import { App as AntdApp, Button, Checkbox, Form, Input } from "antd";
 import styles from "./login.module.scss";
-import {useDispatch} from "react-redux";
-import {login} from "../../store/slices/authSlice";
-import {useNavigate} from "react-router-dom";
-import {useLoginMutation} from "../../apis/accountApi";
-import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../apis/accountApi";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const Login: React.FC = () => {
 
@@ -13,8 +13,8 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const [form] = Form.useForm();
-    const [loginFn, {isLoading}] = useLoginMutation();
-    const {message, notification, modal} = AntdApp.useApp();
+    const [loginFn, { isLoading }] = useLoginMutation();
+    const { message, notification, modal } = AntdApp.useApp();
     const handlerSubmit = async (values: any) => {
         loginFn({
             account: values.username,
@@ -27,11 +27,8 @@ const Login: React.FC = () => {
                 message.success("登录成功")
                 navigate("/index")
             } else {
-                notification.error({
-                    description: resp.message,
-                    message: '出错了'
-                });
 
+                message.error(resp.message)
                 form.resetFields();
             }
         })
@@ -51,7 +48,7 @@ const Login: React.FC = () => {
                 form={form}
                 name="normal_login"
                 className="login-form"
-                initialValues={{remember: true}}
+                initialValues={{ remember: true }}
                 onFinish={handlerSubmit}
                 style={{
                     width: "400px",
@@ -63,22 +60,22 @@ const Login: React.FC = () => {
                 }}
             >
 
-                <h1 style={{marginBottom: '30px'}}>React-Better-Admin </h1>
+                <h1 style={{ marginBottom: '30px' }}>React-Better-Admin </h1>
 
                 <Form.Item
                     name="username"
-                    rules={[{required: true, message: '账户不能为空'}]}
+                    rules={[{ required: true, message: '账户不能为空' }]}
                     extra="测试账号 admin，密码 123456"
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="账户"/>
+                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="账户" />
                 </Form.Item>
 
                 <Form.Item
                     name="password"
-                    rules={[{required: true, message: '密码不能为空'}]}
+                    rules={[{ required: true, message: '密码不能为空' }]}
                 >
                     <Input
-                        prefix={<LockOutlined className="site-form-item-icon"/>}
+                        prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="密码"
                     />
@@ -88,8 +85,8 @@ const Login: React.FC = () => {
                         <Checkbox>记住我</Checkbox>
                     </Form.Item>
 
-                    <Button type={"link"} className="login-form-forgot" style={{float: "right"}}
-                            onClick={showModal}>
+                    <Button type={"link"} className="login-form-forgot" style={{ float: "right" }}
+                        onClick={showModal}>
                         忘记密码
                     </Button>
                 </Form.Item>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     ColumnHeightOutlined, DeleteOutlined, DownloadOutlined,
     DownOutlined, EditOutlined, EyeOutlined, FormatPainterOutlined, LineChartOutlined,
@@ -6,7 +6,8 @@ import {
     ReloadOutlined,
     SearchOutlined, SlidersOutlined, SwapOutlined,
     UploadOutlined,
-    UpOutlined
+    UpOutlined,
+    UserDeleteOutlined
 } from '@ant-design/icons';
 import {
     Alert,
@@ -24,16 +25,17 @@ import {
     theme, Tooltip,
     Upload
 } from 'antd';
-import {ColumnsType} from "antd/es/table";
-import {TableRowSelection} from "antd/es/table/interface";
-import UserEdit from "../UserEdit";
+import { ColumnsType } from "antd/es/table";
+import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../../components/DictSelect";
+import UserCreate from '../UserCreate';
+import UserEdit from '../UserEdit';
 
-const {Option} = Select;
+const { Option } = Select;
 
 
 const AdvancedSearchForm = () => {
-    const {token} = theme.useToken();
+    const { token } = theme.useToken();
     const [form] = Form.useForm();
     const [expand, setExpand] = useState(false);
 
@@ -44,7 +46,7 @@ const AdvancedSearchForm = () => {
         padding: 24,
         marginBottom: '20px'
 
-    } ;
+    };
 
 
     const getFields = () => {
@@ -64,12 +66,12 @@ const AdvancedSearchForm = () => {
                         ]}
                     >
                         {i % 3 !== 1 ? (
-                            <Input placeholder="placeholder"/>
+                            <Input placeholder="placeholder" />
                         ) : (
                             <Select defaultValue="2">
                                 <Option value="1">1</Option>
                                 <Option value="2">
-                nglonglong
+                                    nglonglong
                                 </Option>
                             </Select>
                         )}
@@ -90,12 +92,12 @@ const AdvancedSearchForm = () => {
 
                 {getFields()}
 
-                <Col span={expand ? '12' : 6} style={{textAlign: 'right'} }>
+                <Col span={expand ? '12' : 6} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit">
                         搜索
                     </Button>
                     <Button
-                        style={{margin: '0 8px'}  }
+                        style={{ margin: '0 8px' }}
                         onClick={() => {
                             form.resetFields();
                         }}
@@ -103,13 +105,13 @@ const AdvancedSearchForm = () => {
                         重置
                     </Button>
                     <a
-                        style={{fontSize: 12}  }
+                        style={{ fontSize: 12 }}
                         onClick={() => {
                             setExpand(!expand);
                         }}
                     >
                         {expand ?
-                            <> <UpOutlined/> 折叠 </> : <><DownOutlined/> 更多</>}
+                            <> <UpOutlined /> 折叠 </> : <><DownOutlined /> 更多</>}
                     </a>
                 </Col>
             </Row>
@@ -159,10 +161,10 @@ const UserList: React.FC = () => {
 
                 return (
                     <Space>
-                        <a><EyeOutlined/> 查看</a>
-                        <a><EditOutlined/> 编辑</a>
-                        <a style={{color: "#ed4014"} }><DeleteOutlined/> 删除</a>
-                        <a> 更多 <DownOutlined style={{fontSize: "10px"} }/></a>
+                        <a><EyeOutlined /> 查看</a>
+                        <a><EditOutlined /> 编辑</a>
+                        <a style={{ color: "#ed4014" }}><DeleteOutlined /> 删除</a>
+                        <a> 更多 <DownOutlined style={{ fontSize: "10px" }} /></a>
                     </Space>
                 )
             }
@@ -173,7 +175,7 @@ const UserList: React.FC = () => {
     const densityItems: MenuProps['items'] = [
         {
             key: '1',
-            label:'默认',
+            label: '默认',
         },
         {
             key: '2',
@@ -215,23 +217,23 @@ const UserList: React.FC = () => {
     return (
         <div>
 
-            <Drawer title="列设置" placement="right" onClose={()=>setShowDrawer(false)}  open={showDrawer}>
-                {columns.map((item)=>{
+            <Drawer title="列设置" placement="right" onClose={() => setShowDrawer(false)} open={showDrawer}>
+                {columns.map((item) => {
                     return <p> <Checkbox>{item.title}</Checkbox></p>
                 })}
             </Drawer>
 
-            <AdvancedSearchForm/>
+            <AdvancedSearchForm />
 
             <Modal title="新增用户"
-                   open={isModalOpen}
-                   onOk={() => setIsModalOpen(false)}
-                   onCancel={() => setIsModalOpen(false)}
-                   width={"60%"}>
-                <UserEdit />
+                open={isModalOpen}
+                onOk={() => setIsModalOpen(false)}
+                onCancel={() => setIsModalOpen(false)}
+                width={'38%'}>
+                <UserCreate />
             </Modal>
 
-            <Space style={{display: "flex", justifyContent: "space-between", padding: "10px 0"} }>
+            <Space style={{ display: "flex", justifyContent: "space-between", padding: "10px 0" }}>
 
                 <Space align={"center"}>
 
@@ -239,17 +241,17 @@ const UserList: React.FC = () => {
                         setIsModalOpen(!isModalOpen)
                     }}><PlusOutlined />新增</Button>
 
-                    <DictSelect dictUrl={"/account/status"} style={{width:"130px"}} />
+                    <DictSelect dictUrl={"/account/status"} style={{ width: "130px" }} />
 
-                    { selectCount > 0 &&
-                        <div style={{border:"1px solid #abdcff",borderRadius:"6px", padding:"0 10px", margin:"-1px",background:"#f0faff"} }>
+                    {selectCount > 0 &&
+                        <div style={{ border: "1px solid #abdcff", borderRadius: "6px", padding: "0 10px", margin: "-1px", background: "#f0faff" }}>
                             <Space>
                                 <div>
                                     已选择 {selectCount} 项
                                 </div>
 
                                 <Button type="link" danger>
-                                    <DeleteOutlined/>全部删除
+                                    <DeleteOutlined />全部删除
                                 </Button>
 
                                 <Button type="link" onClick={selectNone}>取消选择</Button>
@@ -262,7 +264,7 @@ const UserList: React.FC = () => {
 
                 <Space align={"center"} size={"small"}>
                     <Tooltip title="刷新">
-                        <Button type={"text"} icon={ <ReloadOutlined/>} />
+                        <Button type={"text"} icon={<ReloadOutlined />} />
                     </Tooltip>
 
                     <Tooltip title="导出">
@@ -276,31 +278,31 @@ const UserList: React.FC = () => {
                     </Tooltip>
 
                     <Tooltip title="打印">
-                        <Button type={"text"} icon={<FormatPainterOutlined/>} />
+                        <Button type={"text"} icon={<FormatPainterOutlined />} />
                     </Tooltip>
 
                     <Tooltip title="列设置">
-                        <Button type={"text"} icon={<SwapOutlined />} onClick={()=>{setShowDrawer(true)}}/>
+                        <Button type={"text"} icon={<SwapOutlined />} onClick={() => { setShowDrawer(true) }} />
                     </Tooltip>
                 </Space>
 
             </Space>
 
             <Table dataSource={dataSource} columns={columns as ColumnsType}
-                   rowSelection={{
-                       type: 'checkbox',
-                       ...rowSelection,
-                   } as TableRowSelection<any>}
+                rowSelection={{
+                    type: 'checkbox',
+                    ...rowSelection,
+                } as TableRowSelection<any>}
 
-                   pagination={
-                       {
-                           showQuickJumper: true,
-                           defaultCurrent: 2,
-                           total: 500,
-                           showTotal: (total) => `Total ${total} items`,
-                           // onChange={onChange}
-                       }
-                   }
+                pagination={
+                    {
+                        showQuickJumper: true,
+                        defaultCurrent: 2,
+                        total: 500,
+                        showTotal: (total) => `Total ${total} items`,
+                        // onChange={onChange}
+                    }
+                }
             />
         </div>
     )
