@@ -1088,7 +1088,7 @@
               "format": "guid"
             }
           },
-          "superiorIds": {
+          "organizationIds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"

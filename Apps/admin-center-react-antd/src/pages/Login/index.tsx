@@ -4,8 +4,8 @@ import styles from "./login.module.scss";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../apis/accountApi";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { loginApi } from "../../apis/users/loginApi";
 
 const Login: React.FC = () => {
 
@@ -13,26 +13,30 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
 
     const [form] = Form.useForm();
-    const [loginFn, { isLoading }] = useLoginMutation();
     const { message, notification, modal } = AntdApp.useApp();
-    const handlerSubmit = async (values: any) => {
-        loginFn({
-            account: values.username,
-            password: values.password
-        }).unwrap().then(resp => {
-            if (resp.code == 200) {
-                dispatch(login({
-                    jwt: resp.data.token
-                }))
-                message.success("登录成功")
-                navigate("/index")
-            } else {
 
-                message.error(resp.message)
-                form.resetFields();
-            }
-        })
-    };
+    const handlerSubmit = async (values: any) => {
+
+
+        var resp = await loginApi({
+            loginName: values.username,
+            password: values.password
+        });
+
+        if (resp.code == 200) {
+            dispatch(login({
+                jwt: resp.data?.token
+            }))
+            localStorage.setItem('token', resp.data?.token ?? "");
+            message.success("登录成功")
+            navigate("/index")
+        } else {
+
+            message.error(resp.message)
+            form.resetFields();
+        }
+    }
+
 
     const showModal = () => {
         modal.success({
@@ -92,7 +96,7 @@ const Login: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button" block loading={isLoading}>
+                    <Button type="primary" htmlType="submit" className="login-form-button">
                         登 录
                     </Button>
                     或者 <Button type={"link"} onClick={showModal}>注册</Button>

@@ -1,8 +1,8 @@
 import {createApi} from '@reduxjs/toolkit/query/react'
 import myFetchQuery from "./myFetchQuery";
-import {ResponseData} from "./types";
+import {ResponseData} from "./response";
 
-export interface DictData extends ResponseData {
+export interface DictData extends ResponseData<object> {
     list?: {
         value: any,
         text: string

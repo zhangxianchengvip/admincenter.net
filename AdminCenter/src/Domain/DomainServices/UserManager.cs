@@ -18,7 +18,7 @@ public class UserManager(IApplicationDbContext context) : DomainEvent
         string? email,
         string? phoneNumber,
         [NotNull] List<Guid> roleIds,
-        [NotNull] List<(Guid SuperiorId, bool isSubsidiary)> superiorIds)
+        [NotNull] List<(Guid organizationId, bool isSubsidiary)> organizations)
     {
         var user = new User
         (
@@ -33,7 +33,7 @@ public class UserManager(IApplicationDbContext context) : DomainEvent
 
         user.UpdateRoleRange(roleIds);
 
-        user.UpdateOrganizationRange(superiorIds);
+        user.UpdateOrganizationRange(organizations);
 
         var exist = await context.Users.AnyAsync(s => s.LoginName.Equals(loginName));
 
