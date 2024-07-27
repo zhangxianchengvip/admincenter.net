@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     ColumnHeightOutlined, DeleteOutlined, DownloadOutlined,
     DownOutlined, EditOutlined, EyeOutlined, FormatPainterOutlined, LineChartOutlined,
@@ -27,9 +27,9 @@ import {
 } from 'antd';
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
-import DictSelect from "../../../components/DictSelect";
-import UserCreate from '../UserCreate';
-import UserEdit from '../UserEdit';
+import DictSelect from "../../components/DictSelect";
+import UserCreate from '../../components/Users/UserCreate';
+import UserEdit from '../../components/Users/UserEdit';
 
 const { Option } = Select;
 
@@ -161,8 +161,8 @@ const UserList: React.FC = () => {
 
                 return (
                     <Space>
-                        <a><EyeOutlined /> 查看</a>
-                        <a><EditOutlined /> 编辑</a>
+                        <a onClick={() => { setUserDescDrawer(true) }} > 查看</a>
+                        <a onClick={() => { setUserCreateDrawer(true) }} > 编辑</a>
                         <a style={{ color: "#ed4014" }}><DeleteOutlined /> 删除</a>
                         <a> 更多 <DownOutlined style={{ fontSize: "10px" }} /></a>
                     </Space>
@@ -214,6 +214,11 @@ const UserList: React.FC = () => {
     // rowSelection.
     const [showDrawer, setShowDrawer] = useState(false);
 
+    const [showUserCreateDrawer, setUserCreateDrawer] = useState(false);
+    const [showUserDescDrawer, setUserDescDrawer] = useState(false);
+
+    const userCreateFormRef = useRef(null);
+
     return (
         <div>
 
@@ -223,14 +228,21 @@ const UserList: React.FC = () => {
                 })}
             </Drawer>
 
+            <UserEdit formDisable={true} title='用户信息详情' open={showUserDescDrawer} onClose={() => setUserDescDrawer(false)}></UserEdit>
+
+            <UserEdit formDisable={false} title='用户信息修改' open={showUserCreateDrawer} onClose={() => setUserCreateDrawer(false)} ></UserEdit>
+
             <AdvancedSearchForm />
 
             <Modal title="新增用户"
                 open={isModalOpen}
                 onOk={() => setIsModalOpen(false)}
                 onCancel={() => setIsModalOpen(false)}
-                width={'38%'}>
-                <UserCreate />
+                width={'38%'}
+                footer={[]}
+                destroyOnClose>
+
+                <UserCreate closeButtonClickedCallback={() => setIsModalOpen(false)} />
             </Modal>
 
             <Space style={{ display: "flex", justifyContent: "space-between", padding: "10px 0" }}>

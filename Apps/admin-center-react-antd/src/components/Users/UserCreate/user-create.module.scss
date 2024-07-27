@@ -7,7 +7,14 @@
 
 
 .item {
-
     width: 300px;
+}
 
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    margin-top: 25px;
 }

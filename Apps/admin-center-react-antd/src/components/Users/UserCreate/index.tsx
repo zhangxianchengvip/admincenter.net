@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
+    Button,
     Cascader,
-    CascaderProps,
     Form,
     Input,
     Select,
@@ -26,17 +26,21 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const UserCreate: React.FC = () => {
+const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props) => {
 
     const [form] = Form.useForm();
 
 
     const onFinish = (values: any) => {
         console.log(values);
+        onClose()
     };
 
+    const onClose = () => {
+        props.closeButtonClickedCallback()
+    };
     const onReset = () => {
-        form.resetFields();
+      form.resetFields()
     };
 
     const onFill = () => {
@@ -105,12 +109,17 @@ const UserCreate: React.FC = () => {
 
     return (
         <Form className={styles.container}
+            preserve={false}
             {...layout}
             form={form}
             name="control-hooks"
             onFinish={onFinish}
+            onReset={onReset}
             style={{ maxWidth: 600 }}
+
         >
+
+
             <div className={styles.item}>
                 <Form.Item name="account" label="账号" rules={[{ required: true }]}  >
                     <Input />
@@ -130,6 +139,7 @@ const UserCreate: React.FC = () => {
                     />
                 </Form.Item>
             </div>
+
             <div className={styles.item}>
                 <Form.Item name="password" label="密码" rules={[{ required: true }]}>
                     <Input />
@@ -151,6 +161,21 @@ const UserCreate: React.FC = () => {
                     />
                 </Form.Item>
             </div>
+
+            <div className={styles.button}>
+                <Form.Item >
+                    <Button type="default" htmlType="button" onClick={() => { onClose() }}>
+                        取消
+                    </Button>
+                </Form.Item>
+                <Form.Item >
+                    <Button type="primary" htmlType="submit">
+                        保存
+                    </Button>
+                </Form.Item>
+            </div>
+
+
         </Form >
     );
 };
