@@ -21,7 +21,6 @@ const system: MenuRouteObject = {
         {
             path: "list",
             label: "用户列表",
-
             icon: <TeamOutlined/>,
             element: lazyLoad(lazy(() => import("../../pages/user")))
         },
