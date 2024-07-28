@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+
+.item {
+    width: 300px;
+}
+
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    margin-top: 25px;
+}
