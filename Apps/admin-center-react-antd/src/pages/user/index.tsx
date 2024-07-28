@@ -28,18 +28,9 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../components/DictSelect";
-<<<<<<< HEAD
-import UserCreate from '../../components/users/UserCreate';
-import UserEdit from '../../components/users/UserEdit';
-=======
-<<<<<<<< HEAD:Apps/admin-center-react-antd/src/pages/users/index.tsx
 import UserCreate from '../../components/users/create';
 import UserEdit from '../../components/users/edit';
-========
-import UserCreate from '../../components/Users/UserCreate';
-import UserEdit from '../../components/Users/UserEdit';
->>>>>>>> 0d2f9c7498ae2f350b6406a9b93857ba1b9df4c6:Apps/admin-center-react-antd/src/pages/user/index.tsx
->>>>>>> b80cf41b92e00f9a6b3694753e5cff0bf803756f
+
 
 const { Option } = Select;
 
