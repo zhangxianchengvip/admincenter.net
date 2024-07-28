@@ -2,13 +2,12 @@ import { ColumnHeightOutlined, DeleteOutlined, DownloadOutlined, DownOutlined, E
 import { Button, Col, Form, Input, Modal, Row, Select, Space, Table, theme } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RoleCreate from "../../components/roles/create";
-import style from "./role-page.module.scss"
+import style from "./role-page.module.scss";
 import { RoleList, RoleListApi } from "../../apis/roles/roleApi";
+
 const { Option } = Select;
-
-
 const AdvancedSearchForm = () => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
@@ -22,6 +21,7 @@ const AdvancedSearchForm = () => {
         marginBottom: '20px'
 
     };
+
 
     const getFields = () => {
         const count = expand ? 10 : 3;
@@ -45,7 +45,7 @@ const AdvancedSearchForm = () => {
                             <Select defaultValue="2">
                                 <Option value="1">1</Option>
                                 <Option value="2">
-                                    longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong
+                                    nglonglong
                                 </Option>
                             </Select>
                         )}
@@ -93,109 +93,80 @@ const AdvancedSearchForm = () => {
     );
 };
 
-
-
-
 const RolePage: React.FC = () => {
-
-    const handleRoleList = async (pageNumber: number, pageSize: number): Promise<RoleList> => {
-
-        var resp = await RoleListApi(
-            pageNumber,
-            pageSize
-        )
-
-        return resp.data;
-
-    }
-    var roleList = handleRoleList(1, 10);
-
-    console.log(roleList)
-    console.log(roleList)
-
-    const dataSource = [
-        {
-            key: '1',
-            name: '张显成',
-            age: 32,
-            address: '西湖区湖底公园1号',
-        },
-        {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号',
-        },
-    ];
-
-    const columns = [
-        {
-            title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: '年龄',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: '住址',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: '操作',
-            dataIndex: 'name',
-            key: 'name',
-            fixed: 'right',
-            width: 250,
-            render: () => {
-
-                return (
-                    <Space>
-                        <a><EyeOutlined /> 查看</a>
-                        <a><EditOutlined /> 编辑</a>
-                        <a style={{ color: "#ed4014" }}><DeleteOutlined /> 删除</a>
-                        <a> 更多 <DownOutlined style={{ fontSize: "10px" }} /></a>
-                    </Space>
-                )
-            }
-        },
-    ];
-
-
+    const { token } = theme.useToken();
+    const [dataSource, setDataSource] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [selectCount, setSelectCount] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await RoleListApi(1, 10); // 假设默认获取第一页和每页显示10条记录
+                setDataSource(response.data.items); // 假设返回的 data 对象包含一个 items 属性
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setSelectedRowKeys([...selectedRowKeys]);
+            setSelectCount(selectedRows.length);
+        },
+        getCheckboxProps: (record: any) => ({
+            disabled: record.name === 'Disabled User', // 列配置不可被选中
+            name: record.name,
+        }),
+    };
 
     const selectNone = () => {
         setSelectedRowKeys([]);
         setSelectCount(0);
     };
 
-    // rowSelection object indicates the need for row selection
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-            setSelectedRowKeys([...selectedRowKeys]);
-            setSelectCount(selectedRows.length);
+    const columns: ColumnsType<any> = [
+        {
+            title: '角色',
+            dataIndex: 'name',
+            key: 'name',
         },
-        getCheckboxProps: (record: any) => ({
-            disabled: record.name === 'Disabled User', // Column configuration not to be checked
-            name: record.name,
-        }),
-    };
-
-    // rowSelection.
+        {
+            title: '描述',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: '操作',
+            key: 'actions',
+            fixed: 'right',
+            width: 250,
+            render: () => (
+                <Space>
+                    <a><EyeOutlined /> 查看</a>
+                    <a><EditOutlined /> 编辑</a>
+                    <a style={{ color: "#ed4014" }}><DeleteOutlined /> 删除</a>
+                    <a> 更多 <DownOutlined style={{ fontSize: "10px" }} /></a>
+                </Space>
+            ),
+        },
+    ];
 
     return (
         <div>
             <AdvancedSearchForm />
 
-            <Modal title="角色添加"
+            <Modal
+                title="角色添加"
                 open={isModalOpen}
                 onOk={() => setIsModalOpen(false)}
                 onCancel={() => setIsModalOpen(false)}
@@ -207,14 +178,10 @@ const RolePage: React.FC = () => {
             </Modal>
 
             <Space className={style.space}>
-
                 <Space align={"center"}>
+                    <Button type="primary" onClick={() => setIsModalOpen(true)}>新增</Button>
 
-                    <Button type="primary" onClick={() => {
-                        setIsModalOpen(!isModalOpen)
-                    }}>新增</Button>
-
-                    {selectCount > 0 &&
+                    {selectCount > 0 && (
                         <div style={{ border: "1px solid #abdcff", borderRadius: "6px", padding: "0 10px", margin: "-1px", background: "#f0faff" }}>
                             <Space>
                                 <div>
@@ -228,9 +195,7 @@ const RolePage: React.FC = () => {
                                 <Button type="link" onClick={selectNone}>取消选择</Button>
                             </Space>
                         </div>
-                    }
-
-
+                    )}
                 </Space>
 
                 <Space align={"center"} size={"middle"}>
@@ -240,26 +205,25 @@ const RolePage: React.FC = () => {
                     <FormatPainterOutlined />
                     <SwapOutlined />
                 </Space>
-
             </Space>
 
-            <Table dataSource={dataSource} columns={columns as ColumnsType}
+            <Table
+                loading={loading}
+                dataSource={dataSource}
+                columns={columns}
                 rowSelection={{
                     type: 'checkbox',
                     ...rowSelection,
                 } as TableRowSelection<any>}
-
-                pagination={
-                    {
-                        showQuickJumper: true,
-                        defaultCurrent: 2,
-                        total: 500,
-                        showTotal: (total) => `Total ${total} items`,
-                        // onChange={onChange}
-                    }
-                }
+                pagination={{
+                    showQuickJumper: true,
+                    defaultCurrent: 1,
+                    total: dataSource.length, // 这里需要根据实际情况设置总数
+                    showTotal: (total) => `共 ${total} 项`,
+                }}
             />
         </div>
-    )
-}
-export default RolePage
+    );
+};
+
+export default RolePage;

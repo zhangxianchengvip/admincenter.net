@@ -28,7 +28,7 @@ const RoleCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
     const onFinish = async (values: any) => {
         var resp = await RoleCreateApi({
             name: values.roleName,
-            description: values.descriptions
+            description: values.description
         })
 
         if (resp.code == 200 && resp.data != null && resp.data != undefined) {
