@@ -28,13 +28,8 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../components/DictSelect";
-<<<<<<<< HEAD:Apps/admin-center-react-antd/src/pages/users/index.tsx
-import UserCreate from '../../components/users/create';
-import UserEdit from '../../components/users/edit';
-========
-import UserCreate from '../../components/Users/UserCreate';
-import UserEdit from '../../components/Users/UserEdit';
->>>>>>>> 0d2f9c7498ae2f350b6406a9b93857ba1b9df4c6:Apps/admin-center-react-antd/src/pages/user/index.tsx
+import UserCreate from '../../components/users/UserCreate';
+import UserEdit from '../../components/users/UserEdit';
 
 const { Option } = Select;
 
@@ -166,13 +161,8 @@ const UserList: React.FC = () => {
 
                 return (
                     <Space>
-<<<<<<<< HEAD:Apps/admin-center-react-antd/src/pages/users/index.tsx
-                        <a onClick={() => { setUserDescDrawer(true) }} > <EyeOutlined/> 查看</a>
-                        <a onClick={() => { setUserCreateDrawer(true) }}> <EditOutlined/> 编辑</a>
-========
-                        <a onClick={() => { setUserDescDrawer(true) }} > 查看</a>
-                        <a onClick={() => { setUserCreateDrawer(true) }} > 编辑</a>
->>>>>>>> 0d2f9c7498ae2f350b6406a9b93857ba1b9df4c6:Apps/admin-center-react-antd/src/pages/user/index.tsx
+                        <a onClick={() => { setUserDescDrawer(true) }} > <EyeOutlined /> 查看</a>
+                        <a onClick={() => { setUserCreateDrawer(true) }}> <EditOutlined /> 编辑</a>
                         <a style={{ color: "#ed4014" }}><DeleteOutlined /> 删除</a>
                         <a> 更多 <DownOutlined style={{ fontSize: "10px" }} /></a>
                     </Space>

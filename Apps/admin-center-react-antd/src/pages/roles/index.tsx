@@ -5,7 +5,7 @@ import { TableRowSelection } from "antd/es/table/interface";
 import { useState } from "react";
 import RoleCreate from "../../components/roles/create";
 import style from "./role-page.module.scss"
-import RoleInfo, { RoleListApi } from "../../apis/roles/roleApi";
+import { RoleList, RoleListApi } from "../../apis/roles/roleApi";
 const { Option } = Select;
 
 
@@ -97,8 +97,8 @@ const AdvancedSearchForm = () => {
 
 
 const RolePage: React.FC = () => {
-    
-    const handleRoleList = async (pageNumber: number, pageSize: number): Promise<RoleInfo[]> => {
+
+    const handleRoleList = async (pageNumber: number, pageSize: number): Promise<RoleList> => {
 
         var resp = await RoleListApi(
             pageNumber,
@@ -108,6 +108,10 @@ const RolePage: React.FC = () => {
         return resp.data;
 
     }
+    var roleList = handleRoleList(1, 10);
+
+    console.log(roleList)
+    console.log(roleList)
 
     const dataSource = [
         {

@@ -40,11 +40,7 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
         props.closeButtonClickedCallback()
     };
     const onReset = () => {
-<<<<<<<< HEAD:Apps/admin-center-react-antd/src/components/users/create/index.tsx
-        form.resetFields()
-========
       form.resetFields()
->>>>>>>> 0d2f9c7498ae2f350b6406a9b93857ba1b9df4c6:Apps/admin-center-react-antd/src/components/Users/UserCreate/index.tsx
     };
 
     const onFill = () => {
