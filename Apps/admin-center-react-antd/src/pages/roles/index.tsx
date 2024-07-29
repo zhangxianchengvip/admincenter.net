@@ -140,6 +140,11 @@ const RolePage: React.FC = () => {
             key: 'name',
         },
         {
+            title: '排序',
+            dataIndex: 'order',
+            key: 'order',
+        },
+        {
             title: '描述',
             dataIndex: 'description',
             key: 'description',
