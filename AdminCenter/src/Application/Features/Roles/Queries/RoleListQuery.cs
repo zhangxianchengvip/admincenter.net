@@ -22,6 +22,7 @@ public class RoleListQueryHandler(IApplicationDbContext context) : IRequestHandl
     public async Task<PaginatedList<RoleDto>> Handle(RoleListQuery request, CancellationToken cancellationToken)
     {
         return await context.Roles
+        .OrderByDescending(s => s.Order)
         .ProjectToType<RoleDto>()
         .PaginatedListAsync(request.PageNumber, request.PageSize);
     }

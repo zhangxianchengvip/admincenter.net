@@ -13,6 +13,11 @@ public class Role : AggregateRoot<Guid>
     public string Name { get; private set; } = default!;
 
     /// <summary>
+    /// 排序
+    /// </summary>
+    public int Order { get; set; }
+
+    /// <summary>
     /// 描述
     /// </summary>
     public string? Description { get; set; }
@@ -35,8 +40,10 @@ public class Role : AggregateRoot<Guid>
     public Role(
         [NotNull] Guid id,
         [NotNull] string name,
+        int order,
         string? description = null) : base(id)
     {
+        Order = order;
         Description = description;
         Status = StatusEnum.Enable;
         Name = Guard.Against.NullOrWhiteSpace

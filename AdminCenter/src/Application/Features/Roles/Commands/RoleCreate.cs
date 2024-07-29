@@ -6,7 +6,7 @@ namespace AdminCenter.Application.Features.Roles.Commands;
 /// <summary>
 /// 角色创建
 /// </summary>
-public record RoleCreateCommand(string Name, string? Description) : IRequest<RoleDto>;
+public record RoleCreateCommand(string Name, int Order, string? Description) : IRequest<RoleDto>;
 
 public class RoleCreateCommandValidator : AbstractValidator<RoleCreateCommand>
 {
@@ -23,6 +23,7 @@ public class RoleCreateHandler(IApplicationDbContext context, RoleManager manage
         var role = await manager.CreateAsync
         (
             request.Name,
+            request.Order,
             request.Description
         );
 

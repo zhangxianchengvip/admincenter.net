@@ -1,9 +1,11 @@
-﻿namespace AdminCenter.Application.Features.Roles.Commands;
+﻿using AdminCenter.Domain.DomainServices;
+
+namespace AdminCenter.Application.Features.Roles.Commands;
 
 /// <summary>
 /// 角色修改
 /// </summary>
-public record RoleUpdateCommand(Guid Id, string Name, string? Description) : IRequest<bool>;
+public record RoleUpdateCommand(Guid Id, string Name, int Order, string? Description) : IRequest<bool>;
 
 public class RoleUpdateCommandValidator : AbstractValidator<RoleCreateCommand>
 {
@@ -13,7 +15,7 @@ public class RoleUpdateCommandValidator : AbstractValidator<RoleCreateCommand>
     }
 }
 
-public class RoleUpdataHandler(IApplicationDbContext context) : IRequestHandler<RoleUpdateCommand, bool>
+public class RoleUpdataHandler(IApplicationDbContext context, RoleManager manager) : IRequestHandler<RoleUpdateCommand, bool>
 {
     public async Task<bool> Handle(RoleUpdateCommand request, CancellationToken cancellationToken)
     {
@@ -21,8 +23,14 @@ public class RoleUpdataHandler(IApplicationDbContext context) : IRequestHandler<
 
         if (role != null)
         {
-            role.Description = request.Description;
-            role.UpdateRoleName(request.Name);
+            await manager.UpdateAsync
+            (
+                role,
+                request.Name,
+                request.Order,
+                request.Description
+            );
+
             return true;
         }
 

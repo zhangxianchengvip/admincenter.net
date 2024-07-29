@@ -9,12 +9,13 @@ public class RoleManager(IApplicationDbContext context) : DomainService
     /// <summary>
     /// 创建角色
     /// </summary>
-    public async Task<Role> CreateAsync([NotNull] string name, string? description = null)
+    public async Task<Role> CreateAsync([NotNull] string name, int order, string? description = null)
     {
         var role = new Role
         (
             id: Guid.NewGuid(),
             name: name,
+            order: order,
             description: description
         );
 
@@ -26,8 +27,9 @@ public class RoleManager(IApplicationDbContext context) : DomainService
     /// <summary>
     /// 角色修改
     /// </summary>
-    public async Task<Role> UpdateAsync([NotNull] Role role, [NotNull] string name, string? description = null)
+    public async Task<Role> UpdateAsync([NotNull] Role role, [NotNull] string name, int order, string? description = null)
     {
+        role.Order = order;
         role.Description = description;
         role.UpdateRoleName(name);
 
