@@ -5,9 +5,10 @@ import { TableRowSelection } from "antd/es/table/interface";
 import { useState, useEffect } from "react";
 import RoleCreate from "../../components/roles/create";
 import style from "./role-page.module.scss";
-import { RoleList, RoleListApi } from "../../apis/roles/roleApi";
+import { RoleInfo, RoleList, RoleListApi } from "../../apis/roles/roleApi";
 
 const { Option } = Select;
+
 const AdvancedSearchForm = () => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
@@ -19,9 +20,7 @@ const AdvancedSearchForm = () => {
         borderRadius: token.borderRadiusLG,
         padding: 24,
         marginBottom: '20px'
-
     };
-
 
     const getFields = () => {
         const count = expand ? 10 : 3;
@@ -35,18 +34,16 @@ const AdvancedSearchForm = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Input something!',
+                                message: '请输入内容!',
                             },
                         ]}
                     >
                         {i % 3 !== 1 ? (
-                            <Input placeholder="placeholder" />
+                            <Input placeholder="请输入" />
                         ) : (
                             <Select defaultValue="2">
-                                <Option value="1">1</Option>
-                                <Option value="2">
-                                    nglonglong
-                                </Option>
+                                <Option value="1">选项1</Option>
+                                <Option value="2">选项2</Option>
                             </Select>
                         )}
                     </Form.Item>
@@ -57,15 +54,13 @@ const AdvancedSearchForm = () => {
     };
 
     const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
+        console.log('收到表单值: ', values);
     };
 
     return (
         <Form form={form} name="advanced_search" style={formStyle} onFinish={onFinish}>
             <Row gutter={24}>
-
                 {getFields()}
-
                 <Col span={expand ? '12' : 6} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit">
                         搜索
@@ -94,27 +89,31 @@ const AdvancedSearchForm = () => {
 };
 
 const RolePage: React.FC = () => {
-    const { token } = theme.useToken();
-    const [dataSource, setDataSource] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [dataSource, setDataSource] = useState<RoleInfo[]>([]);//数据
+    const [loading, setLoading] = useState(true);//loading
+    const [isModalOpen, setIsModalOpen] = useState(false);//模态框
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [selectCount, setSelectCount] = useState(0);
+    const [selectCount, setSelectCount] = useState(0);//选中数量
+    const [currentPage, setCurrentPage] = useState(1); // 当前页码
+    const [total, setTotal] = useState(0); // 总条目数
+    const fetchRoleList = async (pageNumber: number, pageSize: number) => {
+        try {
+            const response = await RoleListApi(pageNumber, pageSize);
+            setDataSource(response.data.items);
+            setTotal(response.data.totalCount); // 设置总条目数
+        } catch (error) {
+            console.error("获取数据失败:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await RoleListApi(1, 10); // 假设默认获取第一页和每页显示10条记录
-                setDataSource(response.data.items); // 假设返回的 data 对象包含一个 items 属性
-            } catch (error) {
-                console.error("Failed to fetch data:", error);
-            } finally {
-                setLoading(false);
-            }
+            await fetchRoleList(currentPage, 10);
         };
         fetchData();
-    }, []);
-
+    }, [currentPage]); // 当前页码变化时重新获取数据
 
     const rowSelection = {
         selectedRowKeys,
@@ -161,6 +160,8 @@ const RolePage: React.FC = () => {
         },
     ];
 
+
+
     return (
         <div>
             <AdvancedSearchForm />
@@ -168,18 +169,29 @@ const RolePage: React.FC = () => {
             <Modal
                 title="角色添加"
                 open={isModalOpen}
-                onOk={() => setIsModalOpen(false)}
-                onCancel={() => setIsModalOpen(false)}
+                onOk={() => {
+                    fetchRoleList(currentPage, 10); // 关闭模态框后重新获取数据
+                    setIsModalOpen(false);
+                }}
+                onCancel={() => {
+                    fetchRoleList(currentPage, 10); // 关闭模态框后重新获取数据
+                    setIsModalOpen(false);
+                }}
                 width={"30%"}
                 footer={[]}
                 destroyOnClose
             >
-                <RoleCreate submitOkCallback={() => setIsModalOpen(false)} />
+                <RoleCreate submitOkCallback={() => {
+                    fetchRoleList(currentPage, 10); // 创建角色后重新获取数据
+                    setIsModalOpen(false);
+                }} />
             </Modal>
 
             <Space className={style.space}>
                 <Space align={"center"}>
-                    <Button type="primary" onClick={() => setIsModalOpen(true)}>新增</Button>
+                    <Button type="primary" onClick={() => setIsModalOpen(true)}>
+                        新增
+                    </Button>
 
                     {selectCount > 0 && (
                         <div style={{ border: "1px solid #abdcff", borderRadius: "6px", padding: "0 10px", margin: "-1px", background: "#f0faff" }}>
@@ -189,10 +201,12 @@ const RolePage: React.FC = () => {
                                 </div>
 
                                 <Button type="link" danger>
-                                    <DeleteOutlined />全部删除
+                                    <DeleteOutlined /> 全部删除
                                 </Button>
 
-                                <Button type="link" onClick={selectNone}>取消选择</Button>
+                                <Button type="link" onClick={selectNone}>
+                                    取消选择
+                                </Button>
                             </Space>
                         </div>
                     )}
@@ -217,8 +231,9 @@ const RolePage: React.FC = () => {
                 } as TableRowSelection<any>}
                 pagination={{
                     showQuickJumper: true,
-                    defaultCurrent: 1,
-                    total: dataSource.length, // 这里需要根据实际情况设置总数
+                    current: currentPage,
+                    onChange: (page) => setCurrentPage(page), // 更新当前页码
+                    total,
                     showTotal: (total) => `共 ${total} 项`,
                 }}
             />
