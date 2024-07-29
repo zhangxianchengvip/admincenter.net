@@ -27,7 +27,8 @@ const RoleCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
 
     const onFinish = async (values: any) => {
         var resp = await RoleCreateApi({
-            name: values.roleName,
+            name: values.name,
+            order: values.order,
             description: values.description
         })
 
@@ -47,7 +48,10 @@ const RoleCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
                 style={{ maxWidth: 430 }}
                 validateMessages={validateMessages}
             >
-                <Form.Item name="roleName" label="角色名称" rules={[{ required: true, message: "角色名称不能为空" }]}>
+                <Form.Item name="name" label="角色名称" rules={[{ required: true, message: "角色名称不能为空" }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="order" label="角色排序" >
                     <Input />
                 </Form.Item>
 

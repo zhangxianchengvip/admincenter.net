@@ -5,6 +5,7 @@ import { ResponseData } from "../response";
 
 interface RoleAddCommand {
     name: string;
+    order: number;
     description: string | null;
 }
 
