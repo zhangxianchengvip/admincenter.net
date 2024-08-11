@@ -6,12 +6,12 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/v1/Users/Login": {
+    "/api/v1/Login/Account": {
       "post": {
         "tags": [
-          "Users"
+          "Login"
         ],
-        "operationId": "UserLogin",
+        "operationId": "AccountLogin",
         "requestBody": {
           "x-name": "query",
           "content": {

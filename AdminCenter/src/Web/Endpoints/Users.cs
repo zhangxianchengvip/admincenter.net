@@ -16,10 +16,6 @@ public class Users : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
-           .AddEndpointFilter<ApiResponseFilter>()
-           .MapPost(UserLogin, "Login");
-
-        app.MapGroup(this)
 #if !DEBUG
            .RequireAuthorization()
 #endif
@@ -31,26 +27,6 @@ public class Users : EndpointGroupBase
            .MapDelete(UserDelete, "{id}")
            .MapGet(PersonalQuery, "/Personal");
 
-    }
-
-    /// <summary>
-    /// 登录
-    /// </summary>
-    public async Task<object> UserLogin(ISender sender, TokenBuilder tokenBuilder, UserLogin query)
-    {
-        var userDto = await sender.Send(query);
-
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, userDto.Id.ToString()),
-            new Claim(ClaimTypes.Name, userDto.LoginName!), //HttpContext.User.Identity.Name
-            new Claim(ClaimTypes.Role, "admin"), //HttpContext.User.IsInRole("r_admin")
-            new Claim("Username",userDto.RealName??""),
-        };
-
-        string token = tokenBuilder.Build(claims);
-
-        return new { User = userDto, Token = token };
     }
 
     /// <summary>
