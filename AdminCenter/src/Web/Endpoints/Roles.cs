@@ -11,13 +11,16 @@ public class Roles : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+#if !DEBUG
            .RequireAuthorization()
+#endif
            .AddEndpointFilter<ApiResponseFilter>()
            .MapPost(RoleCreate)
            .MapGet(RoleListQuery)
            .MapGet(RoleQuery, "{id}")
            .MapPut(RoleUpdate, "{id}")
-           .MapDelete(RoleDelete, "{id}");
+           .MapDelete(RoleDelete, "{id}")
+           .MapGet(RoleListWithPaginationQuery, "WithPagination");
     }
 
     /// <summary>
@@ -28,10 +31,15 @@ public class Roles : EndpointGroupBase
         return await sender.Send(new RoleQuery(id));
     }
 
+    public async Task<List<RoleDto>> RoleListQuery(ISender sender)
+    {
+        return await sender.Send(new RoleListQuery());
+    }
+
     /// <summary>
     /// 角色列表
     /// </summary>
-    public async Task<PaginatedList<RoleDto>> RoleListQuery(ISender sender, [AsParameters] RoleListQuery query)
+    public async Task<PaginatedList<RoleDto>> RoleListWithPaginationQuery(ISender sender, [AsParameters] RoleListWithPaginationQuery query)
     {
         return await sender.Send(query);
     }

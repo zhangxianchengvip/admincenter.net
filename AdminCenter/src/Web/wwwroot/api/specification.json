@@ -65,12 +65,47 @@
               }
             }
           }
-        },
-        "security": [
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "UserListQuery",
+        "parameters": [
           {
-            "JWT": []
+            "name": "pageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfUserDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/Users/{id}": {
@@ -102,12 +137,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -149,12 +179,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -184,12 +209,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Users/Personal": {
@@ -209,12 +229,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Menus": {
@@ -246,12 +261,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Menus/{id}": {
@@ -283,12 +293,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -330,12 +335,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -365,12 +365,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Menus/{superiorId}": {
@@ -405,12 +400,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Organizations": {
@@ -442,12 +432,40 @@
               }
             }
           }
-        },
-        "security": [
+        }
+      },
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "OrganizationListBySuperiorIdQuery",
+        "parameters": [
           {
-            "JWT": []
+            "name": "SuperiorId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 1
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/Organizations/{id}": {
@@ -479,12 +497,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -526,12 +539,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -561,32 +569,15 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
-    "/api/v1/Organizations/{superiorId}": {
+    "/api/v1/Organizations/WithChildren": {
       "get": {
         "tags": [
           "Organizations"
         ],
-        "operationId": "OrganizationListBySuperiorIdQuery",
-        "parameters": [
-          {
-            "name": "superiorId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
+        "operationId": "OrganizationListWithChildrenQuery",
         "responses": {
           "200": {
             "description": "",
@@ -595,18 +586,105 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OrganizationDto"
+                    "$ref": "#/components/schemas/OrganizationWithChildrenDto"
                   }
                 }
               }
             }
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/api/v1/Organizations/WithPaginationAndChildren": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "OrganizationListWithPaginationAndChildrenQuery",
+        "parameters": [
           {
-            "JWT": []
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfOrganizationWithChildrenDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Organizations/WithPaginationBySuperiorId": {
+      "get": {
+        "tags": [
+          "Organizations"
+        ],
+        "operationId": "OrganizationListWithPaginationBySuperiorIdQuery",
+        "parameters": [
+          {
+            "name": "SuperiorId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfOrganizationDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/Positions": {
@@ -638,12 +716,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "get": {
         "tags": [
@@ -683,12 +756,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Positions/{id}": {
@@ -720,12 +788,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -767,12 +830,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -802,12 +860,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Roles": {
@@ -839,57 +892,28 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "get": {
         "tags": [
           "Roles"
         ],
         "operationId": "RoleListQuery",
-        "parameters": [
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          }
-        ],
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfRoleDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoleDto"
+                  }
                 }
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/Roles/{id}": {
@@ -921,12 +945,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "put": {
         "tags": [
@@ -968,12 +987,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "JWT": []
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -1003,12 +1017,49 @@
               }
             }
           }
-        },
-        "security": [
+        }
+      }
+    },
+    "/api/v1/Roles/WithPagination": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "operationId": "RoleListWithPaginationQuery",
+        "parameters": [
           {
-            "JWT": []
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfRoleDto"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -1091,21 +1142,51 @@
           "organizationIds": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
+              "$ref": "#/components/schemas/OrganizationInfo"
             }
           }
         }
       },
-      "ValueTupleOfGuidAndBoolean": {
+      "OrganizationInfo": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "system.Runtime.CompilerServices.ITuple.Length": {
+          "organizationId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "isSubsidiary": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaginatedListOfUserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            }
+          },
+          "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "system.Runtime.CompilerServices.ITuple.Item": {
-            "nullable": true
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },
@@ -1150,6 +1231,19 @@
             "items": {
               "$ref": "#/components/schemas/ValueTupleOfGuidAndBoolean"
             }
+          }
+        }
+      },
+      "ValueTupleOfGuidAndBoolean": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "system.Runtime.CompilerServices.ITuple.Length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "system.Runtime.CompilerServices.ITuple.Item": {
+            "nullable": true
           }
         }
       },
@@ -1329,6 +1423,99 @@
           }
         }
       },
+      "OrganizationWithChildrenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "superiorId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationWithChildrenDto"
+            }
+          }
+        }
+      },
+      "PaginatedListOfOrganizationWithChildrenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationWithChildrenDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaginatedListOfOrganizationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
       "PositionDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1429,6 +1616,10 @@
           "name": {
             "type": "string"
           },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -1439,6 +1630,27 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RoleUpdateCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
           "name": {
             "type": "string"
           },
@@ -1479,27 +1691,6 @@
           },
           "hasNextPage": {
             "type": "boolean"
-          }
-        }
-      },
-      "RoleUpdateCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "order": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
           }
         }
       }

@@ -20,9 +20,12 @@ public class Users : EndpointGroupBase
            .MapPost(UserLogin, "Login");
 
         app.MapGroup(this)
+#if !DEBUG
            .RequireAuthorization()
+#endif
            .AddEndpointFilter<ApiResponseFilter>()
            .MapPost(UserCreate)
+           .MapGet(UserListQuery)
            .MapGet(UserQuery, "{id}")
            .MapPut(UserUpdate, "{id}")
            .MapDelete(UserDelete, "{id}")

@@ -10,7 +10,9 @@ public class Menus : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+#if !DEBUG
            .RequireAuthorization()
+#endif
            .AddEndpointFilter<ApiResponseFilter>()
            .MapPost(MenuCreate)
            .MapGet(MenuQuery, "{id}")
