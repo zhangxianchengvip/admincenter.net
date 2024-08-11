@@ -12,6 +12,8 @@ import { MenuRouteObject } from "../router";
 import Page2 from "../../pages/Page3";
 import Page3 from "../../pages/Page3";
 import RolePage from "../../pages/roles";
+import OrganizationPage from "../../pages/organizations/organization";
+import MenuList from "../../pages/menus";
 
 const system: MenuRouteObject = {
     path: "user",
@@ -22,13 +24,13 @@ const system: MenuRouteObject = {
             path: "list",
             label: "用户列表",
             icon: <TeamOutlined/>,
-            element: lazyLoad(lazy(() => import("../../pages/user")))
+            element: lazyLoad(lazy(() => import("../../pages/users")))
         },
         {
             path: "dept",
             label: "部门管理",
             icon: <InsertRowRightOutlined />,
-            element: <Page2 />
+            element: <OrganizationPage />
         },
         {
             path: "position",
@@ -52,7 +54,7 @@ const system: MenuRouteObject = {
             path: "menu",
             label: "用户菜单",
             icon: <MenuOutlined />,
-            element: <Page3 />
+            element: <MenuList />
         },
     ] as MenuRouteObject[]
 }

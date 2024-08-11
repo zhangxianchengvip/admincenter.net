@@ -65,7 +65,7 @@ const UserEdit: React.FC<
     return (
       <Drawer
         title={props.title}
-        width={720}
+        width={520}
         open={props.open}
         onClose={() => onClose()}
         extra={

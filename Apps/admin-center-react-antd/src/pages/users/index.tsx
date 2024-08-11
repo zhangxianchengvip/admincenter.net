@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
     ColumnHeightOutlined, DeleteOutlined, DownloadOutlined,
     DownOutlined, EditOutlined, EyeOutlined, FormatPainterOutlined, LineChartOutlined,
@@ -15,6 +15,7 @@ import {
     Col, Drawer, Dropdown,
     Form,
     Input, MenuProps,
+    message,
     Modal,
     Pagination,
     Popconfirm,
@@ -30,6 +31,7 @@ import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../components/DictSelect";
 import UserCreate from '../../components/users/create';
 import UserEdit from '../../components/users/edit';
+import { UserInfo, UserListeApi } from '../../apis/users/userApi';
 
 
 const { Option } = Select;
@@ -121,36 +123,53 @@ const AdvancedSearchForm = () => {
 };
 
 const UserList: React.FC = () => {
-    const dataSource = [
-        {
-            key: '1',
-            name: '胡彦斌',
-            age: 32,
-            address: '西湖区湖底公园1号',
-        },
-        {
-            key: '2',
-            name: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号',
-        },
-    ];
+
+    const [dataSource, setDataSource] = useState<UserInfo[]>([]);
+    const [loading, setLoading] = useState(true);//loading
+    const [isModalOpen, setIsModalOpen] = useState(false);//模态框
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [selectCount, setSelectCount] = useState(0);//选中数量
+    const [currentPage, setCurrentPage] = useState(1); // 当前页码
+    const [total, setTotal] = useState(0); // 总条目数
+
+    const fetchUserData = async (pageNumber: number, pageSize: number) => {
+        const response = await UserListeApi(pageNumber, pageSize)
+
+        if (response.code === 200) {
+            setDataSource(response.data.items);
+            setTotal(response.data.totalCount); // 设置总条目数
+            setLoading(false);
+        } else {
+            message.error(response.message);
+        }
+    }
+
+    useEffect(() => {
+
+        fetchUserData(currentPage, 10);
+
+    }, [currentPage]); // 当前页码变化时重新获取数据
 
     const columns = [
         {
-            title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
+            title: '账号',
+            dataIndex: 'loginName',
+            key: 'loginName',
         },
         {
-            title: '年龄',
-            dataIndex: 'age',
-            key: 'age',
+            title: '昵称',
+            dataIndex: 'nickName',
+            key: 'nickName',
         },
         {
-            title: '住址',
-            dataIndex: 'address',
-            key: 'address',
+            title: '真实姓名',
+            dataIndex: 'realName',
+            key: 'realName',
+        },
+        {
+            title: '电话',
+            dataIndex: 'phoneNumber',
+            key: 'phoneNumber',
         },
         {
             title: '操作',
@@ -189,11 +208,6 @@ const UserList: React.FC = () => {
         },
     ];
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [selectCount, setSelectCount] = useState(0);
-
     const selectNone = () => {
         setSelectedRowKeys([]);
         setSelectCount(0);
@@ -219,17 +233,9 @@ const UserList: React.FC = () => {
     const [showUserCreateDrawer, setUserCreateDrawer] = useState(false);
     const [showUserDescDrawer, setUserDescDrawer] = useState(false);
 
-    const userCreateFormRef = useRef(null);
 
     return (
         <div>
-
-            <Drawer title="列设置" placement="right" onClose={() => setShowDrawer(false)} open={showDrawer}>
-                {columns.map((item) => {
-                    return <p> <Checkbox>{item.title}</Checkbox></p>
-                })}
-            </Drawer>
-
             <UserEdit formDisable={true} title='用户信息详情' open={showUserDescDrawer} onClose={() => setUserDescDrawer(false)}></UserEdit>
 
             <UserEdit formDisable={false} title='用户信息修改' open={showUserCreateDrawer} onClose={() => setUserCreateDrawer(false)} ></UserEdit>
@@ -302,21 +308,22 @@ const UserList: React.FC = () => {
 
             </Space>
 
-            <Table dataSource={dataSource} columns={columns as ColumnsType}
+            <Table
+                loading={loading}
+                dataSource={dataSource}
+                columns={columns as ColumnsType}
                 rowSelection={{
                     type: 'checkbox',
                     ...rowSelection,
                 } as TableRowSelection<any>}
-
-                pagination={
-                    {
-                        showQuickJumper: true,
-                        defaultCurrent: 2,
-                        total: 500,
-                        showTotal: (total) => `Total ${total} items`,
-                        // onChange={onChange}
-                    }
-                }
+                rowKey={(record) => record.id}
+                pagination={{
+                    showQuickJumper: true,
+                    current: currentPage,
+                    total: total,
+                    showTotal: (total) => `Total ${total} items`,
+                    onChange: (page) => setCurrentPage(page), // 更新当前页码
+                }}
             />
         </div>
     )

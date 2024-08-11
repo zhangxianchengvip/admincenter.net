@@ -12,13 +12,14 @@ interface RoleAddCommand {
 interface RoleUpdateCommand {
     id: string
     name: string
-    desciption: string | null
+    order: number
+    description: string | null
 }
 
 export interface RoleInfo {
     id: string
     name: string
-    desciption: string | null
+    description: string | null
 }
 
 export interface RoleList {
@@ -64,10 +65,23 @@ export const RoleDeleteApi = async (roleId: string): Promise<ResponseData<boolea
     }
 }
 
-export const RoleListApi = async (pageNumber: number, pageSize: number): Promise<ResponseData<RoleList>> => {
+//分页查询
+export const RoleListWithPaginationApi = async (pageNumber: number, pageSize: number): Promise<ResponseData<RoleList>> => {
 
     try {
-        const response = await get<ResponseData<RoleList>>(`/api/v1/Roles?PageNumber=${pageNumber}&PageSize=${pageSize}`);
+        const response = await get<ResponseData<RoleList>>(`/api/v1/Roles/WithPagination?PageNumber=${pageNumber}&PageSize=${pageSize}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+//全部角色
+export const RoleListApi = async (): Promise<ResponseData<RoleInfo[]>> => {
+
+    try {
+        const response = await get<ResponseData<RoleInfo[]>>("/api/v1/Roles");
         return response;
     } catch (error) {
         throw error;

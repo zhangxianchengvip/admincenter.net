@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Cascader,
     Form,
     Input,
+    message,
     Select,
     SelectProps,
-
 } from 'antd';
 import styles from "./user-create.module.scss";
-
+import { RoleListApi } from '../../../apis/roles/roleApi';
+import { OrgListWithChildrenApi } from '../../../apis/organizations/orgApi';
+import { UserCreateApi } from '../../../apis/users/userApi';
 
 interface Option {
     value: string;
@@ -17,23 +19,74 @@ interface Option {
     children?: Option[];
 }
 
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
-
 const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props) => {
 
     const [form] = Form.useForm();
+    const [options, setOptions] = useState<SelectProps['options']>([]);
+    const [orgOptions, setOrgOptions] = useState<Option[]>([]);
+
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
 
 
-    const onFinish = (values: any) => {
-        console.log(values);
-        onClose()
+    const fetchOrgList = async () => {
+        const response = await OrgListWithChildrenApi();
+        if (response.code === 200) {
+            const newOrgOptions = convertToAntdOptions(response.data);
+            setOrgOptions(newOrgOptions);
+        }
+    };
+
+    const fetchRoleListData = async () => {
+        const response = await RoleListApi();
+        if (response.code === 200) {
+            const newOptions = response.data.map(role => ({
+                label: role.name,
+                value: role.id.toString()
+            }));
+            setOptions(newOptions);
+        }
+    };
+
+    const convertToAntdOptions = (data: any[]): Option[] => {
+        return data.map((org) => ({
+            value: org.id,
+            label: org.name,
+            children: convertToAntdOptions(org.children),
+        }));
+    };
+
+    useEffect(() => {
+        fetchRoleListData();
+        fetchOrgList();
+    }, []);
+
+    const onOrgChange = (value: any, selectOptions: any) => {
+        console.log(value, selectOptions);
+    }
+
+    const onFinish = async (values: any) => {
+        var org = values.org[values.org.length - 1]
+        const response = await UserCreateApi({
+            loginName: values.account,
+            realName: values.realName,
+            password: values.password,
+            nickName: values.nickName,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            roleIds: values.role,
+            organizationIds: [{ isSubsidiary: false, organizationId: org }]
+        })
+
+        if (response.code === 200) {
+            message.success("创建成功");
+            onClose()
+        } else {
+            message.error(response.message)
+        }
+
     };
 
     const onClose = () => {
@@ -41,70 +94,13 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
     };
     const onReset = () => {
         form.resetFields()
-
     };
 
-    const onFill = () => {
-        form.setFieldsValue({ note: 'Hello world!', gender: 'male' });
-    };
 
-    const options: SelectProps['options'] = [];
-
-    for (let i = 10; i < 36; i++) {
-        options.push({
-            label: i.toString(36) + i,
-            value: i.toString(36) + i,
-        });
-    }
     const handleChange = (value: string[]) => {
         console.log(`selected ${value}`);
     };
 
-
-
-
-    const orgs: Option[] = [
-        {
-            value: 'zhejiang',
-            label: 'Zhejiang',
-            children: [
-                {
-                    value: 'hangzhou',
-                    label: 'Hangzhou',
-                    children: [
-                        {
-                            value: 'xihu',
-                            label: 'West Lake',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            value: 'jiangsu',
-            label: 'Jiangsu',
-            children: [
-                {
-                    value: 'nanjing',
-                    label: 'Nanjing',
-                    children: [
-                        {
-                            value: 'zhonghuamen',
-                            label: 'Zhong Hua Men',
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
-
-
-
-    // const onChange: CascaderProps<Option>['onChange'] = (value: any, selectedOptions: any) => {
-    //     console.log('Selected Options:', selectedOptions);
-    //     console.log('Value:', value);
-    // };
-    // Just show the latest item.
     const displayRender = (labels: string[]) => labels[labels.length - 1];
 
 
@@ -133,7 +129,8 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
                 </Form.Item>
                 <Form.Item name="org" label="组织" rules={[{ required: true }]}>
                     <Cascader
-                        options={orgs}
+                        options={orgOptions}
+                        onChange={onOrgChange}
                         expandTrigger="hover"
                         displayRender={displayRender}
                         changeOnSelect={true}
@@ -159,6 +156,7 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
                         placeholder="请选择角色"
                         onChange={handleChange}
                         options={options}
+
                     />
                 </Form.Item>
             </div>
@@ -180,5 +178,6 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
         </Form >
     );
 };
+
 
 export default UserCreate

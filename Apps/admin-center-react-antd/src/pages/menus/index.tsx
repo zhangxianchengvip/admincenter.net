@@ -1,24 +1,30 @@
-import { ColumnHeightOutlined, DeleteOutlined, DownloadOutlined, DownOutlined, EditOutlined, EyeOutlined, FormatPainterOutlined, ReloadOutlined, SwapOutlined, UpOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, message, Modal, Row, Select, Space, Table, theme } from "antd";
+import {
+    ColumnHeightOutlined, DeleteOutlined, DownloadOutlined, DownOutlined, EditOutlined, EyeOutlined,
+    FormatPainterOutlined, ReloadOutlined, SwapOutlined
+} from "@ant-design/icons";
+import { Button, message, Modal, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import { useState, useEffect } from "react";
-import RoleCreate from "../../components/roles/create";
-import style from "./role-page.module.scss";
-import { RoleDeleteApi, RoleInfo, RoleList, RoleListWithPaginationApi, RoleUpdateApi } from "../../apis/roles/roleApi";
-
-const RolePage: React.FC = () => {
-    const [dataSource, setDataSource] = useState<RoleInfo[]>([]);//数据
-    const [loading, setLoading] = useState(true);//loading
-    const [isModalOpen, setIsModalOpen] = useState(false);//模态框
+import { RoleInfo } from "../../apis/roles/roleApi";
+import { OrgDeleteApi, OrgListWithPaginationAndChildrenApi, OrgUpdateApi } from "../../apis/organizations/orgApi";
+import MenuCreate from "../../components/menus/create";
+import style from "./menu-page.module.scss";
+const MenuPage: React.FC = () => {
+    const [dataSource, setDataSource] = useState<RoleInfo[]>([]); // 数据
+    const [loading, setLoading] = useState(true); // loading
+    const [isModalOpen, setIsModalOpen] = useState(false); // 模态框
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [selectCount, setSelectCount] = useState(0);//选中数量
+    const [selectCount, setSelectCount] = useState(0); // 选中数量
     const [currentPage, setCurrentPage] = useState(1); // 当前页码
     const [total, setTotal] = useState(0); // 总条目数
-    const fetchRoleList = async (pageNumber: number, pageSize: number) => {
+    const [expandedRows, setExpandedRows] = useState<string[]>([]); // 保存当前展开的行
+    const [expandedTopLevelRow, setExpandedTopLevelRow] = useState<string | null>(null);
+
+    const fetchOrgList = async (pageNumber: number, pageSize: number, superiorId: string | null = null) => {
         try {
-            const response = await RoleListWithPaginationApi(pageNumber, pageSize);
-            console.log("response:", response.data);
+            const response = await OrgListWithPaginationAndChildrenApi(pageNumber, pageSize);
+            console.log(response.data.items);
             setDataSource(response.data.items);
             setTotal(response.data.totalCount); // 设置总条目数
         } catch (error) {
@@ -28,10 +34,30 @@ const RolePage: React.FC = () => {
         }
     };
 
+    const onExpand = (expanded: boolean, record: any) => {
+        console.log("展开", record);
+
+        if (record.superiorId === null) { // 判断是否为顶级节点
+            console.log("顶级节点", record);
+            if (expanded) {
+                setExpandedTopLevelRow(record.id); // 记录当前展开的顶级行
+                setExpandedRows([record.id]); // 只展开当前顶级行
+            } else {
+                setExpandedTopLevelRow(null); // 取消记录顶级行
+                setExpandedRows([]); // 折叠所有行
+            }
+        } else {
+            // 如果是子节点，更新展开的行
+            const newExpandedRows = expanded
+                ? [...expandedRows, record.id]
+                : expandedRows.filter(id => id !== record.id);
+
+            setExpandedRows(newExpandedRows);
+        }
+    };
+
     useEffect(() => {
-
-        fetchRoleList(currentPage, 10);
-
+        fetchOrgList(currentPage, 10);
     }, [currentPage]); // 当前页码变化时重新获取数据
 
     const rowSelection = {
@@ -54,42 +80,48 @@ const RolePage: React.FC = () => {
 
     // 删除角色
     const handleDelete = async (id: string) => {
-        const response = await RoleDeleteApi(id);
+        const response = await OrgDeleteApi(id);
 
         if (response.code === 200) {
-            fetchRoleList(currentPage, 10); // 删除角色后重新获取数据
+            fetchOrgList(currentPage, 10); // 删除角色后重新获取数据
             message.success("删除成功");
         } else {
             message.error("删除失败");
         }
-
     }
 
     // 编辑角色
-    const handleEdit = async (id: string, name: string, order: number, description: string | null) => {
-        const response = await RoleUpdateApi({
+    const handleEdit = async (id: string, name: string, code: string, description: string, status: number, superiorId: string) => {
+        const response = await OrgUpdateApi({
             id,
             name,
-            order,
-            description
+            code,
+            description,
+            superiorId,
+            status
         }, id)
     }
 
     const columns: ColumnsType<any> = [
         {
-            title: '角色',
+            title: '部门名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '排序',
-            dataIndex: 'order',
-            key: 'order',
+            title: '部门编号',
+            dataIndex: 'code',
+            key: 'code',
         },
         {
             title: '描述',
             dataIndex: 'description',
             key: 'description',
+        },
+        {
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
         },
         {
             title: '操作',
@@ -107,28 +139,25 @@ const RolePage: React.FC = () => {
         },
     ];
 
-
-
     return (
         <div>
-
             <Modal
-                title="角色添加"
+                title="菜单添加"
                 open={isModalOpen}
                 onOk={() => {
-                    fetchRoleList(currentPage, 10); // 关闭模态框后重新获取数据
+                    fetchOrgList(currentPage, 10); // 关闭模态框后重新获取数据
                     setIsModalOpen(false);
                 }}
                 onCancel={() => {
-                    fetchRoleList(currentPage, 10); // 关闭模态框后重新获取数据
+                    fetchOrgList(currentPage, 10); // 关闭模态框后重新获取数据
                     setIsModalOpen(false);
                 }}
                 width={"30%"}
                 footer={[]}
                 destroyOnClose
             >
-                <RoleCreate submitOkCallback={() => {
-                    fetchRoleList(currentPage, 10); // 创建角色后重新获取数据
+                <MenuCreate submitOkCallback={() => {
+                    fetchOrgList(currentPage, 10); // 创建角色后重新获取数据
                     setIsModalOpen(false);
                 }} />
             </Modal>
@@ -183,9 +212,14 @@ const RolePage: React.FC = () => {
                     total,
                     showTotal: (total) => `共 ${total} 项`,
                 }}
+                expandable={{
+                    expandedRowKeys: expandedRows, // 控制展开的行
+                    //onExpand: onExpand, // 处理展开/折叠的逻辑
+                    childrenColumnName: 'children', // 自动处理children字段作为子项
+                }}
             />
         </div>
     );
 };
 
-export default RolePage;
+export default MenuPage;

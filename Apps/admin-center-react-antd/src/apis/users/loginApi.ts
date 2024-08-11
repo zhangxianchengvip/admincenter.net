@@ -1,6 +1,6 @@
 import { post } from "../apiClient";
 import { ResponseData } from "../response";
-import { User } from "./userApi";
+import { UserInfo } from "./userApi";
 
 interface LoginRequest {
   loginName: string;
@@ -9,7 +9,7 @@ interface LoginRequest {
 
 interface LoginResponse {
   token: string;
-  user: User;
+  user: UserInfo;
 }
 
 
@@ -21,7 +21,7 @@ interface LoginResponse {
 */
 export const loginApi = async (data: LoginRequest): Promise<ResponseData<LoginResponse>> => {
   try {
-    const response = await post<ResponseData<LoginResponse>>('/api/v1/Users/Login', data);
+    const response = await post<ResponseData<LoginResponse>>('/api/v1/Login/Account', data);
     return response;
   } catch (error) {
     throw error;
