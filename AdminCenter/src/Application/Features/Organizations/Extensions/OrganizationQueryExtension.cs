@@ -24,6 +24,8 @@ public static class OrganizationQueryExtension
         {
             if (organizationDto.SuperiorId.HasValue && organizationDictionary.TryGetValue(organizationDto.SuperiorId.Value, out var parentMenuDto))
             {
+                parentMenuDto.Children ??= [];
+
                 parentMenuDto.Children.Add(organizationDto);
             }
         }

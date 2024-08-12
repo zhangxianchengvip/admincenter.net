@@ -26,5 +26,5 @@ public class OrganizationWithChildrenDto
     /// </summary>
     public Guid? SuperiorId { get; set; }
 
-    public List<OrganizationWithChildrenDto> Children { get; set; } = [];
+    public List<OrganizationWithChildrenDto>? Children { get; set; }
 }

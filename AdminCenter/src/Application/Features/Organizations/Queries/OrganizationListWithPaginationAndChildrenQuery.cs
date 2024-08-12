@@ -18,7 +18,7 @@ public class OrganizationListWithPaginationAndChildrenQueryHandler(IApplicationD
         .Skip((request.PageNumber - 1) * request.PageSize)
         .Take(request.PageSize).ToList();
 
-        return new PaginatedList<OrganizationWithChildrenDto>(result, request.PageNumber, request.PageSize, result.Count);
+        return new PaginatedList<OrganizationWithChildrenDto>(result, result.Count, request.PageNumber, request.PageSize);
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿
+using AdminCenter.Application.Common.Models;
 using AdminCenter.Application.Features.Menus.Commands;
 using AdminCenter.Application.Features.Menus.Dtos;
 using AdminCenter.Application.Features.Menus.Queries;
@@ -18,6 +19,7 @@ public class Menus : EndpointGroupBase
            .MapGet(MenuQuery, "{id}")
            .MapPut(MenuUpdate, "{id}")
            .MapDelete(MenuDelete, "{id}")
+           .MapGet(MenuListWithPaginationAndChildrenQuery)
            .MapGet(MenuListBySuperiorIdQuery, "{superiorId}");
     }
 
@@ -35,6 +37,14 @@ public class Menus : EndpointGroupBase
     public async Task<List<MenuDto>> MenuListBySuperiorIdQuery(ISender sender, Guid superiorId)
     {
         return await sender.Send(new MenuListBySuperiorIdQuery(superiorId));
+    }
+
+    /// <summary>
+    /// 菜单列表查询
+    /// </summary>
+    public async Task<PaginatedList<MenuWithChildrenDto>> MenuListWithPaginationAndChildrenQuery(ISender sender, [AsParameters] MenuListWithPaginationAndChildrenQuery query)
+    {
+        return await sender.Send(query);
     }
 
     /// <summary>

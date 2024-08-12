@@ -262,6 +262,46 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "MenuListWithPaginationAndChildrenQuery",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfMenuWithChildrenDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/Menus/{id}": {
@@ -1347,6 +1387,70 @@
           }
         }
       },
+      "PaginatedListOfMenuWithChildrenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuWithChildrenDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MenuWithChildrenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "menuType": {
+            "$ref": "#/components/schemas/MenuTypeEnum"
+          },
+          "name": {
+            "type": "string"
+          },
+          "route": {
+            "type": "string",
+            "nullable": true
+          },
+          "isLink": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusEnum"
+          },
+          "superiorId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MenuWithChildrenDto"
+            }
+          }
+        }
+      },
       "OrganizationCreateCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -1450,6 +1554,7 @@
           },
           "children": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/OrganizationWithChildrenDto"
             }
