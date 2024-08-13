@@ -29,8 +29,8 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../components/DictSelect";
-import UserCreate from '../../components/Users/create';
-import UserEdit from '../../components/Users/edit';
+import UserCreate from '../../components/users/create';
+import UserEdit from '../../components/users/edit';
 import { UserInfo, UserListeApi } from '../../apis/users/userApi';
 
 

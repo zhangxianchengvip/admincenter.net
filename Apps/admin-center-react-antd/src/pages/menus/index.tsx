@@ -10,8 +10,9 @@ import { RoleInfo } from "../../apis/roles/roleApi";
 import { OrgDeleteApi, OrgListWithPaginationAndChildrenApi, OrgUpdateApi } from "../../apis/organizations/orgApi";
 import MenuCreate from "../../components/menus/create";
 import style from "./menu-page.module.scss";
+import { MenuListWithPaginationAndChildrenApi, MenuWithChildrenInfo } from "../../apis/menus/menuApi";
 const MenuPage: React.FC = () => {
-    const [dataSource, setDataSource] = useState<RoleInfo[]>([]); // 数据
+    const [dataSource, setDataSource] = useState<MenuWithChildrenInfo[]>([]); // 数据
     const [loading, setLoading] = useState(true); // loading
     const [isModalOpen, setIsModalOpen] = useState(false); // 模态框
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -23,7 +24,7 @@ const MenuPage: React.FC = () => {
 
     const fetchOrgList = async (pageNumber: number, pageSize: number, superiorId: string | null = null) => {
         try {
-            const response = await OrgListWithPaginationAndChildrenApi(pageNumber, pageSize);
+            const response = await MenuListWithPaginationAndChildrenApi(pageNumber, pageSize);
             console.log(response.data.items);
             setDataSource(response.data.items);
             setTotal(response.data.totalCount); // 设置总条目数
@@ -104,19 +105,14 @@ const MenuPage: React.FC = () => {
 
     const columns: ColumnsType<any> = [
         {
-            title: '部门名称',
+            title: '菜单名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: '部门编号',
-            dataIndex: 'code',
-            key: 'code',
-        },
-        {
-            title: '描述',
-            dataIndex: 'description',
-            key: 'description',
+            title: '路由',
+            dataIndex: 'route',
+            key: 'route',
         },
         {
             title: '状态',
@@ -125,7 +121,7 @@ const MenuPage: React.FC = () => {
         },
         {
             title: '操作',
-            key: 'actions',
+            key: 'actions', 
             fixed: 'right',
             width: 250,
             render: (record) => (

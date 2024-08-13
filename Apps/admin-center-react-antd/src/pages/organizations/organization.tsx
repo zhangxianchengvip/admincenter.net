@@ -215,7 +215,7 @@ const OrganizationPage: React.FC = () => {
                 }}
                 expandable={{
                     expandedRowKeys: expandedRows, // 控制展开的行
-                    //onExpand: onExpand, // 处理展开/折叠的逻辑
+                    onExpand: onExpand, // 处理展开/折叠的逻辑
                     childrenColumnName: 'children', // 自动处理children字段作为子项
                 }}
             />
