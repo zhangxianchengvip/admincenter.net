@@ -35,7 +35,7 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
         const response = await OrgListWithChildrenApi();
         if (response.code === 200) {
             const newOrgOptions = convertToAntdOptions(response.data);
-            setOrgOptions(newOrgOptions);
+            setOrgOptions(newOrgOptions??[]);
         }
     };
 
@@ -50,7 +50,10 @@ const UserCreate: React.FC<{ closeButtonClickedCallback: () => void; }> = (props
         }
     };
 
-    const convertToAntdOptions = (data: any[]): Option[] => {
+    const convertToAntdOptions = (data: any[]): any[] | null => {
+        if (data == null || data == undefined) {
+            return null;
+        }
         return data.map((org) => ({
             value: org.id,
             label: org.name,

@@ -15,11 +15,16 @@ const OrganizaitonCreate: React.FC<{ submitOkCallback: () => void }> = (props) =
         const response = await OrgListWithChildrenApi();
         if (response.code === 200) {
             const orgs = convertToAntdOptions(response.data);
-            setOrgOptions(orgs);
+            setOrgOptions(orgs ?? []);
         }
     };
 
-    const convertToAntdOptions = (data: any[]): any[] => {
+    const convertToAntdOptions = (data: any[]): any[] | null => {
+
+        if (data == null || data == undefined) {
+            return null;
+        }
+
         return data.map((org) => ({
             value: org.id,
             label: org.name,

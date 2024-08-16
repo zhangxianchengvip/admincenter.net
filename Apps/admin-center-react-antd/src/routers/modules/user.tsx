@@ -52,7 +52,7 @@ const system: MenuRouteObject = {
         },
         {
             path: "menu",
-            label: "用户菜单",
+            label: "菜单管理",
             icon: <MenuOutlined />,
             element: <MenuList />
         },

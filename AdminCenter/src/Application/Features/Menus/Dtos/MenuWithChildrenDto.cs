@@ -7,6 +7,10 @@ namespace AdminCenter.Application.Features.Menus.Dtos;
 public class MenuWithChildrenDto
 {
     /// <summary>
+    /// Id
+    /// </summary>
+    public Guid Id { get; set; }
+    /// <summary>
     /// 类型
     /// </summary>
     public MenuTypeEnum MenuType { get; set; }

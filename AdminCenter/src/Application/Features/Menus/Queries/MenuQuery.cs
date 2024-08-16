@@ -13,7 +13,6 @@ public class MenuQueryHandler(IApplicationDbContext context) : IRequestHandler<M
     public async Task<MenuDto> Handle(MenuQuery request, CancellationToken cancellationToken)
     {
         var menu = await context.Menus.FindAsync(request.Id);
-
         return menu != null ? menu.Adapt<MenuDto>() : throw new BusinessException(ExceptionMessage.MenuNotExist);
     }
 }

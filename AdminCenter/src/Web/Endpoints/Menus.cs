@@ -19,8 +19,9 @@ public class Menus : EndpointGroupBase
            .MapGet(MenuQuery, "{id}")
            .MapPut(MenuUpdate, "{id}")
            .MapDelete(MenuDelete, "{id}")
-           .MapGet(MenuListWithPaginationAndChildrenQuery)
-           .MapGet(MenuListBySuperiorIdQuery, "{superiorId}");
+           .MapGet(MenuListBySuperiorIdQuery, "{superiorId}")
+           .MapGet(MenuListWithChildrenQuery, "WithChildren")
+           .MapGet(MenuListWithPaginationAndChildrenQuery, "WithPaginationAndChildren");
     }
 
     /// <summary>
@@ -38,6 +39,16 @@ public class Menus : EndpointGroupBase
     {
         return await sender.Send(new MenuListBySuperiorIdQuery(superiorId));
     }
+
+
+    /// <summary>
+    /// 菜单列表查询
+    /// </summary>
+    public async Task<List<MenuWithChildrenDto>> MenuListWithChildrenQuery(ISender sender)
+    {
+        return await sender.Send(new MenuListWithChildrenQuery());
+    }
+
 
     /// <summary>
     /// 菜单列表查询

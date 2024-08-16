@@ -14,7 +14,7 @@ public static class MenuQueryExtension
         // 将所有菜单转换为 DTO 并填充到字典中以便快速查找
         foreach (var menu in menus)
         {
-            var menuDto = menus.Adapt<MenuWithChildrenDto>();
+            var menuDto = menu.Adapt<MenuWithChildrenDto>();
             menuDtos.Add(menuDto);
             menuDictionary[menu.Id] = menuDto;
         }

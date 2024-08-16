@@ -1,10 +1,10 @@
 import { Button, Cascader, Descriptions, Form, Input, InputNumber, message } from "antd";
 import React, { useEffect, useState } from "react";
 import style from "./menu-create.module.scss";
-import { OrgCreateApi, OrgListWithChildrenApi } from "../../../apis/organizations/orgApi";
+import { MenuCreateApi, MenuListWithChildrenApi, MenuListWithPaginationAndChildrenApi } from "../../../apis/menus/menuApi";
 const MenuCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
 
-    const [orgOptions, setOrgOptions] = useState<Option[]>([]);
+    const [menuOptions, setMenuOptions] = useState<Option[]>([]);
     useEffect(() => {
         fetchOrgList();
     }, []);
@@ -12,18 +12,24 @@ const MenuCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
 
 
     const fetchOrgList = async () => {
-        const response = await OrgListWithChildrenApi();
+        const response = await MenuListWithChildrenApi();
         if (response.code === 200) {
-            const orgs = convertToAntdOptions(response.data);
-            setOrgOptions(orgs);
+            console.log("xxxxxxx");
+            console.log(response.data);
+
+            const menus = convertToAntdOptions(response.data);
+            setMenuOptions(menus ?? []);
         }
     };
 
-    const convertToAntdOptions = (data: any[]): any[] => {
-        return data.map((org) => ({
-            value: org.id,
-            label: org.name,
-            children: convertToAntdOptions(org.children),
+    const convertToAntdOptions = (data: any[]): any[] | null => {
+        if (data == null || data == undefined) {
+            return null;
+        }
+        return data.map((menu) => ({
+            value: menu.id,
+            label: menu.name,
+            children: convertToAntdOptions(menu.children),
         }));
     };
 
@@ -47,10 +53,11 @@ const MenuCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
     /* eslint-enable no-template-curly-in-string */
 
     const onFinish = async (values: any) => {
-        var resp = await OrgCreateApi({
+        var resp = await MenuCreateApi({
             name: values.name,
-            code: values.code,
-            description: values.description,
+            menuType: 1,
+            route: values.route,
+            isLink: false,
             superiorId: values.superior[values.superior.length - 1]
         })
 
@@ -82,7 +89,7 @@ const MenuCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
                 <Form.Item name="name" label="菜单名称" rules={[{ required: true, message: "菜单名称不能为空" }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="route" label="菜单类型" rules={[{ required: true, message: "菜单名称不能为空" }]}>
+                <Form.Item name="menuType" label="菜单类型" rules={[{ required: true, message: "菜单类型不能为空" }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="route" label="路由" rules={[{ required: true, message: "菜单名称不能为空" }]}>
@@ -94,7 +101,7 @@ const MenuCreate: React.FC<{ submitOkCallback: () => void }> = (props) => {
 
                 <Form.Item name="superior" label="上级菜单">
                     <Cascader
-                        options={orgOptions}
+                        options={menuOptions}
                         expandTrigger="hover"
                         displayRender={displayRender}
                         changeOnSelect={true}

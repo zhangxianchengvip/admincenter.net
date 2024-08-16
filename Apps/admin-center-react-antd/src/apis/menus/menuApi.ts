@@ -1,4 +1,4 @@
-import { get } from "../apiClient";
+import { get, post } from "../apiClient";
 import { ResponseData } from "../response";
 
 interface MenuCreateCoommand {
@@ -29,6 +29,26 @@ interface MenuListWithChildren {
 
 }
 
+
+export const MenuCreateApi = async (data: MenuCreateCoommand): Promise<ResponseData<boolean>> => {
+
+  try {
+    const response = await post<ResponseData<boolean>>(`/api/v1/Menus`, data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const MenuListWithChildrenApi = async (): Promise<ResponseData<MenuWithChildrenInfo[]>> => {
+
+  try {
+    const response = await get<ResponseData<MenuWithChildrenInfo[]>>(`/api/v1/Menus/WithChildren`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const MenuListWithPaginationAndChildrenApi = async (pageNumber: number, pageSize: number): Promise<ResponseData<MenuListWithChildren>> => {
 

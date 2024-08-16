@@ -262,46 +262,6 @@
             }
           }
         }
-      },
-      "get": {
-        "tags": [
-          "Menus"
-        ],
-        "operationId": "MenuListWithPaginationAndChildrenQuery",
-        "parameters": [
-          {
-            "name": "PageNumber",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedListOfMenuWithChildrenDto"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/v1/Menus/{id}": {
@@ -436,6 +396,71 @@
                   "items": {
                     "$ref": "#/components/schemas/MenuDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Menus/WithChildren": {
+      "get": {
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "MenuListWithChildrenQuery",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MenuWithChildrenDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Menus/WithPaginationAndChildren": {
+      "get": {
+        "tags": [
+          "Menus"
+        ],
+        "operationId": "MenuListWithPaginationAndChildrenQuery",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfMenuWithChildrenDto"
                 }
               }
             }
@@ -1387,40 +1412,14 @@
           }
         }
       },
-      "PaginatedListOfMenuWithChildrenDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MenuWithChildrenDto"
-            }
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
-          }
-        }
-      },
       "MenuWithChildrenDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
           "menuType": {
             "$ref": "#/components/schemas/MenuTypeEnum"
           },
@@ -1448,6 +1447,36 @@
             "items": {
               "$ref": "#/components/schemas/MenuWithChildrenDto"
             }
+          }
+        }
+      },
+      "PaginatedListOfMenuWithChildrenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuWithChildrenDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
           }
         }
       },
