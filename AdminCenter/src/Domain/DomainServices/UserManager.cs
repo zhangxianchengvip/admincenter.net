@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdminCenter.Domain;
 
-public class UserManager(IApplicationDbContext context) : DomainEvent
+public class UserManager(IApplicationDbContext context) : DomainService
 {
     /// <summary>
     /// 创建用户
@@ -26,15 +26,14 @@ public class UserManager(IApplicationDbContext context) : DomainEvent
             loginName: loginName,
             password: password,
             realName: realName,
+            roles: roleIds,
+            organizations: organizations,
             nickName: nickName,
             phoneNumber: phoneNumber,
             email: email
         );
 
-        user.UpdateRoleRange(roleIds);
-
-        user.UpdateOrganizationRange(organizations);
-
+        // 验证用户是否存在
         var exist = await context.Users.AnyAsync(s => s.LoginName.Equals(loginName));
 
         return !exist ? user : throw new BusinessException(ExceptionMessage.UserExist);

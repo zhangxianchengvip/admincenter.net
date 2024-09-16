@@ -68,38 +68,52 @@ public class User : AggregateRoot<Guid>
         [NotNull] string loginName,
         [NotNull] string password,
         [NotNull] string realName,
+        [NotNull] List<Guid> roles,
+        [NotNull] List<(Guid organizationId, bool isSubsidiary)> organizations,
         string? nickName = null,
         string? phoneNumber = null,
         string? email = null) : base(id)
     {
-        Email = email;
-        NickName = nickName;
-        PhoneNumber = phoneNumber;
-        Status = StatusEnum.Enable;
-
         //校验名称为空，或者赋值
-        RealName = Guard.Against.NullOrWhiteSpace
-        (
-            input: realName,
-            parameterName: nameof(realName),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
-        );
+        if (string.IsNullOrWhiteSpace(loginName))
+        {
+            throw new BusinessException(ExceptionMessage.UserNameNull);
+        }
 
-        //校验登录名称为空，或者赋值
-        LoginName = Guard.Against.NullOrWhiteSpace
-        (
-            input: loginName,
-            parameterName: nameof(loginName),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
-        );
+        //如果realName为空，则抛出异常
+        if (string.IsNullOrWhiteSpace(realName))
+        {
+            throw new BusinessException(ExceptionMessage.UserNameNull);
+        }
 
         //校验密码为空，或者赋值
-        Password = HashPassword(Guard.Against.NullOrWhiteSpace
-        (
-            input: password,
-            parameterName: nameof(password),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
-        ));
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new BusinessException(ExceptionMessage.UserPasswordNull);
+        }
+
+        //校验角色列表为空
+        if (roles.Count == 0)
+        {
+            throw new BusinessException(ExceptionMessage.UserRoleListNull);
+        }
+
+        //校验组织列表为空
+        if (organizations.Count == 0)
+        {
+            throw new BusinessException(ExceptionMessage.UserRoleListNull);
+        }
+
+        //校验通过，设置值
+        Email = email;
+        RealName = realName;
+        NickName = nickName;
+        LoginName = loginName;
+        PhoneNumber = phoneNumber;
+        Status = StatusEnum.Enable;
+        Password = HashPassword(password);
+        UserRoles = roles.Select(roleId => new UserRole { RoleId = roleId, UserId = Id }).ToList();
+        UserOrganizations = organizations.Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, IsSubsidiary = organization.isSubsidiary }).ToList();
     }
 
     /// <summary>
@@ -107,13 +121,13 @@ public class User : AggregateRoot<Guid>
     /// </summary>
     public User UpdatePassword([NotNull] string password)
     {
-        //校验密码为空，或者赋值
-        Password = HashPassword(Guard.Against.NullOrWhiteSpace
-        (
-            input: password,
-            parameterName: nameof(password),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
-        ));
+        //校验密码为空
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new BusinessException(ExceptionMessage.UserPasswordNull);
+        }
+
+        Password = HashPassword(password);
 
         //添加用户密码修改事件
         AddDomainEvent(new UserPasswordUpdateEvent { UserId = Id });
@@ -160,13 +174,12 @@ public class User : AggregateRoot<Guid>
     public bool ValidatePassword([NotNull] string password)
     {
         //校验密码为空
-        Guard.Against.NullOrWhiteSpace
-        (
-            input: password,
-            parameterName: nameof(password),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
-        );
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new BusinessException(ExceptionMessage.UserPasswordNull);
+        }
 
+        // 解码密码
         byte[] saltAndHash = Convert.FromBase64String(Password);
         byte[] salt = new byte[32];
         byte[] hash = new byte[saltAndHash.Length - 32];
@@ -188,12 +201,11 @@ public class User : AggregateRoot<Guid>
     /// </summary>
     public User UpdateRoleRange(List<Guid> roleList)
     {
-        Guard.Against.Null
-        (
-           input: roleList,
-           parameterName: nameof(roleList),
-           exceptionCreator: () => new BusinessException(ExceptionMessage.UserRoleListNull)
-        );
+        //校验角色列表为空
+        if (roleList.Count == 0)
+        {
+            throw new BusinessException(ExceptionMessage.UserRoleListNull);
+        }
 
         UserRoles = roleList
         .Select(roleId => new UserRole { RoleId = roleId, UserId = Id })
@@ -208,12 +220,11 @@ public class User : AggregateRoot<Guid>
     public User UpdateRealName([NotNull] string realName)
     {
         //校验名称为空，或者赋值
-        RealName = Guard.Against.NullOrWhiteSpace
-        (
-           input: realName,
-           parameterName: nameof(realName),
-           exceptionCreator: () => new BusinessException(ExceptionMessage.UserNameNull)
-        );
+        if (string.IsNullOrWhiteSpace(realName))
+        {
+            throw new BusinessException(ExceptionMessage.UserNameNull);
+        }
+        RealName = realName;
 
         return this;
     }
@@ -223,13 +234,12 @@ public class User : AggregateRoot<Guid>
     /// </summary>
     public User UpdateOrganizationRange(List<(Guid organizationId, bool isSubsidiary)> organizationList)
     {
-        Guard.Against.Null
-        (
-           input: organizationList,
-           parameterName: nameof(organizationList),
-           exceptionCreator: () => new BusinessException(ExceptionMessage.UserOrgListNull)
-        );
-
+        //校验组织列表为空
+        if (organizationList.Count == 0)
+        {
+            throw new BusinessException(ExceptionMessage.UserRoleListNull);
+        }
+        
         UserOrganizations = organizationList
         .Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, IsSubsidiary = organization.isSubsidiary })
         .ToList();

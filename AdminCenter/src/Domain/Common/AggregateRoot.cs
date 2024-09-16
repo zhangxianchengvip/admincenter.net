@@ -7,12 +7,12 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 聚合根
 /// </summary>
-public abstract class AggregateRoot : AuditableEntity
+public abstract class AggregateRoot : AuditableEntity, IAggregateRoot
 {
     /// <summary>
     /// 事件集合
     /// </summary>
-    private readonly List<DomainEvent> _domainEvents = new();
+    private readonly List<DomainEvent> _domainEvents = [];
 
     [NotMapped]
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
@@ -46,7 +46,7 @@ public abstract class AggregateRoot : AuditableEntity
 /// 聚合根
 /// </summary>
 /// <typeparam name="TKey"></typeparam>
-public abstract class AggregateRoot<TKey> : AggregateRoot, IAuditableEntity<TKey>
+public abstract class AggregateRoot<TKey> : AggregateRoot, IAggregateRoot<TKey>
 {
     /// <summary>
     /// 主键

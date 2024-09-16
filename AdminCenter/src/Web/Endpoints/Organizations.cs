@@ -4,7 +4,6 @@ using AdminCenter.Application.Features.Organizations.Commands;
 using AdminCenter.Application.Features.Organizations.Dto;
 using AdminCenter.Application.Features.Organizations.Dtos;
 using AdminCenter.Application.Features.Organizations.Queries;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AdminCenter.Web.Endpoints;
 
