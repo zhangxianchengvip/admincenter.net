@@ -17,7 +17,8 @@ public class MenuListWithPaginationAndChildrenQueryHandler(IApplicationDbContext
         var result = menuList
         .BuildMenuTree()
         .Skip((request.PageNumber - 1) * request.PageSize)
-        .Take(request.PageSize).ToList();
+        .Take(request.PageSize)
+        .ToList();
 
         return new PaginatedList<MenuWithChildrenDto>(result, result.Count, request.PageNumber, request.PageSize);
     }

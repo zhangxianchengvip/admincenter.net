@@ -7,7 +7,7 @@ interface ApiConfig extends AxiosRequestConfig {
 
 // 基础 URL 和其他配置
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/',
+    baseURL: 'https://api.admin.hello-developer.cn',
     timeout: 10000,
     headers: { 'Content-Type': 'application/json' }
 });

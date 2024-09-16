@@ -28,8 +28,7 @@ import {
 import { ColumnsType } from "antd/es/table";
 import { TableRowSelection } from "antd/es/table/interface";
 import DictSelect from "../../../components/DictSelect";
-import UserCreate from '../UserCreate';
-import UserEdit from '../UserEdit';
+import UserCreate from '../../../components/users/create';
 
 const { Option } = Select;
 
@@ -120,7 +119,7 @@ const AdvancedSearchForm = () => {
 };
 
 const UserList: React.FC = () => {
-    const [data,setData] = useState(null);
+    const [data, setData] = useState(null);
 
     const dataSource = [
         {
@@ -216,7 +215,7 @@ const UserList: React.FC = () => {
     // rowSelection.
     const [showDrawer, setShowDrawer] = useState(false);
     // 改变form的状态
-    const changeFormData = (newVal:any) =>{
+    const changeFormData = (newVal: any) => {
         setData(newVal)
     }
     const ref = useRef(null);
@@ -239,7 +238,9 @@ const UserList: React.FC = () => {
                 }}
                 onCancel={() => setIsModalOpen(false)}
                 width={'38%'}>
-                <UserCreate ref={ref}/>
+                <UserCreate closeButtonClickedCallback={function (): void {
+                    setIsModalOpen(false)
+                }} />
             </Modal>
 
             <Space style={{ display: "flex", justifyContent: "space-between", padding: "10px 0" }}>
