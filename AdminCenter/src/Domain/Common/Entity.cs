@@ -6,7 +6,7 @@ namespace AdminCenter.Domain.Common;
 /// <summary>
 /// 实体
 /// </summary>
-public class Entity : IEntity
+public abstract class Entity : IEntity
 {
 
 }
@@ -15,7 +15,7 @@ public class Entity : IEntity
 /// 实体
 /// </summary>
 /// <typeparam name="TKey"></typeparam>
-public class Entity<TKey> : Entity, IEntity<TKey>
+public abstract class Entity<TKey> : Entity, IEntity<TKey>
 {
     /// <summary>
     /// 主键

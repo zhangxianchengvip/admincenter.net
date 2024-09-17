@@ -2,7 +2,7 @@
 
 namespace AdminCenter.Domain.Common;
 
-public class DomainEvent : IDomainEvent, INotification
+public abstract class DomainEvent : IDomainEvent, INotification
 {
     /// <summary>
     /// 事件Id
