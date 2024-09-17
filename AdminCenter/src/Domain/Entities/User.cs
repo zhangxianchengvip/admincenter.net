@@ -112,8 +112,20 @@ public class User : AggregateRoot<Guid>
         PhoneNumber = phoneNumber;
         Status = StatusEnum.Enable;
         Password = HashPassword(password);
-        UserRoles = roles.Select(roleId => new UserRole { RoleId = roleId, UserId = Id }).ToList();
-        UserOrganizations = organizations.Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, IsSubsidiary = organization.isSubsidiary }).ToList();
+        UserRoles = roles.Select(roleId => new UserRole
+        {
+            RoleId = roleId,
+            UserId = Id
+        }).ToList();
+
+        UserOrganizations = organizations
+        .Select(organization => new UserOrganization
+        {
+            UserId = Id,
+            OrganizationId = organization.organizationId,
+            IsSubsidiary = organization.isSubsidiary
+        })
+        .ToList();
     }
 
     /// <summary>
@@ -239,9 +251,14 @@ public class User : AggregateRoot<Guid>
         {
             throw new BusinessException(ExceptionMessage.UserRoleListNull);
         }
-        
+
         UserOrganizations = organizationList
-        .Select(organization => new UserOrganization { UserId = Id, OrganizationId = organization.organizationId, IsSubsidiary = organization.isSubsidiary })
+        .Select(organization => new UserOrganization
+        {
+            UserId = Id,
+            OrganizationId = organization.organizationId,
+            IsSubsidiary = organization.isSubsidiary
+        })
         .ToList();
 
         return this;
