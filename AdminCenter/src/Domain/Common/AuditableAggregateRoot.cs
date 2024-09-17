@@ -37,7 +37,6 @@ public abstract class AuditableAggregateRoot : IAuditableAggregateRoot
     /// <summary>
     /// 领域事件集合
     /// </summary>
-    [NotMapped]
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     /// <summary>
