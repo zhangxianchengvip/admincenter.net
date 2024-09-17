@@ -3,7 +3,7 @@
 /// <summary>
 /// 值对象
 /// </summary>
-public abstract class ValueObject
+public abstract class ValueObject : IValueObject
 {
     /// <summary>
     /// 等于
@@ -11,7 +11,7 @@ public abstract class ValueObject
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    protected static bool EqualOperator(ValueObject left, ValueObject right)
+    public bool EqualOperator(ValueObject left, ValueObject right)
     {
         if (left is null ^ right is null)
         {
@@ -27,12 +27,12 @@ public abstract class ValueObject
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+    public bool NotEqualOperator(ValueObject left, ValueObject right)
     {
         return !(EqualOperator(left, right));
     }
 
-    protected abstract IEnumerable<object> GetEqualityComponents();
+    public abstract IEnumerable<object> GetEqualityComponents();
 
     /// <summary>
     /// 相等
