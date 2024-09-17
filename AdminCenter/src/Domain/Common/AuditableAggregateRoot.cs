@@ -5,7 +5,7 @@ using Ardalis.GuardClauses;
 namespace AdminCenter.Domain;
 
 /// <summary>
-/// 聚合根
+/// 审计聚合根
 /// </summary>
 public abstract class AuditableAggregateRoot : IAuditableAggregateRoot
 {
