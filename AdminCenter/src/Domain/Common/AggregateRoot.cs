@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 
@@ -7,7 +7,7 @@ namespace AdminCenter.Domain;
 /// <summary>
 /// 聚合根
 /// </summary>
-public abstract class AggregateRoot : AuditableEntity, IAggregateRoot
+public abstract class AggregateRoot : IAggregateRoot
 {
     /// <summary>
     /// 事件集合
