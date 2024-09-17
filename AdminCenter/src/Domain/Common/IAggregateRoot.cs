@@ -2,8 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public interface IAggregateRoot : IEntity
 {
-
-
     /// <summary>
     /// 添加领域事件
     /// </summary>

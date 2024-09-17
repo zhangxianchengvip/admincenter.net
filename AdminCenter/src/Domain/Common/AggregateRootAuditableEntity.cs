@@ -41,15 +41,15 @@ public abstract class AggregateRootAuditableEntity<TKey> : AggregateRootAuditabl
     /// </summary>
     public TKey Id { get; init; } = default!;
 
-    protected AggregateRootAuditableEntity() { }
+    public AggregateRootAuditableEntity() { }
 
-    protected AggregateRootAuditableEntity(TKey id)
+    public AggregateRootAuditableEntity(TKey id)
     {
-        Id = Guard.Against.Null
-        (
-            input: id,
-            parameterName: nameof(id),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.IdNull)
-        );
+        if (id == null)
+        {
+            throw new BusinessException("唯一标识不能为空");
+        }
+
+        Id = id;
     }
 }

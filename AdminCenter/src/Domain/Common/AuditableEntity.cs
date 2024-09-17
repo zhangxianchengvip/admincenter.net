@@ -39,15 +39,17 @@ public class AuditableEntity<TKey> : AuditableEntity, IAuditableEntity<TKey>
     /// <summary>
     /// 主键
     /// </summary>
-    public TKey Id { get; init; }
+    public TKey Id { get; init; } = default!;
+
+    public AuditableEntity() { }
 
     public AuditableEntity(TKey id)
     {
-        Id = Guard.Against.Null
-        (
-            input: id,
-            parameterName: nameof(id),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.IdNull)
-        );
+        if (id == null)
+        {
+            throw new BusinessException("唯一标识不能为空");
+        }
+
+        Id = id;
     }
 }

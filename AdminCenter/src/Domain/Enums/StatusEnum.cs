@@ -15,4 +15,10 @@ public enum StatusEnum
     /// </summary>
     [Description("停用")]
     Disable = 2,
+
+    /// <summary>
+    /// 已删除
+    /// </summary>
+    [Description("已删除")]
+    Deleted = 3
 }

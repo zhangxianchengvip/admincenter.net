@@ -20,15 +20,17 @@ public class Entity<TKey> : Entity, IEntity<TKey>
     /// <summary>
     /// 主键
     /// </summary>
-    public TKey Id { get; init; }
+    public TKey Id { get; init; } = default!;
+
+    public Entity() { }
 
     public Entity(TKey id)
     {
-        Id = Guard.Against.Null
-        (
-            input: id,
-            parameterName: nameof(id),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.IdNull)
-        );
+        if (id == null)
+        {
+            throw new BusinessException("唯一标识不能为空");
+        }
+
+        Id = id;
     }
 }

@@ -53,15 +53,15 @@ public abstract class AggregateRoot<TKey> : AggregateRoot, IAggregateRoot<TKey>
     /// </summary>
     public TKey Id { get; init; } = default!;
 
-    protected AggregateRoot() { }
+    public AggregateRoot() { }
 
-    protected AggregateRoot(TKey id)
+    public AggregateRoot(TKey id)
     {
-        Id = Guard.Against.Null
-        (
-            input: id,
-            parameterName: nameof(id),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.IdNull)
-        );
+        if (id == null)
+        {
+            throw new BusinessException("唯一标识不能为空");
+        }
+
+        Id = id;
     }
 }
