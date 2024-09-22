@@ -1,7 +1,4 @@
-﻿using AdminCenter.Domain.Constants;
-using Ardalis.GuardClauses;
-
-namespace AdminCenter.Domain.Common.Entities;
+﻿namespace AdminCenter.Domain.Common.Entities;
 
 /// <summary>
 /// 审计实体
