@@ -1377,11 +1377,13 @@
         "description": "",
         "x-enumNames": [
           "Enable",
-          "Disable"
+          "Disable",
+          "Deleted"
         ],
         "enum": [
           1,
-          2
+          2,
+          3
         ]
       },
       "MenuUpdateCommand": {
@@ -1767,6 +1769,9 @@
           "name": {
             "type": "string"
           },
+          "showName": {
+            "type": "string"
+          },
           "order": {
             "type": "integer",
             "format": "int32"
@@ -1786,6 +1791,9 @@
             "format": "guid"
           },
           "name": {
+            "type": "string"
+          },
+          "showName": {
             "type": "string"
           },
           "order": {

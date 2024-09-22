@@ -6,7 +6,7 @@ namespace AdminCenter.Application.Features.Roles.Commands;
 /// <summary>
 /// 角色修改
 /// </summary>
-public record RoleUpdateCommand(Guid Id, string Name, int Order, string? Description) : IRequest<bool>;
+public record RoleUpdateCommand(Guid Id, string Name, string ShowName, int Order, string? Description) : IRequest<bool>;
 
 public class RoleUpdateCommandValidator : AbstractValidator<RoleCreateCommand>
 {
@@ -28,6 +28,7 @@ public class RoleUpdataHandler(IApplicationDbContext context, RoleManager manage
             (
                 role,
                 request.Name,
+                request.ShowName,
                 request.Order,
                 request.Description
             );

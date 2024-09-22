@@ -23,7 +23,7 @@ public class PositionManager(IApplicationDbContext context) : DomainService
             description: description
         );
 
-        var exist = await context.Roles.AnyAsync(s => s.Name.Equals(name));
+        var exist = await context.Roles.AnyAsync(s => s.RoleName.Equals(name));
 
         return !exist ? position : throw new BusinessException(ExceptionMessage.PositionCodeExist);
     }

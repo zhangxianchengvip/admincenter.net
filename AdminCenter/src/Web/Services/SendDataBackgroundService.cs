@@ -15,7 +15,7 @@ public class SendDataBackgroundService(IServiceProvider serviceProvider) : Backg
 
         if (!await db.Users.AnyAsync())
         {
-            db.Users.Add(new User(Guid.NewGuid(), "admin", "admin", "张三"));
+            db.Users.Add(new User(Guid.NewGuid(), "admin", "admin", "张三", [], []));
             await db.SaveChangesAsync();
         }
     }
