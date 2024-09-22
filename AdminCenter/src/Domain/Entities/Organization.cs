@@ -46,23 +46,20 @@ public class Organization : AggregateRoot<Guid>
         Guid? superiorId,
         string? description = null) : base(id)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException("组织名称为空");
+        }
+
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new BusinessException("组织编码为空");
+        }
+
+        Name = name;
+        Code = code;
         Description = description;
         SuperiorId = superiorId;
-
-        Code = Guard.Against.NullOrWhiteSpace
-        (
-            input: code,
-            parameterName: nameof(code),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationCodeNull)
-        );
-
-        Name = Guard.Against.NullOrWhiteSpace
-        (
-            input: name,
-            parameterName: nameof(name),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
-        );
-
     }
 
     /// <summary>
@@ -70,12 +67,12 @@ public class Organization : AggregateRoot<Guid>
     /// </summary>
     public Organization UpdateOrganizationName([NotNull] string name)
     {
-        Name = Guard.Against.NullOrWhiteSpace
-        (
-            input: name,
-            parameterName: nameof(name),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
-        );
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException("组织名称为空");
+        }
+
+        Name = name;
 
         return this;
     }
@@ -86,12 +83,12 @@ public class Organization : AggregateRoot<Guid>
     /// </summary>
     public Organization UpdateOrganizationCode([NotNull] string code)
     {
-        Code = Guard.Against.NullOrWhiteSpace
-        (
-            input: code,
-            parameterName: nameof(code),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationCodeNull)
-        );
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new BusinessException("组织编码为空");
+        }
+
+        Code = code;
 
         return this;
     }

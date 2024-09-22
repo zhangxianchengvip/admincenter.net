@@ -53,17 +53,17 @@ public class Menu : AggregateRoot<Guid>
         bool isLink,
         Guid? superiorId) : base(id)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException("菜单名称为空");
+        }
+
         Route = route;
         IsLink = isLink;
         MenuType = menuType;
         Status = StatusEnum.Enable;
         SuperiorId = superiorId;
-        Name = Guard.Against.NullOrWhiteSpace
-       (
-           input: name,
-           parameterName: nameof(name),
-           exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
-       );
+        Name = name;
     }
 
     /// <summary>
@@ -71,12 +71,12 @@ public class Menu : AggregateRoot<Guid>
     /// </summary>
     public Menu UpdateName(string name)
     {
-        Name = Guard.Against.NullOrWhiteSpace
-        (
-           input: name,
-           parameterName: nameof(name),
-           exceptionCreator: () => new BusinessException(ExceptionMessage.OrganizationNameNull)
-        );
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException("菜单名称为空");
+        }
+
+        Name = name;
 
         return this;
     }
