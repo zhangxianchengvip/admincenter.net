@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Features.Menus.Dtos;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Menus.Queries;
 /// <summary>

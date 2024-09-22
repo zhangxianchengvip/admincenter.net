@@ -1,4 +1,6 @@
-﻿namespace AdminCenter.Application.Features.Users.Commands;
+﻿using AdminCenter.Domain.Common.Repository;
+
+namespace AdminCenter.Application.Features.Users.Commands;
 
 /// <summary>
 /// 删除用户

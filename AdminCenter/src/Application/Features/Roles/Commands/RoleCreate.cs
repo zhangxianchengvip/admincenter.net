@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Features.Roles.Dto;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Domain.DomainServices;
 
 namespace AdminCenter.Application.Features.Roles.Commands;

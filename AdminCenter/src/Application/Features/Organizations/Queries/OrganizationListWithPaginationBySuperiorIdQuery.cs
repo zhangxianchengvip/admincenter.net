@@ -1,5 +1,6 @@
 ﻿using AdminCenter.Application.Common.Models;
 using AdminCenter.Application.Features.Organizations.Dto;
+using AdminCenter.Domain.Common.Repository;
 using CleanArchitecture.Application.Common.Mappings;
 
 namespace AdminCenter.Application.Features.Organizations.Queries;

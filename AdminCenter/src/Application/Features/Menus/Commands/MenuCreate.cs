@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Application.Features.Organizations.Commands;
 using AdminCenter.Domain;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Domain.DomainServices;
 using AdminCenter.Domain.Enums;
 

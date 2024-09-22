@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using AdminCenter.Domain.Common.Domain;
 using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 
-namespace AdminCenter.Domain;
+namespace AdminCenter.Domain.Common.Entities;
 
 /// <summary>
 /// 审计聚合根

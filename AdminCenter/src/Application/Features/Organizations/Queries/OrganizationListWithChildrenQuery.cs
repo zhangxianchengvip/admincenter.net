@@ -1,6 +1,7 @@
 using AdminCenter.Application.Features.Organizations.Dtos;
 using AdminCenter.Application.Features.Organizations.Extensions;
 using AdminCenter.Domain;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Organizations.Queries;
 

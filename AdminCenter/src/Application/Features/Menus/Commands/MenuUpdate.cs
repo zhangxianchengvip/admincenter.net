@@ -1,5 +1,6 @@
 ﻿using AdminCenter.Application.Features.Menus.Dtos;
 using AdminCenter.Application.Features.Organizations.Dto;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Domain.DomainServices;
 using AdminCenter.Domain.Enums;
 

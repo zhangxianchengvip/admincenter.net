@@ -1,4 +1,6 @@
-﻿namespace AdminCenter.Domain.Entities;
+﻿using AdminCenter.Domain.Common.Entities;
+
+namespace AdminCenter.Domain.Entities;
 public class RoleMenu : AuditableEntity
 {
     /// <summary>

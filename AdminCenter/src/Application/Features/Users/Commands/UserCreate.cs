@@ -1,5 +1,6 @@
 ﻿using AdminCenter.Application.Features.Users.Dto;
 using AdminCenter.Domain;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Users.Commands;
 

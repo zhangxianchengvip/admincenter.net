@@ -1,4 +1,6 @@
-﻿namespace AdminCenter.Application.Features.Positions.Commands;
+﻿using AdminCenter.Domain.Common.Repository;
+
+namespace AdminCenter.Application.Features.Positions.Commands;
 public record PositionDeleteCommand(Guid Id) : IRequest<bool>;
 
 

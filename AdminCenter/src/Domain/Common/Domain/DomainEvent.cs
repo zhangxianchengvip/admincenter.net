@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace AdminCenter.Domain.Common;
+namespace AdminCenter.Domain.Common.Domain;
 
 public abstract class DomainEvent : IDomainEvent, INotification
 {

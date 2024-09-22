@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Features.Users.Dto;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Users.Queries;
 

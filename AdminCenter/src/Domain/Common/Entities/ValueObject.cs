@@ -1,4 +1,4 @@
-﻿namespace AdminCenter.Domain.Common;
+﻿namespace AdminCenter.Domain.Common.Entities;
 
 /// <summary>
 /// 值对象
@@ -29,7 +29,7 @@ public abstract class ValueObject : IValueObject
     /// <returns></returns>
     public bool NotEqualOperator(ValueObject left, ValueObject right)
     {
-        return !(EqualOperator(left, right));
+        return !EqualOperator(left, right);
     }
 
     public abstract IEnumerable<object> GetEqualityComponents();

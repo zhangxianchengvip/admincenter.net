@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using AdminCenter.Domain.Common.Domain;
+using AdminCenter.Domain.Common.Entities;
 
 public interface IAggregateRoot : IEntity
 {

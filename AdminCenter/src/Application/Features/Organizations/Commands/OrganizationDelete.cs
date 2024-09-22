@@ -1,4 +1,6 @@
-﻿namespace AdminCenter.Application.Features.Organizations.Commands;
+﻿using AdminCenter.Domain.Common.Repository;
+
+namespace AdminCenter.Application.Features.Organizations.Commands;
 
 /// <summary>
 /// 组织删除

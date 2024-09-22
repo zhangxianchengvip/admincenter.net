@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AdminCenter.Domain.Common.Repository;
+using Microsoft.Extensions.Logging;
 
 namespace AdminCenter.Application;
 

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
 using Ardalis.GuardClauses;
 

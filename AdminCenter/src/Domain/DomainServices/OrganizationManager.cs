@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using AdminCenter.Application.Common.Interfaces;
+using AdminCenter.Domain.Common.Domain;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 

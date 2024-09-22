@@ -1,5 +1,5 @@
 ﻿using AdminCenter.Application.Common.Interfaces;
-using AdminCenter.Domain.Common;
+using AdminCenter.Domain.Common.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;

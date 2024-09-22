@@ -1,4 +1,4 @@
-namespace AdminCenter.Domain.Common;
+namespace AdminCenter.Domain.Common.Entities;
 
 /// <summary>
 /// 值对象

@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Features.Positions.Dtos;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Positions.Queries;
 

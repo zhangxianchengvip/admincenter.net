@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdminCenter.Domain.Common;
+namespace AdminCenter.Domain.Common.Entities;
 
 //复合主键或无主键标识实体基类
 public interface IEntity

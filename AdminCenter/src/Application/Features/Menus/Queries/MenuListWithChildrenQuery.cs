@@ -1,6 +1,7 @@
 using System;
 using AdminCenter.Application.Features.Menus.Dtos;
 using AdminCenter.Application.Features.Menus.Extensions;
+using AdminCenter.Domain.Common.Repository;
 
 namespace AdminCenter.Application.Features.Menus.Queries;
 

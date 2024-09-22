@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
+using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
 using AdminCenter.Domain.Entities;
 using Ardalis.GuardClauses;

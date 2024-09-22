@@ -1,4 +1,6 @@
 ﻿
+using AdminCenter.Domain.Common.Repository;
+
 namespace AdminCenter.Application.Features.Menus.Commands;
 
 /// <summary>

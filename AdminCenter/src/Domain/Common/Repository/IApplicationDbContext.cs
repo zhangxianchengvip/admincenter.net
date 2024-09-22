@@ -1,9 +1,8 @@
-﻿
-using AdminCenter.Domain;
+﻿using AdminCenter.Domain;
 using AdminCenter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminCenter.Application.Common.Interfaces;
+namespace AdminCenter.Domain.Common.Repository;
 
 /// <summary>
 /// 仓储

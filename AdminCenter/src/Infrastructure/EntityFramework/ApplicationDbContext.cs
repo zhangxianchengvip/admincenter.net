@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using AdminCenter.Application.Common.Interfaces;
 using AdminCenter.Domain;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

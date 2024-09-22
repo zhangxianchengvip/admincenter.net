@@ -1,4 +1,5 @@
 ﻿using AdminCenter.Application.Common.Interfaces;
+using AdminCenter.Domain.Common.Repository;
 using AdminCenter.Infrastructure.EntityFramework;
 using AdminCenter.Infrastructure.EntityFramework.Interceptors;
 using AdminCenter.Infrastructure.Identity;

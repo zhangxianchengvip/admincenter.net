@@ -1,3 +1,5 @@
+using AdminCenter.Domain.Common.Entities;
+
 public interface IAuditableAggregateRoot : IAuditableEntity, IAggregateRoot
 {
 }
