@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
-using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -48,12 +47,12 @@ public class Organization : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BusinessException("组织名称为空");
+            throw new BusinessException(ExceptionMessage.OrganizationNameNull);
         }
 
         if (string.IsNullOrWhiteSpace(code))
         {
-            throw new BusinessException("组织编码为空");
+            throw new BusinessException(ExceptionMessage.OrganizationCodeNull);
         }
 
         Name = name;
@@ -69,7 +68,7 @@ public class Organization : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BusinessException("组织名称为空");
+            throw new BusinessException(ExceptionMessage.OrganizationNameNull);
         }
 
         Name = name;
@@ -85,7 +84,7 @@ public class Organization : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(code))
         {
-            throw new BusinessException("组织编码为空");
+            throw new BusinessException(ExceptionMessage.OrganizationCodeNull);
         }
 
         Code = code;

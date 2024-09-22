@@ -4,7 +4,6 @@ using System.Text;
 using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
 using AdminCenter.Domain.Entities;
-using Ardalis.GuardClauses;
 namespace AdminCenter.Domain;
 
 /// <summary>
@@ -113,20 +112,19 @@ public class User : AggregateRoot<Guid>
         PhoneNumber = phoneNumber;
         Status = StatusEnum.Enable;
         Password = HashPassword(password);
+
         UserRoles = roles.Select(roleId => new UserRole
         {
             RoleId = roleId,
             UserId = Id
         }).ToList();
 
-        UserOrganizations = organizations
-        .Select(organization => new UserOrganization
+        UserOrganizations = organizations.Select(organization => new UserOrganization
         {
             UserId = Id,
             OrganizationId = organization.organizationId,
             IsSubsidiary = organization.isSubsidiary
-        })
-        .ToList();
+        }).ToList();
     }
 
     /// <summary>
@@ -151,15 +149,14 @@ public class User : AggregateRoot<Guid>
     /// <summary>
     /// 密码hash加密
     /// </summary>
-    private string HashPassword([NotNull] string password)
+    private static string HashPassword([NotNull] string password)
     {
         //校验密码为空
-        Guard.Against.NullOrWhiteSpace
-        (
-            input: password,
-            parameterName: nameof(password),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.UserPasswordNull)
-        );
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new BusinessException(ExceptionMessage.UserPasswordNull);
+        }
+
 
         // 生成一个随机的盐
         using var rng = RandomNumberGenerator.Create();
@@ -253,14 +250,12 @@ public class User : AggregateRoot<Guid>
             throw new BusinessException(ExceptionMessage.UserRoleListNull);
         }
 
-        UserOrganizations = organizationList
-        .Select(organization => new UserOrganization
+        UserOrganizations = organizationList.Select(organization => new UserOrganization
         {
             UserId = Id,
             OrganizationId = organization.organizationId,
             IsSubsidiary = organization.isSubsidiary
-        })
-        .ToList();
+        }).ToList();
 
         return this;
     }

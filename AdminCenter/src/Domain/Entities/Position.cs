@@ -2,7 +2,6 @@
 using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
 using AdminCenter.Domain.Entities;
-using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain;
 
@@ -43,22 +42,21 @@ public class Position : AggregateRoot<Guid>
         [NotNull] string code,
         string? description = null) : base(id)
     {
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException(ExceptionMessage.PositionNameNull);
+        }
+
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new BusinessException(ExceptionMessage.PositionCodeNull);
+        }
+
         Description = description;
         Status = StatusEnum.Enable;
-
-        Name = Guard.Against.NullOrWhiteSpace
-        (
-            input: name,
-            parameterName: nameof(name),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.PositionNameNull)
-        );
-
-        Code = Guard.Against.NullOrWhiteSpace
-        (
-            input: code,
-            parameterName: nameof(code),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.PositionCodeNull)
-        );
+        Name = name;
+        Code = code;
     }
 
     /// <summary>
@@ -66,12 +64,12 @@ public class Position : AggregateRoot<Guid>
     /// </summary>
     public Position UpdatePositionName([NotNull] string name)
     {
-        Name = Guard.Against.NullOrWhiteSpace
-        (
-            input: name,
-            parameterName: nameof(name),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.PositionNameNull)
-        );
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new BusinessException(ExceptionMessage.PositionNameNull);
+        }
+
+        Name = name;
 
         return this;
     }
@@ -81,12 +79,12 @@ public class Position : AggregateRoot<Guid>
     /// </summary>
     public Position UpdatePositionCode([NotNull] string code)
     {
-        Code = Guard.Against.NullOrWhiteSpace
-        (
-            input: code,
-            parameterName: nameof(code),
-            exceptionCreator: () => new BusinessException(ExceptionMessage.PositionCodeNull)
-        );
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new BusinessException(ExceptionMessage.PositionCodeNull);
+        }
+
+        Code = code;
 
         return this;
     }

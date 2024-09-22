@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using AdminCenter.Domain.Common.Entities;
+using AdminCenter.Domain.Constants;
 using AdminCenter.Domain.Entities;
 namespace AdminCenter.Domain;
 
@@ -50,12 +51,12 @@ public class Role : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(roleName))
         {
-            throw new BusinessException("角色名称不能为空");
+            throw new BusinessException(ExceptionMessage.RoleNameNull);
         }
 
         if (string.IsNullOrWhiteSpace(showName))
         {
-            throw new BusinessException("显示名称不能为空");
+            throw new BusinessException(ExceptionMessage.RoleShowNameNull);
         }
 
         RoleName = roleName;
@@ -72,7 +73,7 @@ public class Role : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(roleName))
         {
-            throw new BusinessException("角色名称不能为空");
+            throw new BusinessException(ExceptionMessage.RoleNameNull);
         }
         RoleName = roleName;
         return this;
@@ -84,7 +85,7 @@ public class Role : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(showName))
         {
-            throw new BusinessException("角色显示名称不能为空");
+            throw new BusinessException(ExceptionMessage.RoleShowNameNull);
         }
         ShowName = showName;
         return this;

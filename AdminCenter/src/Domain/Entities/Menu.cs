@@ -2,7 +2,6 @@
 using AdminCenter.Domain.Common.Entities;
 using AdminCenter.Domain.Constants;
 using AdminCenter.Domain.Enums;
-using Ardalis.GuardClauses;
 
 namespace AdminCenter.Domain.Entities;
 
@@ -55,7 +54,7 @@ public class Menu : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BusinessException("菜单名称为空");
+            throw new BusinessException(ExceptionMessage.MenuNameNull);
         }
 
         Route = route;
@@ -73,7 +72,7 @@ public class Menu : AggregateRoot<Guid>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new BusinessException("菜单名称为空");
+            throw new BusinessException(ExceptionMessage.MenuNameNull);
         }
 
         Name = name;

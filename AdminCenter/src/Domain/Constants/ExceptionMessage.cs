@@ -16,6 +16,7 @@ public static class ExceptionMessage
     //角色
     public const string RoleIdNull = "角色表示为空";
     public const string RoleNameNull = "角色名称为空";
+    public const string RoleShowNameNull = "角色显示名称为空";
     public const string RoleExist = "角色已存在";
     public const string RoleNotExist = "角色不存在";
     public const string RoleOccupy = "角色正在使用中";
